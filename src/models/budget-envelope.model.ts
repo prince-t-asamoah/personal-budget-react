@@ -23,4 +23,4 @@ export interface BudgetEnvelopeInitialState {
   pendingFromId: string
 }
 
-export type BudgetEnvelopeActions = { type: 'ADD', payload: BudgetEnvelope | BudgetEnvelope[] };
+export type BudgetEnvelopeActions = { type: 'ADD', payload: BudgetEnvelope | BudgetEnvelope[] } | { type: 'SET_NEW_ENVELOPE_MODAL', payload: boolean };

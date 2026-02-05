@@ -32,6 +32,13 @@ export const budgetReducer = (state: BudgetEnvelopeInitialState, action: BudgetE
                 }
             }
         }
+        case 'SET_NEW_ENVELOPE_MODAL': {
+            console.log('set new envelope', action.payload)
+            return {
+                ...state,
+                isAddingEnvelope: action.payload
+            }
+        }
         default:
             return state;
     }

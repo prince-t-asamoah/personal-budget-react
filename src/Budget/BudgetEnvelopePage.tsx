@@ -9,6 +9,7 @@ import {
   budgetReducer,
   initialStateBudgetEnvelope,
 } from "../store/budget-envelope.store";
+import AddEnvelope from "./components/AddEnvelope";
 
 function BudgetPage() {
   const [state, dispatch] = useReducer(
@@ -52,6 +53,9 @@ function BudgetPage() {
     return { allocated, spent, balance };
   }, [state.envelopes]);
 
+  const openAddEnvelopeModal = () =>
+    dispatch({ type: "SET_NEW_ENVELOPE_MODAL", payload: true });
+
   return (
     <div className="app-container">
       <header>
@@ -66,7 +70,7 @@ function BudgetPage() {
       ) : (
         <>
           <div className="action-buttons">
-            <button className="btn-primary">
+            <button className="btn-primary" onClick={openAddEnvelopeModal}>
               <Plus size={20} />
               New Envelope
             </button>
@@ -110,6 +114,15 @@ function BudgetPage() {
           )}
         </>
       )}
+      {/* Add New Envelope */}
+      {state.isAddingEnvelope && (
+        <AddEnvelope
+          onClose={() =>
+            dispatch({ type: "SET_NEW_ENVELOPE_MODAL", payload: false })
+          }
+        />
+      )}
+      
     </div>
   );
 }
