@@ -1,9 +1,12 @@
 import BudgetPage from "./Budget/BudgetEnvelopePage";
+import BudgetStateProvider from "./providers/BudgetStateProvider";
 
 function App() {
   return (
     <>
-      <BudgetPage />
+      <BudgetStateProvider>
+        <BudgetPage />
+      </BudgetStateProvider>
     </>
   );
 }
