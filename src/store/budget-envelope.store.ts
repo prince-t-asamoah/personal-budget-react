@@ -16,7 +16,7 @@ export const initialStateBudgetEnvelope: BudgetEnvelopeInitialState = {
 
 export const budgetReducer = (state: BudgetEnvelopeInitialState, action: BudgetEnvelopeActions) => {
     switch (action.type) {
-        case 'ADD': {
+        case 'ADD_ENVELOPES': {
             if (action.payload instanceof Array) {
                 return {
                     ...state,
