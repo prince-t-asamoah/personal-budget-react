@@ -1,21 +1,16 @@
-import { useState, useEffect, useMemo, useReducer } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Wallet, Plus, ArrowDownCircle, ArrowRightLeft } from "lucide-react";
 
 import SummaryCard from "./components/SummaryCard";
 import EnvelopeCard from "./components/EnvelopeCard";
 import { formatCurrency } from "../utils/ui.utils";
 import { fetchEnvelopes } from "../services/budget-envelope-api.service";
-import {
-  budgetReducer,
-  initialStateBudgetEnvelope,
-} from "../store/budget-envelope.store";
+
 import AddEnvelope from "./components/AddEnvelope";
+import { useBudgetContext } from "../context/budget.context";
 
 function BudgetPage() {
-  const [state, dispatch] = useReducer(
-    budgetReducer,
-    initialStateBudgetEnvelope,
-  );
+  const { state, dispatch } = useBudgetContext();
   const [loading, setLoading] = useState(true);
 
   const getAllEnvelopes = () => {
@@ -26,7 +21,7 @@ function BudgetPage() {
       })
       .then((data) => {
         setLoading(false);
-        dispatch({ type: "ADD", payload: data });
+        dispatch({ type: "ADD_ENVELOPES", payload: data });
       })
       .catch((error) => {
         setLoading(false);
@@ -64,7 +59,7 @@ function BudgetPage() {
       </header>
       {loading ? (
         <div className="loading">
-          <div className="spinner"></div>
+          <div className="spinner large"></div>
           <p>Loading your envelopes...</p>
         </div>
       ) : (
@@ -115,14 +110,7 @@ function BudgetPage() {
         </>
       )}
       {/* Add New Envelope */}
-      {state.isAddingEnvelope && (
-        <AddEnvelope
-          onClose={() =>
-            dispatch({ type: "SET_NEW_ENVELOPE_MODAL", payload: false })
-          }
-        />
-      )}
-      
+      {state.isAddingEnvelope && <AddEnvelope />}
     </div>
   );
 }

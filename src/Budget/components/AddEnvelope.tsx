@@ -1,17 +1,44 @@
-import { Plus } from "lucide-react";
 import { useState } from "react";
+import { createEnvelope } from "../../services/budget-envelope-api.service";
+import type { BudgetEnvelope } from "../../models/budget-envelope.model";
+import { useBudgetContext } from "../../context/budget.context";
+import { Plus } from "lucide-react";
 
-type AddEnvelopeProps = {
-  onClose: () => void;
-};
-
-export default function AddEnvelope({ onClose }: AddEnvelopeProps) {
+export default function AddEnvelope() {
+  const { dispatch } = useBudgetContext();
 
   const [newEnvelope, setNewEnvelope] = useState({
     name: "",
-    allocatedAmount: "",
+    allocatedAmount: 0,
     currency: "GHS",
+    spentAmount: 0,
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const createNewEnvelope = () => {
+    setIsSubmitting(true);
+    createEnvelope(newEnvelope)
+      .then((response) => {
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
+        return response.json();
+      })
+      .then((response: BudgetEnvelope) => {
+        if (!response) {
+          throw Error("Invalid response from server.");
+        }
+        dispatch({ type: "ADD_ENVELOPES", payload: response });
+        closeModal();
+      })
+      .catch((error) => console.log("Error creating a new envelope: ", error))
+      .finally(() => {
+        setIsSubmitting(false);
+      });
+  };
+
+  const closeModal = () =>
+    dispatch({ type: "SET_NEW_ENVELOPE_MODAL", payload: false });
 
   return (
     <div className="modal-overlay">
@@ -38,7 +65,7 @@ export default function AddEnvelope({ onClose }: AddEnvelopeProps) {
             onChange={(e) =>
               setNewEnvelope({
                 ...newEnvelope,
-                allocatedAmount: e.target.value,
+                allocatedAmount: Number(e.target.value),
               })
             }
             placeholder="0.00"
@@ -62,10 +89,23 @@ export default function AddEnvelope({ onClose }: AddEnvelopeProps) {
           </select>
         </div>
         <div className="modal-actions">
-          <button onClick={onClose}>Cancel</button>
-          <button className="btn-primary">
-            <Plus size={20} />
-            Create Envelope
+          <button onClick={closeModal}>Cancel</button>
+          <button
+            className="btn-primary"
+            onClick={createNewEnvelope}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <span className="spinner small"></span>
+                Creating...
+              </>
+            ) : (
+              <>
+                <Plus size={20} />
+                Create Envelope
+              </>
+            )}
           </button>
         </div>
       </div>
