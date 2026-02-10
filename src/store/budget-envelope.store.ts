@@ -9,7 +9,6 @@ export const initialStateBudgetEnvelope: BudgetEnvelopeInitialState = {
     isDistributing: false,
     isTransferringFunds: false,
     loading: false,
-    editingId: "",
     spendingFromId: "",
     pendingFromId: ""
 };

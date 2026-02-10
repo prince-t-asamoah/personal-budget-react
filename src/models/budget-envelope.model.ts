@@ -18,7 +18,6 @@ export interface BudgetEnvelopeInitialState {
   isDistributing: boolean,
   isTransferringFunds: boolean,
   loading: boolean,
-  editingId: string,
   spendingFromId: string,
   pendingFromId: string
 }
