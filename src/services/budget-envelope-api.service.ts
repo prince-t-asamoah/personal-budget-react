@@ -11,6 +11,15 @@ export const createEnvelope = (envelope: Pick<BudgetEnvelope, 'name' | 'allocate
     }
 });
 
-export const transferEnvelopeFunds = ({ fromId, toId, amount }: { fromId: string, toId: string, amount: number }) => apiService(`${BASE_ROUTE}/transfer/${fromId}/${toId}`, { method: 'POST', body: JSON.stringify({ amount }), headers: {
-    'Content-Type': 'application/json'
-} });
+export const transferEnvelopeFunds = ({ fromId, toId, amount }: { fromId: string, toId: string, amount: number }) => apiService(`${BASE_ROUTE}/transfer/${fromId}/${toId}`, {
+    method: 'POST', body: JSON.stringify({ amount }), headers: {
+        'Content-Type': 'application/json'
+    }
+});
+
+export const updateEnvelopeFunds = (id: string, data: Partial<BudgetEnvelope>) => apiService(`${BASE_ROUTE}/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data), headers: {
+        'Content-Type': 'application/json'
+    }
+})

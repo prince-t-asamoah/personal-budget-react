@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import { Edit2, MinusCircle, Trash2, Check, X } from "lucide-react";
 import {
   formatCurrency,
@@ -5,11 +6,8 @@ import {
   getProgressPercentage,
 } from "../../utils/ui.utils";
 import type { BudgetEnvelope } from "../../models/budget-envelope.model";
-import { useReducer, useState } from "react";
-import {
-  budgetReducer,
-  initialStateBudgetEnvelope,
-} from "../../store/budget-envelope.store";
+import { updateEnvelopeFunds } from "../../services/budget-envelope-api.service";
+import { useBudgetContext } from "../../context/budget.context";
 
 interface EnvelopeCardProps {
   envelope: BudgetEnvelope;
@@ -18,9 +16,11 @@ interface EnvelopeCardProps {
 export default function EnvelopeCard({
   envelope,
 }: Readonly<EnvelopeCardProps>) {
-  const [state] = useReducer(budgetReducer, initialStateBudgetEnvelope);
+  const { state, dispatch } = useBudgetContext();
   const [isEditingAllocation, setIsEditingAllocation] = useState(false);
   const [isEditingSpending, setIsEditingSpending] = useState(false);
+  const editAllocationInputRef = useRef<HTMLInputElement | null>(null);
+
   const progressPercentage = getProgressPercentage(
     envelope.spentAmount,
     envelope.allocatedAmount,
@@ -28,15 +28,55 @@ export default function EnvelopeCard({
   const progressColor = getProgressColor(progressPercentage);
 
   const editAllocation = () => setIsEditingAllocation(true);
-  const cancelEditAllocation = () => setIsEditingAllocation(false);
+  const resetEditAllocation = () => {
+    setIsEditingAllocation(false);
+    if (editAllocationInputRef.current) {
+      editAllocationInputRef.current.value = "";
+    }
+  };
   const editSpending = () => setIsEditingSpending(true);
   const cancelEditSpeding = () => setIsEditingSpending(false);
+
+  const updateAllocation = () => {
+    const updateAllocatedAmount = editAllocationInputRef.current?.value;
+    if (!updateAllocatedAmount) return;
+    updateEnvelopeFunds(envelope.id, {
+      allocatedAmount: Number(updateAllocatedAmount),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        return response.json();
+      })
+      .then((data: BudgetEnvelope) => {
+        if (!data) {
+          throw new Error("Response data is invalid.");
+        }
+        const updatedEnvelopeIndex = state.envelopes.findIndex(
+          (envelope) => envelope.id === data.id,
+        );
+        if (updatedEnvelopeIndex === -1) {
+          throw new Error(`Envelope with id: ${data.id} not found.`);
+        }
+        state.envelopes[updatedEnvelopeIndex] = data;
+        dispatch({
+          type: "ADD_ENVELOPES",
+          payload: [...state.envelopes],
+        });
+        resetEditAllocation();
+      })
+      .catch((error) => {
+        console.error("Error updating envelope: ", error.message);
+      });
+  };
 
   return (
     <div className="envelope-card">
       <div className="envelope-header">
         <div className="envelope-title">{envelope.name}</div>
         <div className="envelope-actions">
+          {/* Actions */}
           {!(isEditingAllocation || isEditingSpending) && (
             <>
               <button
@@ -71,6 +111,7 @@ export default function EnvelopeCard({
         </div>
       </div>
 
+      {/* Edit Allocation UI*/}
       {isEditingAllocation && (
         <div className="envelope-edit">
           <input
@@ -79,20 +120,26 @@ export default function EnvelopeCard({
             step="0.01"
             min="0"
             aria-label="New allocation amount"
+            ref={editAllocationInputRef}
           />
-          <button className="btn-icon btn-success" aria-label="Save changes">
+          <button
+            className="btn-icon btn-success"
+            aria-label="Save changes"
+            onClick={updateAllocation}
+          >
             <Check size={16} />
           </button>
           <button
             className="btn-icon"
             aria-label="Cancel editing"
-            onClick={cancelEditAllocation}
+            onClick={resetEditAllocation}
           >
             <X size={16} />
           </button>
         </div>
       )}
 
+      {/* Edit Spending UI */}
       {isEditingSpending && (
         <div className="envelope-spend">
           <input
@@ -119,6 +166,7 @@ export default function EnvelopeCard({
         </div>
       )}
 
+      {/* Envelope UI */}
       {!(isEditingAllocation || isEditingSpending) && (
         <div className="envelope-amounts">
           <div className="amount-row">
