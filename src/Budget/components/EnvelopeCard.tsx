@@ -20,6 +20,7 @@ export default function EnvelopeCard({
   const [isEditingAllocation, setIsEditingAllocation] = useState(false);
   const [isEditingSpending, setIsEditingSpending] = useState(false);
   const editAllocationInputRef = useRef<HTMLInputElement | null>(null);
+  const editSpendingInputRef = useRef<HTMLInputElement | null>(null);
 
   const progressPercentage = getProgressPercentage(
     envelope.spentAmount,
@@ -37,12 +38,19 @@ export default function EnvelopeCard({
   const editSpending = () => setIsEditingSpending(true);
   const cancelEditSpeding = () => setIsEditingSpending(false);
 
-  const updateAllocation = () => {
-    const updateAllocatedAmount = editAllocationInputRef.current?.value;
-    if (!updateAllocatedAmount) return;
-    updateEnvelopeFunds(envelope.id, {
-      allocatedAmount: Number(updateAllocatedAmount),
-    })
+  const resetEditState = () => {
+    setIsEditingAllocation(false);
+    setIsEditingSpending(false);
+    if (editAllocationInputRef.current) {
+      editAllocationInputRef.current.value = "";
+    }
+    if (editSpendingInputRef.current) {
+      editSpendingInputRef.current.value = "";
+    }
+  };
+
+  const updateEnvelopeById = (data: Partial<BudgetEnvelope>) => {
+    updateEnvelopeFunds(envelope.id, data)
       .then((response) => {
         if (!response.ok) {
           throw new Error(response.statusText);
@@ -64,11 +72,25 @@ export default function EnvelopeCard({
           type: "ADD_ENVELOPES",
           payload: [...state.envelopes],
         });
-        resetEditAllocation();
+        resetEditState();
       })
       .catch((error) => {
         console.error("Error updating envelope: ", error.message);
       });
+  };
+
+  const updateAllocation = () => {
+    if (!editAllocationInputRef.current?.value) return;
+    updateEnvelopeById({
+      allocatedAmount: Number(editAllocationInputRef.current?.value),
+    });
+  };
+
+  const updateSpending = () => {
+    if (!editSpendingInputRef.current?.value) return;
+    updateEnvelopeById({
+      spentAmount: Number(editSpendingInputRef.current?.value),
+    });
   };
 
   return (
@@ -149,10 +171,12 @@ export default function EnvelopeCard({
             min="0.01"
             max={envelope.balance}
             aria-label="Spending amount"
+            ref={editSpendingInputRef}
           />
           <button
             className="btn-icon btn-success"
             aria-label="Confirm spending"
+            onClick={updateSpending}
           >
             <Check size={16} />
           </button>
