@@ -8,31 +8,32 @@ import { fetchEnvelopes } from "../services/budget-envelope-api.service";
 
 import AddEnvelope from "./components/AddEnvelope";
 import { useBudgetContext } from "../context/budget.context";
+import TransferFunds from "./components/TransferFunds";
 
 function BudgetPage() {
   const { state, dispatch } = useBudgetContext();
   const [loading, setLoading] = useState(true);
 
-  const getAllEnvelopes = () => {
-    fetchEnvelopes()
-      .then((response) => {
-        if (!response.ok) return;
-        return response.json();
-      })
-      .then((data) => {
-        setLoading(false);
-        dispatch({ type: "ADD_ENVELOPES", payload: data });
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.error("Error fetching all envelopes: ", error);
-      });
-  };
-
   // Fetch envelopes on mount
   useEffect(() => {
+    const getAllEnvelopes = () => {
+      fetchEnvelopes()
+        .then((response) => {
+          if (!response.ok) return;
+          return response.json();
+        })
+        .then((data) => {
+          setLoading(false);
+          dispatch({ type: "ADD_ENVELOPES", payload: data });
+        })
+        .catch((error) => {
+          setLoading(false);
+          console.error("Error fetching all envelopes: ", error);
+        });
+    };
+
     getAllEnvelopes();
-  }, []);
+  }, [dispatch]);
 
   const totals = useMemo(() => {
     const allocated = state.envelopes.reduce(
@@ -50,6 +51,8 @@ function BudgetPage() {
 
   const openAddEnvelopeModal = () =>
     dispatch({ type: "SET_NEW_ENVELOPE_MODAL", payload: true });
+
+  const openTransferFundsModal = () => dispatch({ type: 'SET_IS_TRANSFERING_FUNDS', payload: true});
 
   return (
     <div className="app-container">
@@ -73,7 +76,7 @@ function BudgetPage() {
               <ArrowDownCircle size={20} />
               Distribute Funds
             </button>
-            <button className="btn-secondary">
+            <button className="btn-secondary" onClick={openTransferFundsModal}>
               <ArrowRightLeft size={20} />
               Transfer Funds
             </button>
@@ -111,6 +114,8 @@ function BudgetPage() {
       )}
       {/* Add New Envelope */}
       {state.isAddingEnvelope && <AddEnvelope />}
+      {/* Transfer Funds */}
+      { state.isTransferringFunds && <TransferFunds />}
     </div>
   );
 }
