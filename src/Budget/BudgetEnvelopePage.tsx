@@ -52,7 +52,8 @@ function BudgetPage() {
   const openAddEnvelopeModal = () =>
     dispatch({ type: "SET_NEW_ENVELOPE_MODAL", payload: true });
 
-  const openTransferFundsModal = () => dispatch({ type: 'SET_IS_TRANSFERING_FUNDS', payload: true});
+  const openTransferFundsModal = () =>
+    dispatch({ type: "SET_IS_TRANSFERING_FUNDS", payload: true });
 
   return (
     <div className="app-container">
@@ -115,7 +116,7 @@ function BudgetPage() {
       {/* Add New Envelope */}
       {state.isAddingEnvelope && <AddEnvelope />}
       {/* Transfer Funds */}
-      { state.isTransferringFunds && <TransferFunds />}
+      {state.isTransferringFunds && <TransferFunds />}
     </div>
   );
 }

@@ -18,8 +18,6 @@ export interface BudgetEnvelopeInitialState {
   isDistributing: boolean,
   isTransferringFunds: boolean,
   loading: boolean,
-  spendingFromId: string,
-  pendingFromId: string
 }
 
-export type BudgetEnvelopeActions = { type: 'ADD_ENVELOPES', payload: BudgetEnvelope | BudgetEnvelope[] } | { type: 'SET_NEW_ENVELOPE_MODAL', payload: boolean } | { type: 'SET_IS_TRANSFERING_FUNDS', payload: boolean };
+export type BudgetEnvelopeActions = { type: 'ADD_ENVELOPES', payload: BudgetEnvelope | BudgetEnvelope[] } | { type: 'SET_NEW_ENVELOPE_MODAL', payload: boolean } | { type: 'SET_IS_TRANSFERING_FUNDS', payload: boolean } | { type: 'SET_IS_DELETING_FUNDS', payload: boolean } | { type: 'DELETE_ENVELOPE', payload: string };
