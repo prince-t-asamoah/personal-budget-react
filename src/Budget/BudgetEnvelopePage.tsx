@@ -13,10 +13,12 @@ import EnvelopeCard from "./components/EnvelopeCard";
 import AddEnvelope from "./components/AddEnvelope";
 import TransferFunds from "./components/TransferFunds";
 import DashboardSidebar from "./components/DashboardSidebar";
+import DistributeFunds from "./components/DistributeFunds";
 
 import { formatCurrency } from "../utils/ui.utils";
 import { fetchEnvelopes } from "../services/budget-envelope-api.service";
 import { useBudgetContext } from "../context/budget.context";
+
 
 function BudgetPage() {
   const { state, dispatch } = useBudgetContext();
@@ -63,6 +65,9 @@ function BudgetPage() {
 
   const openTransferFundsModal = () =>
     dispatch({ type: "SET_IS_TRANSFERING_FUNDS", payload: true });
+
+  const openDistributingFundsModal = () =>
+    dispatch({ type: "SET_IS_DISTRIBUTING_FUNDS", payload: true });
 
   return (
     <>
@@ -154,7 +159,63 @@ function BudgetPage() {
             {state.isTransferringFunds && <TransferFunds />}
           </div>
         </div>
-      </div>
+      ) : (
+        <>
+          <div className="action-buttons">
+            <button className="btn-primary" onClick={openAddEnvelopeModal}>
+              <Plus size={20} />
+              New Envelope
+            </button>
+            <button
+              className="btn-secondary"
+              onClick={openDistributingFundsModal}
+            >
+              <ArrowDownCircle size={20} />
+              Distribute Funds
+            </button>
+            <button className="btn-secondary" onClick={openTransferFundsModal}>
+              <ArrowRightLeft size={20} />
+              Transfer Funds
+            </button>
+          </div>
+
+          <div className="budget-summary">
+            <SummaryCard
+              label="Total Allocated"
+              amount={formatCurrency(totals.allocated)}
+            />
+            <SummaryCard
+              label="Total Spent"
+              amount={formatCurrency(totals.spent)}
+            />
+            <SummaryCard
+              label="Total Balance"
+              amount={formatCurrency(totals.balance)}
+            />
+          </div>
+
+          {state.envelopes.length === 0 ? (
+            <div className="empty-state">
+              <Wallet size={64} className="empty-state-icon" />
+              <h3>No Envelopes Yet</h3>
+              <p>Create your first envelope to start budgeting</p>
+            </div>
+          ) : (
+            <div className="envelopes-grid">
+              {state.envelopes.map((envelope) => (
+                <EnvelopeCard key={envelope.id} envelope={envelope} />
+              ))}
+            </div>
+          )}
+        </>
+
+      {/* Add New Envelope */}
+      {state.isAddingEnvelope && <AddEnvelope />}
+      {/* Transfer Funds */}
+      {state.isTransferringFunds && <TransferFunds />}
+      {/* Distribute Funds */}
+      {state.isDistributingFunds && <DistributeFunds />}
+    </div>
     </>
   );
 }

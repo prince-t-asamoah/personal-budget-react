@@ -28,3 +28,10 @@ export const deleteEnvelope = (id: string) => apiService(`${BASE_ROUTE}/${id}`, 
     method: 'DELETE',
 
 });
+
+export const distributeFunds = (data: { amount: number, envelopesId: string[] }) => apiService(`${BASE_ROUTE}/distribute`, {
+    method: 'POST',
+    body: JSON.stringify(data), headers: {
+        'Content-Type': 'application/json'
+    }
+})

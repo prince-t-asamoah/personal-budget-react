@@ -6,7 +6,7 @@ export const initialStateBudgetEnvelope: BudgetEnvelopeInitialState = {
     totalSpent: 0,
     totalBalance: 0,
     isAddingEnvelope: false,
-    isDistributing: false,
+    isDistributingFunds: false,
     isTransferringFunds: false,
     loading: false,
 };
@@ -29,6 +29,13 @@ export const budgetReducer = (state: BudgetEnvelopeInitialState, action: BudgetE
                 } as BudgetEnvelopeInitialState
             }
         }
+        case 'DELETE_ENVELOPE': {
+            const newEnvelopes = state.envelopes.filter(envelope => envelope.id !== action.payload);
+            return {
+                ...state,
+                envelopes: newEnvelopes
+            } as BudgetEnvelopeInitialState
+        }
         case 'SET_NEW_ENVELOPE_MODAL': {
             return {
                 ...state,
@@ -46,12 +53,11 @@ export const budgetReducer = (state: BudgetEnvelopeInitialState, action: BudgetE
                 ...state,
                 isDeletingEnvelope: action.payload
             } as BudgetEnvelopeInitialState
-        } case 'DELETE_ENVELOPE': {
-            const newEnvelopes = state.envelopes.filter(envelope => envelope.id !== action.payload);
-
+        }
+        case 'SET_IS_DISTRIBUTING_FUNDS': {
             return {
                 ...state,
-                envelopes: newEnvelopes
+                isDistributingFunds: action.payload
             } as BudgetEnvelopeInitialState
         }
         default:
