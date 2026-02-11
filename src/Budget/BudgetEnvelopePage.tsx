@@ -9,6 +9,7 @@ import { fetchEnvelopes } from "../services/budget-envelope-api.service";
 import AddEnvelope from "./components/AddEnvelope";
 import { useBudgetContext } from "../context/budget.context";
 import TransferFunds from "./components/TransferFunds";
+import DistributeFunds from "./components/DistributeFunds";
 
 function BudgetPage() {
   const { state, dispatch } = useBudgetContext();
@@ -55,6 +56,9 @@ function BudgetPage() {
   const openTransferFundsModal = () =>
     dispatch({ type: "SET_IS_TRANSFERING_FUNDS", payload: true });
 
+  const openDistributingFundsModal = () =>
+    dispatch({ type: "SET_IS_DISTRIBUTING_FUNDS", payload: true });
+
   return (
     <div className="app-container">
       <header>
@@ -73,7 +77,10 @@ function BudgetPage() {
               <Plus size={20} />
               New Envelope
             </button>
-            <button className="btn-secondary">
+            <button
+              className="btn-secondary"
+              onClick={openDistributingFundsModal}
+            >
               <ArrowDownCircle size={20} />
               Distribute Funds
             </button>
@@ -117,6 +124,8 @@ function BudgetPage() {
       {state.isAddingEnvelope && <AddEnvelope />}
       {/* Transfer Funds */}
       {state.isTransferringFunds && <TransferFunds />}
+      {/* Distribute Funds */}
+      {state.isDistributingFunds && <DistributeFunds />}
     </div>
   );
 }
