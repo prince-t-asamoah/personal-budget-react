@@ -1,18 +1,27 @@
 import { useState, useEffect, useMemo } from "react";
-import { Wallet, Plus, ArrowDownCircle, ArrowRightLeft } from "lucide-react";
+import {
+  Wallet,
+  Plus,
+  ArrowDownCircle,
+  ArrowRightLeft,
+  Menu,
+} from "lucide-react";
+import './BudgetEnvelopePage.css';
 
 import SummaryCard from "./components/SummaryCard";
 import EnvelopeCard from "./components/EnvelopeCard";
+import AddEnvelope from "./components/AddEnvelope";
+import TransferFunds from "./components/TransferFunds";
+import DashboardSidebar from "./components/DashboardSidebar";
+
 import { formatCurrency } from "../utils/ui.utils";
 import { fetchEnvelopes } from "../services/budget-envelope-api.service";
-
-import AddEnvelope from "./components/AddEnvelope";
 import { useBudgetContext } from "../context/budget.context";
-import TransferFunds from "./components/TransferFunds";
 
 function BudgetPage() {
   const { state, dispatch } = useBudgetContext();
   const [loading, setLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Fetch envelopes on mount
   useEffect(() => {
@@ -56,68 +65,97 @@ function BudgetPage() {
     dispatch({ type: "SET_IS_TRANSFERING_FUNDS", payload: true });
 
   return (
-    <div className="app-container">
-      <header>
-        <h1>Envelope Budget</h1>
-        <p className="subtitle">Financial Clarity Through Organization</p>
-      </header>
-      {loading ? (
-        <div className="loading">
-          <div className="spinner large"></div>
-          <p>Loading your envelopes...</p>
+    <>
+      {/* Sidebar Overlay for Mobile */}
+      <div
+        className={`sidebar-overlay ${sidebarOpen ? "active" : ""}`}
+        onClick={() => setSidebarOpen(false)}
+      />
+      {/* Page Wrapper */}
+      <div className="page-wrapper">
+        <DashboardSidebar isOpen={sidebarOpen} />
+        {/* Main Content */}
+        <div className={`main-content ${sidebarOpen ? "" : "full-width"}`}>
+          {/* Mobile Topbar */}
+          <div className="topbar">
+            <button
+              className="mobile-menu-btn"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              aria-label="Toggle menu"
+            >
+              <Menu size={24} />
+            </button>
+            <div className="mobile-logo">Envelope Budget</div>
+            <div style={{ width: "40px" }} /> {/* Spacer for centering */}
+          </div>
+          {/* App Container */}
+          <div className="app-container">
+            {loading ? (
+              <div className="loading">
+                <div className="spinner large"></div>
+                <p>Loading your envelopes...</p>
+              </div>
+            ) : (
+              <>
+                <div className="action-buttons">
+                  <button
+                    className="btn-primary"
+                    onClick={openAddEnvelopeModal}
+                  >
+                    <Plus size={20} />
+                    New Envelope
+                  </button>
+                  <button className="btn-secondary">
+                    <ArrowDownCircle size={20} />
+                    Distribute Funds
+                  </button>
+                  <button
+                    className="btn-secondary"
+                    onClick={openTransferFundsModal}
+                  >
+                    <ArrowRightLeft size={20} />
+                    Transfer Funds
+                  </button>
+                </div>
+
+                <div className="budget-summary">
+                  <SummaryCard
+                    label="Total Allocated"
+                    amount={formatCurrency(totals.allocated)}
+                  />
+                  <SummaryCard
+                    label="Total Spent"
+                    amount={formatCurrency(totals.spent)}
+                  />
+                  <SummaryCard
+                    label="Total Balance"
+                    amount={formatCurrency(totals.balance)}
+                  />
+                </div>
+
+                {state.envelopes.length === 0 ? (
+                  <div className="empty-state">
+                    <Wallet size={64} className="empty-state-icon" />
+                    <h3>No Envelopes Yet</h3>
+                    <p>Create your first envelope to start budgeting</p>
+                  </div>
+                ) : (
+                  <div className="envelopes-grid">
+                    {state.envelopes.map((envelope) => (
+                      <EnvelopeCard key={envelope.id} envelope={envelope} />
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+            {/* Add New Envelope */}
+            {state.isAddingEnvelope && <AddEnvelope />}
+            {/* Transfer Funds */}
+            {state.isTransferringFunds && <TransferFunds />}
+          </div>
         </div>
-      ) : (
-        <>
-          <div className="action-buttons">
-            <button className="btn-primary" onClick={openAddEnvelopeModal}>
-              <Plus size={20} />
-              New Envelope
-            </button>
-            <button className="btn-secondary">
-              <ArrowDownCircle size={20} />
-              Distribute Funds
-            </button>
-            <button className="btn-secondary" onClick={openTransferFundsModal}>
-              <ArrowRightLeft size={20} />
-              Transfer Funds
-            </button>
-          </div>
-
-          <div className="budget-summary">
-            <SummaryCard
-              label="Total Allocated"
-              amount={formatCurrency(totals.allocated)}
-            />
-            <SummaryCard
-              label="Total Spent"
-              amount={formatCurrency(totals.spent)}
-            />
-            <SummaryCard
-              label="Total Balance"
-              amount={formatCurrency(totals.balance)}
-            />
-          </div>
-
-          {state.envelopes.length === 0 ? (
-            <div className="empty-state">
-              <Wallet size={64} className="empty-state-icon" />
-              <h3>No Envelopes Yet</h3>
-              <p>Create your first envelope to start budgeting</p>
-            </div>
-          ) : (
-            <div className="envelopes-grid">
-              {state.envelopes.map((envelope) => (
-                <EnvelopeCard key={envelope.id} envelope={envelope} />
-              ))}
-            </div>
-          )}
-        </>
-      )}
-      {/* Add New Envelope */}
-      {state.isAddingEnvelope && <AddEnvelope />}
-      {/* Transfer Funds */}
-      {state.isTransferringFunds && <TransferFunds />}
-    </div>
+      </div>
+    </>
   );
 }
 
