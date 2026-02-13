@@ -10,6 +10,8 @@ import {
   LogOut,
 } from "lucide-react";
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
+import { ENVELOPES_ROUTES } from "../../constants/routes.constants";
 
 export default function DashboardSidebar({
   isOpen,
@@ -32,28 +34,48 @@ export default function DashboardSidebar({
           <div className="logo-icon">
             <Wallet size={24} />
           </div>
-          <span>Envelope</span>
+          <span>Envelopes</span>
         </div>
       </div>
 
       {/* Sidebar Navigation */}
       <nav className="sidebar-nav">
-        <div className="nav-item active">
+        <NavLink
+          to={ENVELOPES_ROUTES.DASHBOARD.URL}
+          className={({ isActive }) =>
+            isActive ? "nav-item active" : "nav-item"
+          }
+        >
           <Home size={20} />
           <span>Dashboard</span>
-        </div>
-        <div className="nav-item">
+        </NavLink>
+        <NavLink
+          to={ENVELOPES_ROUTES.ANALYTICS.URL}
+          className={({ isActive }) =>
+            isActive ? "nav-item active" : "nav-item"
+          }
+        >
           <BarChart3 size={20} />
           <span>Analytics</span>
-        </div>
-        <div className="nav-item">
+        </NavLink>
+        <NavLink
+          to={ENVELOPES_ROUTES.SETTINGS.URL}
+          className={({ isActive }) =>
+            isActive ? "nav-item active" : "nav-item"
+          }
+        >
           <Settings size={20} />
           <span>Settings</span>
-        </div>
-        <div className="nav-item">
+        </NavLink>
+        <NavLink
+          to={ENVELOPES_ROUTES.HELP_SUPPORT.URL}
+          className={({ isActive }) =>
+            isActive ? "nav-item active" : "nav-item"
+          }
+        >
           <HelpCircle size={20} />
           <span>Help & Support</span>
-        </div>
+        </NavLink>
       </nav>
 
       {/* Sidebar Footer - User Profile */}

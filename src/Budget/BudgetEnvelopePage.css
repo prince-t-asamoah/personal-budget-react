@@ -3,6 +3,13 @@
     min-height: 100vh;
 }
 
+.page-heading {
+    font-size: x-large;
+    margin-bottom: 32px;
+    margin-top: 32px;
+    text-transform: capitalize;
+}
+
 .sidebar {
     width: 280px;
     background: var(--white);
