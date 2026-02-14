@@ -9,7 +9,7 @@ import EnvelopesHelpSupportContent from "./Budget/components/EnvelopesHelpSuppor
 function App() {
   return (
     <Routes>
-      <Route index element={<Navigate to="/envelopes" />} />
+      <Route index element={<Navigate to="/envelopes/dashboard" replace />} />
       <Route
         path="/envelopes"
         element={
@@ -18,7 +18,8 @@ function App() {
           </BudgetStateProvider>
         }
       >
-        <Route index path="dashboard" element={<EnvelopesDashboardContent />} />
+        <Route index element={<Navigate to="/dashboard" />} />
+        <Route path="dashboard" element={<EnvelopesDashboardContent />} />
         <Route path="analytics" element={<EnvelopesAnalyticsContent />} />
         <Route path="settings" element={<EnvelopesSettingsContent />} />
         <Route path="help-support" element={<EnvelopesHelpSupportContent />} />
