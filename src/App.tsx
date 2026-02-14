@@ -1,10 +1,11 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import BudgetPage from "./Budget/BudgetEnvelopePage";
 import BudgetStateProvider from "./providers/BudgetStateProvider";
 import EnvelopesDashboardContent from "./Budget/components/EnvelopesDashboardContent";
 import EnvelopesAnalyticsContent from "./Budget/components/EnvelopesAnalyticsContent";
 import EnvelopesSettingsContent from "./Budget/components/EnvelopesSettingsContent";
 import EnvelopesHelpSupportContent from "./Budget/components/EnvelopesHelpSupport";
+import BudgetPage from "./Budget/BudgetEnvelopePage";
+import SignupPage from "./Signup/SignupPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="settings" element={<EnvelopesSettingsContent />} />
         <Route path="help-support" element={<EnvelopesHelpSupportContent />} />
       </Route>
+      <Route path="/signup" element={<SignupPage />}/>
     </Routes>
   );
 }
