@@ -10,16 +10,14 @@ import SignupPage from "./pages/Signup/SignupPage";
 function App() {
   return (
     <Routes>
-      <Route index element={<Navigate to="/envelopes/dashboard" replace />} />
+      <Route index element={<Navigate to="/dashboard" replace />} />
       <Route
-        path="/envelopes"
         element={
           <BudgetStateProvider>
             <BudgetPage />
           </BudgetStateProvider>
         }
       >
-        <Route index element={<Navigate to="/dashboard" />} />
         <Route path="dashboard" element={<EnvelopesDashboardContent />} />
         <Route path="analytics" element={<EnvelopesAnalyticsContent />} />
         <Route path="settings" element={<EnvelopesSettingsContent />} />

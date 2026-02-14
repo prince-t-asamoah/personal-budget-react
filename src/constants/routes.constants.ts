@@ -1,19 +1,19 @@
 export const APP_ROUTES = {
   DASHBOARD: {
     NAME: "dashboard",
-    URL: "/envelopes/dashboard",
+    URL: "/dashboard",
   },
   ANALYTICS: {
     NAME: "analytics",
-    URL: "/envelopes/analytics",
+    URL: "/analytics",
   },
   SETTINGS: {
     NAME: "settings",
-    URL: "/envelopes/settings",
+    URL: "/settings",
   },
   HELP_SUPPORT: {
     NAME: "help & support",
-    URL: "/envelopes/help-support",
+    URL: "/help-support",
   },
   CREATE_ACCOUNT: {
     NAME: "Create your account",
