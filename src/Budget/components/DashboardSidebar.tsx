@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { ENVELOPES_ROUTES } from "../../constants/routes.constants";
+import { APP_ROUTES } from "../../constants/routes.constants";
 
 export default function DashboardSidebar({
   isOpen,
@@ -41,7 +41,7 @@ export default function DashboardSidebar({
       {/* Sidebar Navigation */}
       <nav className="sidebar-nav">
         <NavLink
-          to={ENVELOPES_ROUTES.DASHBOARD.URL}
+          to={APP_ROUTES.DASHBOARD.URL}
           className={({ isActive }) =>
             isActive ? "nav-item active" : "nav-item"
           }
@@ -50,7 +50,7 @@ export default function DashboardSidebar({
           <span>Dashboard</span>
         </NavLink>
         <NavLink
-          to={ENVELOPES_ROUTES.ANALYTICS.URL}
+          to={APP_ROUTES.ANALYTICS.URL}
           className={({ isActive }) =>
             isActive ? "nav-item active" : "nav-item"
           }
@@ -59,7 +59,7 @@ export default function DashboardSidebar({
           <span>Analytics</span>
         </NavLink>
         <NavLink
-          to={ENVELOPES_ROUTES.SETTINGS.URL}
+          to={APP_ROUTES.SETTINGS.URL}
           className={({ isActive }) =>
             isActive ? "nav-item active" : "nav-item"
           }
@@ -68,7 +68,7 @@ export default function DashboardSidebar({
           <span>Settings</span>
         </NavLink>
         <NavLink
-          to={ENVELOPES_ROUTES.HELP_SUPPORT.URL}
+          to={APP_ROUTES.HELP_SUPPORT.URL}
           className={({ isActive }) =>
             isActive ? "nav-item active" : "nav-item"
           }

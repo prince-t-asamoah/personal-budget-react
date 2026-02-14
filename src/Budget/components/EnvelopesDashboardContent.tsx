@@ -10,14 +10,14 @@ import TransferFunds from "./TransferFunds";
 import { useBudgetContext } from "../../context/budget.context";
 import { fetchEnvelopes } from "../../services/budget-envelope-api.service";
 import { formatCurrency } from "../../utils/ui.utils";
-import { ENVELOPES_ROUTES } from "../../constants/routes.constants";
+import { APP_ROUTES } from "../../constants/routes.constants";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 
 export default function EnvelopesDashboardContent() {
   const { state, dispatch } = useBudgetContext();
   const [loading, setLoading] = useState(true);
 
-  useDocumentTitle(ENVELOPES_ROUTES.DASHBOARD.NAME);
+  useDocumentTitle(APP_ROUTES.DASHBOARD.NAME);
   
   // Fetch envelopes on mount
   useEffect(() => {
@@ -65,7 +65,7 @@ export default function EnvelopesDashboardContent() {
 
   return (
     <>
-      <h2 className="page-heading">{ENVELOPES_ROUTES.DASHBOARD.NAME}</h2>
+      <h2 className="page-heading">{APP_ROUTES.DASHBOARD.NAME}</h2>
       {loading ? (
         <div className="loading">
           <div className="spinner large"></div>

@@ -1,4 +1,4 @@
-export const ENVELOPES_ROUTES = {
+export const APP_ROUTES = {
   DASHBOARD: {
     NAME: "dashboard",
     URL: "/envelopes/dashboard",
@@ -14,5 +14,9 @@ export const ENVELOPES_ROUTES = {
   HELP_SUPPORT: {
     NAME: "help & support",
     URL: "/envelopes/help-support",
+  },
+  CREATE_ACCOUNT: {
+    NAME: "Create your account",
+    URL: "/signup",
   },
 };

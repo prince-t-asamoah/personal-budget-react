@@ -1,12 +1,12 @@
-import { ENVELOPES_ROUTES } from "../../constants/routes.constants";
+import { APP_ROUTES } from "../../constants/routes.constants";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 
 export default function EnvelopesAnalyticsContent() {
-  useDocumentTitle(ENVELOPES_ROUTES.ANALYTICS.NAME);
+  useDocumentTitle(APP_ROUTES.ANALYTICS.NAME);
 
   return (
     <>
-      <h2 className="page-heading">{ENVELOPES_ROUTES.ANALYTICS.NAME}</h2>
+      <h2 className="page-heading">{APP_ROUTES.ANALYTICS.NAME}</h2>
     </>
   );
 }
