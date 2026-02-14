@@ -1,6 +1,10 @@
+import { APP_ROUTES } from "../constants/routes.constants";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 import "./SingupPage.css";
 
 export default function SignupPage() {
+  useDocumentTitle(APP_ROUTES.CREATE_ACCOUNT.NAME);
+  
   return (
     <div className="signup-container">
       <div className="signup-card">
@@ -27,7 +31,7 @@ export default function SignupPage() {
 
         {/* <!-- Header --> */}
         <div className="signup-header">
-          <h1>Create Your Account</h1>
+          <h1 className="title">{APP_ROUTES.CREATE_ACCOUNT.NAME}</h1>
           <p>Start your journey to financial clarity</p>
         </div>
 

@@ -57,13 +57,14 @@
     color: var(--white);
 }
 
-.signup-header h1 {
+.signup-header .title {
     font-family: 'Playfair Display', serif;
     font-size: 2rem;
     font-weight: 700;
     color: var(--charcoal);
     margin-bottom: 0.5rem;
     text-align: center;
+    text-transform: capitalize;
 }
 
 .signup-header p {
@@ -384,12 +385,14 @@
 }
 
 @media (max-width: 640px) {
+
     body {
         padding: 1rem;
     }
 
     .signup-card {
         padding: 2rem 1.5rem;
+        background-color: transparent;
     }
 
     .signup-header h1 {
