@@ -1,10 +1,11 @@
-import{ APP_ROUTES } from "../../constants/routes.constants";
+import { NavLink } from "react-router-dom";
+import { APP_ROUTES } from "../../constants/routes.constants";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import "./SingupPage.css";
 
 export default function SignupPage() {
   useDocumentTitle(APP_ROUTES.CREATE_ACCOUNT.NAME);
-  
+
   return (
     <div className="signup-container">
       <div className="signup-card">
@@ -218,7 +219,7 @@ export default function SignupPage() {
 
         {/* <!-- Sign In Link --> */}
         <div className="signin-link">
-          Already have an account? <a href="signin.html">Sign In</a>
+          Already have an account? <NavLink to="/login">Login In</NavLink>
         </div>
       </div>
     </div>
