@@ -6,19 +6,18 @@ import SummaryCard from "./SummaryCard";
 import AddEnvelope from "./AddEnvelope";
 import DistributeFunds from "./DistributeFunds";
 import TransferFunds from "./TransferFunds";
-
-import { useBudgetContext } from "../../context/budget.context";
-import { fetchEnvelopes } from "../../services/budget-envelope-api.service";
-import { formatCurrency } from "../../utils/ui.utils";
-import { APP_ROUTES } from "../../constants/routes.constants";
-import useDocumentTitle from "../../hooks/useDocumentTitle";
+import useDocumentTitle from "../../../hooks/useDocumentTitle";
+import { APP_ROUTES } from "../../../constants/routes.constants";
+import { useBudgetContext } from "../../../context/budget.context";
+import { fetchEnvelopes } from "../../../services/budget-envelope-api.service";
+import { formatCurrency } from "../../../utils/ui.utils";
 
 export default function EnvelopesDashboardContent() {
   const { state, dispatch } = useBudgetContext();
   const [loading, setLoading] = useState(true);
 
   useDocumentTitle(APP_ROUTES.DASHBOARD.NAME);
-  
+
   // Fetch envelopes on mount
   useEffect(() => {
     const getAllEnvelopes = () => {

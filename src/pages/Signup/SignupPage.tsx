@@ -1,5 +1,5 @@
-import { APP_ROUTES } from "../constants/routes.constants";
-import useDocumentTitle from "../hooks/useDocumentTitle";
+import{ APP_ROUTES } from "../../constants/routes.constants";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 import "./SingupPage.css";
 
 export default function SignupPage() {

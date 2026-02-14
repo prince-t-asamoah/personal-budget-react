@@ -1,5 +1,5 @@
-import { APP_ROUTES } from "../../constants/routes.constants";
-import useDocumentTitle from "../../hooks/useDocumentTitle";
+import { APP_ROUTES } from "../../../constants/routes.constants";
+import useDocumentTitle from "../../../hooks/useDocumentTitle";
 
 export default function EnvelopesSettingsContent() {
   useDocumentTitle(APP_ROUTES.SETTINGS.NAME);

@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { APP_ROUTES } from "../../constants/routes.constants";
+import { APP_ROUTES } from "../../../constants/routes.constants";
 
 export default function DashboardSidebar({
   isOpen,
