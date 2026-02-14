@@ -11,11 +11,14 @@ import { useBudgetContext } from "../../context/budget.context";
 import { fetchEnvelopes } from "../../services/budget-envelope-api.service";
 import { formatCurrency } from "../../utils/ui.utils";
 import { ENVELOPES_ROUTES } from "../../constants/routes.constants";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 
 export default function EnvelopesDashboardContent() {
   const { state, dispatch } = useBudgetContext();
   const [loading, setLoading] = useState(true);
 
+  useDocumentTitle(ENVELOPES_ROUTES.DASHBOARD.NAME);
+  
   // Fetch envelopes on mount
   useEffect(() => {
     const getAllEnvelopes = () => {
