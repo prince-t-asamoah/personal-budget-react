@@ -1,5 +1,4 @@
 import {
-  Wallet,
   Home,
   BarChart3,
   Settings,
@@ -12,6 +11,7 @@ import {
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { APP_ROUTES } from "../../../constants/routes.constants";
+import AppLogo from "../../../components/AppLogo";
 
 export default function DashboardSidebar({
   isOpen,
@@ -30,12 +30,7 @@ export default function DashboardSidebar({
     <aside className={`sidebar ${isOpen ? "open" : ""}`}>
       {/* Sidebar Header */}
       <div className="sidebar-header">
-        <div className="logo">
-          <div className="logo-icon">
-            <Wallet size={24} />
-          </div>
-          <span>Envelopes</span>
-        </div>
+        <AppLogo />
       </div>
 
       {/* Sidebar Navigation */}
