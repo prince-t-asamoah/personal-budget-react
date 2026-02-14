@@ -1,24 +1,3 @@
- body {
-     min-height: 100vh;
-     display: flex;
-     align-items: center;
-     justify-content: center;
-     padding: var(--space-8) var(--space-4);
-     position: relative;
-     overflow: hidden;
- }
-
- body::before {
-     content: '';
-     position: absolute;
-     top: -50%;
-     left: -20%;
-     width: 800px;
-     height: 800px;
-     background: radial-gradient(circle, rgba(139, 154, 126, 0.08) 0%, transparent 70%);
-     border-radius: 50%;
-     animation: float 20s ease-in-out infinite;
- }
 
  @keyframes float {
 
