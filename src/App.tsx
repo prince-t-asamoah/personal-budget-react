@@ -6,6 +6,7 @@ import EnvelopesSettingsContent from "./pages/Budget/components/EnvelopesSetting
 import EnvelopesHelpSupportContent from "./pages/Budget/components/EnvelopesHelpSupport";
 import BudgetPage from "./pages/Budget/BudgetEnvelopePage";
 import SignupPage from "./pages/Signup/SignupPage";
+import LoginPage from "./pages/Login/LoginPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="help-support" element={<EnvelopesHelpSupportContent />} />
       </Route>
       <Route path="/signup" element={<SignupPage />} />
+      <Route path="/login" element={<LoginPage />} />
     </Routes>
   );
 }
