@@ -19,4 +19,8 @@ export const APP_ROUTES = {
     NAME: "Create your account",
     URL: "/signup",
   },
+  LOGIN: {
+    NAME: "login",
+    URL: "/login",
+  },
 };

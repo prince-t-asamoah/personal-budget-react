@@ -1,8 +1,12 @@
 import { NavLink } from "react-router-dom";
 import "./LoginPage.css";
 import AppLogo from "../../components/AppLogo";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
+import { APP_ROUTES } from "../../constants/routes.constants";
 
 export default function LoginPage() {
+  useDocumentTitle(APP_ROUTES.LOGIN.NAME);
+
   return (
     <div className="signin-container">
       <div className="signin-card">
