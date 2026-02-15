@@ -7,6 +7,7 @@ import EnvelopesHelpSupportContent from "./pages/Budget/components/EnvelopesHelp
 import BudgetPage from "./pages/Budget/BudgetEnvelopePage";
 import SignupPage from "./pages/Signup/SignupPage";
 import LoginPage from "./pages/Login/LoginPage";
+import AuthGuard from "./guard/AuthGuard";
 
 function App() {
   return (
@@ -14,9 +15,11 @@ function App() {
       <Route index element={<Navigate to="/dashboard" replace />} />
       <Route
         element={
-          <BudgetStateProvider>
-            <BudgetPage />
-          </BudgetStateProvider>
+          <AuthGuard>
+            <BudgetStateProvider>
+              <BudgetPage />
+            </BudgetStateProvider>
+          </AuthGuard>
         }
       >
         <Route path="dashboard" element={<EnvelopesDashboardContent />} />
