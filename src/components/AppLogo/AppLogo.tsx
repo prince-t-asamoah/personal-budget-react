@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import "./AppLogo.css";
 
 export default function AppLogo() {
   const homepageUrl = import.meta.env.VITE_WEBSITE_URL;

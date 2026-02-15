@@ -11,7 +11,7 @@ import {
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { APP_ROUTES } from "../../../constants/routes.constants";
-import AppLogo from "../../../components/AppLogo";
+import AppLogo from "../../../components/AppLogo/AppLogo";
 
 export default function DashboardSidebar({
   isOpen,
