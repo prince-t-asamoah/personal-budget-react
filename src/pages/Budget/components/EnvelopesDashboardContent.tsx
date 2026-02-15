@@ -89,7 +89,7 @@ export default function EnvelopesDashboardContent() {
               Transfer Funds
             </button>
           </div>
-
+          <h3 className="subtitle">Overview</h3>
           <div className="budget-summary">
             <SummaryCard
               label="Total Allocated"

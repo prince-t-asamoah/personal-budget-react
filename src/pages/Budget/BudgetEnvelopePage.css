@@ -306,6 +306,7 @@ h1 {
     font-weight: 300;
     letter-spacing: 0.05em;
     text-transform: uppercase;
+    margin: var(--space-4) 0;
 }
 
 .budget-summary {
