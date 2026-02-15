@@ -228,6 +228,8 @@
     transition: all var(--transition-base);
     font-family: var(--font-body);
     margin-top: var(--space-2);
+    text-align: center;
+    justify-content: center;
 }
 
 .submit-btn:hover {
