@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import "./LoginPage.css";
-import AppLogo from "../../components/AppLogo";
+import AppLogo from "../../components/AppLogo/AppLogo";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import { APP_ROUTES } from "../../constants/routes.constants";
 
@@ -8,17 +8,19 @@ export default function LoginPage() {
   useDocumentTitle(APP_ROUTES.LOGIN.NAME);
 
   return (
-    <div className="signin-container">
-      <div className="signin-card">
+    <div className="auth-container">
+      <div className="auth-card">
         {/* <!-- Logo --> */}
-        <div className="logo-section">
+        <div className="auth-logo-section">
           <AppLogo />
         </div>
 
         {/* <!-- Header --> */}
-        <div className="signin-header">
-          <h1>Welcome Back</h1>
-          <p>Sign in to continue managing your finances</p>
+        <div className="auth-header">
+          <h1 className="title">Welcome Back</h1>
+          <p className="description">
+            Sign in to continue managing your finances
+          </p>
         </div>
 
         {/* <!-- Alert Messages --> */}
@@ -70,7 +72,7 @@ export default function LoginPage() {
         </div>
 
         {/* <!-- Sign In Form --> */}
-        <form className="signin-form" id="signinForm">
+        <form className="auth-form" id="signinForm">
           {/* <!-- Email --> */}
           <div className="form-group">
             <label htmlFor="email">
@@ -127,7 +129,7 @@ export default function LoginPage() {
 
           {/* <!-- Form Options --> */}
           <div className="form-options">
-            <div className="remember-me">
+            <div className="check-group remember-me">
               <input type="checkbox" id="remember" name="remember" />
               <label htmlFor="remember">Remember me</label>
             </div>
@@ -144,7 +146,7 @@ export default function LoginPage() {
         </form>
 
         {/* <!-- Sign Up Link --> */}
-        <div className="signup-link">
+        <div className="auth-link">
           Don't have an account? <NavLink to="/signup">Sign Up</NavLink>
         </div>
       </div>

@@ -2,23 +2,23 @@ import { NavLink } from "react-router-dom";
 import { APP_ROUTES } from "../../constants/routes.constants";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import "./SingupPage.css";
-import AppLogo from "../../components/AppLogo";
+import AppLogo from "../../components/AppLogo/AppLogo";
 
 export default function SignupPage() {
   useDocumentTitle(APP_ROUTES.CREATE_ACCOUNT.NAME);
 
   return (
-    <div className="signup-container">
-      <div className="signup-card">
+    <div className="auth-container">
+      <div className="auth-card">
         {/* <!-- Logo --> */}
-        <div className="logo-section">
+        <div className="auth-logo-section">
           <AppLogo />
         </div>
 
         {/* <!-- Header --> */}
-        <div className="signup-header">
+        <div className="auth-header">
           <h1 className="title">{APP_ROUTES.CREATE_ACCOUNT.NAME}</h1>
-          <p>Start your journey to financial clarity</p>
+          <p className="description">Start your journey to financial clarity</p>
         </div>
 
         {/* <!-- SSO Buttons --> */}
@@ -66,7 +66,7 @@ export default function SignupPage() {
         </div>
 
         {/* <!-- Signup Form --> */}
-        <form className="signup-form" id="signupForm">
+        <form className="auth-form" id="signupForm">
           {/* <!-- Full Name --> */}
           <div className="form-group">
             <label htmlFor="fullName">
@@ -203,7 +203,7 @@ export default function SignupPage() {
         </form>
 
         {/* <!-- Sign In Link --> */}
-        <div className="signin-link">
+        <div className="auth-link">
           Already have an account? <NavLink to="/login">Login In</NavLink>
         </div>
       </div>
