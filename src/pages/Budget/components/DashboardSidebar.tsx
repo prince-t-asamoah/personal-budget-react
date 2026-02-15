@@ -1,17 +1,9 @@
-import {
-  Home,
-  BarChart3,
-  Settings,
-  HelpCircle,
-  ChevronDown,
-  User,
-  Bell,
-  LogOut,
-} from "lucide-react";
+import { Settings, ChevronDown, User, Bell, LogOut } from "lucide-react";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+
 import { APP_ROUTES } from "../../../constants/routes.constants";
 import AppLogo from "../../../components/AppLogo/AppLogo";
+import SidebarNavLink from "./SidebarNavLink";
 
 export default function DashboardSidebar({
   isOpen,
@@ -26,6 +18,33 @@ export default function DashboardSidebar({
     initials: "JD",
   });
 
+  const routes: {
+    name: string;
+    path: string;
+    iconName: "home" | "dashboard" | "analytics" | "settings" | "helpcircle";
+  }[] = [
+    {
+      name: APP_ROUTES.DASHBOARD.NAME,
+      path: APP_ROUTES.DASHBOARD.URL,
+      iconName: "dashboard",
+    },
+    {
+      name: APP_ROUTES.ANALYTICS.NAME,
+      path: APP_ROUTES.ANALYTICS.URL,
+      iconName: "analytics",
+    },
+    {
+      name: APP_ROUTES.SETTINGS.NAME,
+      path: APP_ROUTES.SETTINGS.URL,
+      iconName: "settings",
+    },
+    {
+      name: APP_ROUTES.HELP_SUPPORT.NAME,
+      path: APP_ROUTES.HELP_SUPPORT.URL,
+      iconName: "helpcircle",
+    },
+  ];
+
   return (
     <aside className={`sidebar ${isOpen ? "open" : ""}`}>
       {/* Sidebar Header */}
@@ -35,42 +54,14 @@ export default function DashboardSidebar({
 
       {/* Sidebar Navigation */}
       <nav className="sidebar-nav">
-        <NavLink
-          to={APP_ROUTES.DASHBOARD.URL}
-          className={({ isActive }) =>
-            isActive ? "nav-item active" : "nav-item"
-          }
-        >
-          <Home size={20} />
-          <span>Dashboard</span>
-        </NavLink>
-        <NavLink
-          to={APP_ROUTES.ANALYTICS.URL}
-          className={({ isActive }) =>
-            isActive ? "nav-item active" : "nav-item"
-          }
-        >
-          <BarChart3 size={20} />
-          <span>Analytics</span>
-        </NavLink>
-        <NavLink
-          to={APP_ROUTES.SETTINGS.URL}
-          className={({ isActive }) =>
-            isActive ? "nav-item active" : "nav-item"
-          }
-        >
-          <Settings size={20} />
-          <span>Settings</span>
-        </NavLink>
-        <NavLink
-          to={APP_ROUTES.HELP_SUPPORT.URL}
-          className={({ isActive }) =>
-            isActive ? "nav-item active" : "nav-item"
-          }
-        >
-          <HelpCircle size={20} />
-          <span>Help & Support</span>
-        </NavLink>
+        {routes.map((route) => (
+          <SidebarNavLink
+            key={route.path}
+            name={route.name}
+            path={route.path}
+            iconName={route.iconName}
+          />
+        ))}
       </nav>
 
       {/* Sidebar Footer - User Profile */}

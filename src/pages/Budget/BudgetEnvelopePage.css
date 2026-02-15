@@ -74,6 +74,10 @@
     font-weight: 500;
 }
 
+.nav-item .title {
+    text-transform: capitalize;
+}
+
 .nav-item:hover {
     background: rgba(139, 154, 126, 0.08);
     color: var(--sage);
