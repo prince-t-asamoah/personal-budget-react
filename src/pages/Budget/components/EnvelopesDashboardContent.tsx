@@ -1,19 +1,22 @@
+import { Plus, ArrowDownCircle, ArrowRightLeft, Wallet } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
-import { Wallet, Plus, ArrowDownCircle, ArrowRightLeft } from "lucide-react";
 
-import SummaryCard from "./components/SummaryCard";
-import EnvelopeCard from "./components/EnvelopeCard";
-import { formatCurrency } from "../utils/ui.utils";
-import { fetchEnvelopes } from "../services/budget-envelope-api.service";
+import EnvelopeCard from "./EnvelopeCard";
+import SummaryCard from "./SummaryCard";
+import AddEnvelope from "./AddEnvelope";
+import DistributeFunds from "./DistributeFunds";
+import TransferFunds from "./TransferFunds";
+import useDocumentTitle from "../../../hooks/useDocumentTitle";
+import { APP_ROUTES } from "../../../constants/routes.constants";
+import { useBudgetContext } from "../../../context/budget.context";
+import { fetchEnvelopes } from "../../../services/budget-envelope-api.service";
+import { formatCurrency } from "../../../utils/ui.utils";
 
-import AddEnvelope from "./components/AddEnvelope";
-import { useBudgetContext } from "../context/budget.context";
-import TransferFunds from "./components/TransferFunds";
-import DistributeFunds from "./components/DistributeFunds";
-
-function BudgetPage() {
+export default function EnvelopesDashboardContent() {
   const { state, dispatch } = useBudgetContext();
   const [loading, setLoading] = useState(true);
+
+  useDocumentTitle(APP_ROUTES.DASHBOARD.NAME);
 
   // Fetch envelopes on mount
   useEffect(() => {
@@ -60,11 +63,8 @@ function BudgetPage() {
     dispatch({ type: "SET_IS_DISTRIBUTING_FUNDS", payload: true });
 
   return (
-    <div className="app-container">
-      <header>
-        <h1>Envelope Budget</h1>
-        <p className="subtitle">Financial Clarity Through Organization</p>
-      </header>
+    <>
+      <h2 className="page-heading">{APP_ROUTES.DASHBOARD.NAME}</h2>
       {loading ? (
         <div className="loading">
           <div className="spinner large"></div>
@@ -126,8 +126,6 @@ function BudgetPage() {
       {state.isTransferringFunds && <TransferFunds />}
       {/* Distribute Funds */}
       {state.isDistributingFunds && <DistributeFunds />}
-    </div>
+    </>
   );
 }
-
-export default BudgetPage;

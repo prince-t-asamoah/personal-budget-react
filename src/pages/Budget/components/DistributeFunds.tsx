@@ -1,11 +1,8 @@
 import { TrendingUp } from "lucide-react";
-import { formatCurrency } from "../../utils/ui.utils";
-import { useBudgetContext } from "../../context/budget.context";
 import { useState } from "react";
-import {
-  distributeFunds,
-  fetchEnvelopes,
-} from "../../services/budget-envelope-api.service";
+import { useBudgetContext } from "../../../context/budget.context";
+import { distributeFunds, fetchEnvelopes } from "../../../services/budget-envelope-api.service";
+import { formatCurrency } from "../../../utils/ui.utils";
 
 export default function DistributeFunds() {
   const { state, dispatch } = useBudgetContext();

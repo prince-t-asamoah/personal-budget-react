@@ -1,14 +1,10 @@
 import { useRef, useState } from "react";
 import { Edit2, MinusCircle, Trash2, Check, X } from "lucide-react";
-import {
-  formatCurrency,
-  getProgressColor,
-  getProgressPercentage,
-} from "../../utils/ui.utils";
-import type { BudgetEnvelope } from "../../models/budget-envelope.model";
-import { updateEnvelopeFunds } from "../../services/budget-envelope-api.service";
-import { useBudgetContext } from "../../context/budget.context";
 import DeleteEnvelope from "./DeleteEnvelope";
+import { useBudgetContext } from "../../../context/budget.context";
+import type { BudgetEnvelope } from "../../../models/budget-envelope.model";
+import { updateEnvelopeFunds } from "../../../services/budget-envelope-api.service";
+import { getProgressPercentage, getProgressColor, formatCurrency } from "../../../utils/ui.utils";
 
 interface EnvelopeCardProps {
   envelope: BudgetEnvelope;
