@@ -19,7 +19,7 @@ export default function LoginPage() {
         <div className="auth-header">
           <h1 className="title">Welcome Back</h1>
           <p className="description">
-            Sign in to continue managing your finances
+            Login to continue managing your finances
           </p>
         </div>
 
@@ -68,11 +68,11 @@ export default function LoginPage() {
 
         {/* <!-- Divider --> */}
         <div className="divider">
-          <span>Or sign in with email</span>
+          <span>Or login with email</span>
         </div>
 
-        {/* <!-- Sign In Form --> */}
-        <form className="auth-form" id="signinForm">
+        {/* <!-- login Form --> */}
+        <form className="auth-form" id="loginForm">
           {/* <!-- Email --> */}
           <div className="form-group">
             <label htmlFor="email">
@@ -141,7 +141,7 @@ export default function LoginPage() {
 
           {/* <!-- Submit Button --> */}
           <button type="submit" className="submit-btn">
-            Sign In
+            Login
           </button>
         </form>
 
