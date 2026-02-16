@@ -1,8 +1,8 @@
 import { Plus, ArrowDownCircle, ArrowRightLeft, Wallet } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
 
 import "./Dashboard.css";
-
 import EnvelopeCard from "../EnvelopeCard";
 import SummaryCard from "../SummaryCard";
 import AddEnvelope from "../AddEnvelope";
@@ -75,7 +75,7 @@ export default function Dashboard() {
       ) : (
         <>
           <div className="overview">
-            <div className="overview-header">
+            <div className="header">
               <h3 className="subtitle">Overview</h3>
               <div className="overview-actions">
                 <button className="btn-primary" onClick={openAddEnvelopeModal}>
@@ -121,7 +121,12 @@ export default function Dashboard() {
             </div>
           ) : (
             <div className="envelopes">
-              <h3 className="subtitle">Latest Envelopes</h3>
+              <div className="header">
+                <h3 className="subtitle">Latest Envelopes</h3>
+                <Link to="/envelopes" className="view-all">
+                  View all
+                </Link>
+              </div>
               <div className="envelopes-grid">
                 {state.envelopes.map((envelope) => (
                   <EnvelopeCard key={envelope.id} envelope={envelope} />

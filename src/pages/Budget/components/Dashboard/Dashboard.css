@@ -1,5 +1,4 @@
-/* Overview */
-.overview .overview-header {
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -7,6 +6,7 @@
     margin-bottom: var(--space-10);
 }
 
+/* Overview */
 .overview-actions {
     display: flex;
     gap: 1rem;
@@ -70,9 +70,19 @@
 
 
 /* Envelopes */
-.envelopes .subtitle {
-    margin: var(--space-10) 0;
+.envelopes {
+    margin-top: var(--space-16);
 }
+
+.envelopes .view-all {
+    color: var(--dark-sage);
+    font-size: var(--text-sm);
+}
+
+.envelopes .view-all:hover {
+    color: var(--gold);
+}
+
 .envelopes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
