@@ -1,3 +1,5 @@
+const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL || '/';
+
 export const APP_ROUTES = {
   DASHBOARD: {
     NAME: "dashboard",
@@ -23,4 +25,8 @@ export const APP_ROUTES = {
     NAME: "login",
     URL: "/login",
   },
+  HOME: {
+    NAME: 'home',
+    URL: API_BASE_URL
+  }
 };

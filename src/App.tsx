@@ -8,6 +8,7 @@ import BudgetPage from "./pages/Budget/BudgetEnvelopePage";
 import SignupPage from "./pages/Signup/SignupPage";
 import LoginPage from "./pages/Login/LoginPage";
 import AuthGuard from "./guard/AuthGuard";
+import NotFound from "./pages/NotFound/NotFound";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
       </Route>
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
