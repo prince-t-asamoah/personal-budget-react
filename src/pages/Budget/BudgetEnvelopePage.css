@@ -368,136 +368,6 @@ button:active {
     justify-content: center;
 }
 
-.envelopes-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-}
-
-.envelope-card {
-    background: var(--white);
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 12px var(--shadow);
-    border-left: 4px solid var(--sage);
-    transition: all 0.3s ease;
-    animation: fadeInUp 0.5s ease-out backwards;
-}
-
-.envelope-card:nth-child(1) {
-    animation-delay: 0.1s;
-}
-
-.envelope-card:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.envelope-card:nth-child(3) {
-    animation-delay: 0.3s;
-}
-
-.envelope-card:nth-child(4) {
-    animation-delay: 0.4s;
-}
-
-.envelope-card:nth-child(5) {
-    animation-delay: 0.5s;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.envelope-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px var(--shadow-lg);
-}
-
-.envelope-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
-    margin-bottom: 1rem;
-}
-
-.envelope-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--charcoal);
-}
-
-.envelope-actions {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.envelope-amounts {
-    margin-bottom: 1rem;
-}
-
-.amount-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-}
-
-.amount-label {
-    font-size: 0.875rem;
-    color: var(--dark-sage);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.amount-value {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: var(--charcoal);
-}
-
-.amount-value.balance {
-    font-size: 1.5rem;
-    color: var(--sage);
-}
-
-.amount-value.spent {
-    color: var(--gold);
-}
-
-.progress-bar {
-    width: 100%;
-    height: 8px;
-    background: var(--cream);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-top: 1rem;
-}
-
-.progress-fill {
-    height: 100%;
-    background: var(--sage);
-    transition: width 0.3s ease;
-    border-radius: 4px;
-}
-
-.envelope-edit,
-.envelope-spend {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    margin-top: 1rem;
-}
-
 input,
 select {
     width: 100%;
@@ -703,10 +573,6 @@ label {
         flex: 1;
     }
 
-    .envelopes-grid {
-        grid-template-columns: 1fr;
-    }
-
     .modal {
         padding: 1.5rem;
     }
@@ -724,9 +590,5 @@ label {
 
     .subtitle {
         font-size: 0.9rem;
-    }
-
-    .envelope-title {
-        font-size: 1.1rem;
     }
 }
