@@ -3,9 +3,9 @@ export default function SummaryCard({ label, amount}: {
     amount: string
 }) {
   return (
-    <div className="summary-card">
-      <div className="summary-label">{label}</div>
-      <div className="summary-amount">{amount}</div>
+    <div className="overview-card">
+      <div className="overview-label">{label}</div>
+      <div className="overview-amount">{amount}</div>
     </div>
   );
 }

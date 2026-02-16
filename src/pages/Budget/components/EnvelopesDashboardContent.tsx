@@ -72,39 +72,45 @@ export default function EnvelopesDashboardContent() {
         </div>
       ) : (
         <>
-          <div className="action-buttons">
-            <button className="btn-primary" onClick={openAddEnvelopeModal}>
-              <Plus size={20} />
-              New Envelope
-            </button>
-            <button
-              className="btn-secondary"
-              onClick={openDistributingFundsModal}
-            >
-              <ArrowDownCircle size={20} />
-              Distribute Funds
-            </button>
-            <button className="btn-secondary" onClick={openTransferFundsModal}>
-              <ArrowRightLeft size={20} />
-              Transfer Funds
-            </button>
+          <div className="overview">
+            <div className="overview-header">
+              <h3 className="subtitle">Overview</h3>
+              <div className="overview-actions">
+                <button className="btn-primary" onClick={openAddEnvelopeModal}>
+                  <Plus size={20} />
+                  New Envelope
+                </button>
+                <button
+                  className="btn-secondary"
+                  onClick={openDistributingFundsModal}
+                >
+                  <ArrowDownCircle size={20} />
+                  Distribute Funds
+                </button>
+                <button
+                  className="btn-secondary"
+                  onClick={openTransferFundsModal}
+                >
+                  <ArrowRightLeft size={20} />
+                  Transfer Funds
+                </button>
+              </div>
+            </div>
+            <div className="overview-cards">
+              <SummaryCard
+                label="Total Allocated"
+                amount={formatCurrency(totals.allocated)}
+              />
+              <SummaryCard
+                label="Total Spent"
+                amount={formatCurrency(totals.spent)}
+              />
+              <SummaryCard
+                label="Total Balance"
+                amount={formatCurrency(totals.balance)}
+              />
+            </div>
           </div>
-          <h3 className="subtitle">Overview</h3>
-          <div className="budget-summary">
-            <SummaryCard
-              label="Total Allocated"
-              amount={formatCurrency(totals.allocated)}
-            />
-            <SummaryCard
-              label="Total Spent"
-              amount={formatCurrency(totals.spent)}
-            />
-            <SummaryCard
-              label="Total Balance"
-              amount={formatCurrency(totals.balance)}
-            />
-          </div>
-
           {state.envelopes.length === 0 ? (
             <div className="empty-state">
               <Wallet size={64} className="empty-state-icon" />
@@ -112,10 +118,13 @@ export default function EnvelopesDashboardContent() {
               <p>Create your first envelope to start budgeting</p>
             </div>
           ) : (
-            <div className="envelopes-grid">
-              {state.envelopes.map((envelope) => (
-                <EnvelopeCard key={envelope.id} envelope={envelope} />
-              ))}
+            <div className="envelopes">
+              <h3 className="subtitle">Envelopes</h3>
+              <div className="envelopes-grid">
+                {state.envelopes.map((envelope) => (
+                  <EnvelopeCard key={envelope.id} envelope={envelope} />
+                ))}
+              </div>
             </div>
           )}
         </>
