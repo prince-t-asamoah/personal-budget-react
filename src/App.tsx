@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import BudgetStateProvider from "./providers/BudgetStateProvider";
-import EnvelopesDashboardContent from "./pages/Budget/components/EnvelopesDashboardContent";
+import Dashboard from "./pages/Budget/components/Dashboard/Dashboard";
 import EnvelopesAnalyticsContent from "./pages/Budget/components/EnvelopesAnalyticsContent";
 import EnvelopesSettingsContent from "./pages/Budget/components/EnvelopesSettingsContent";
 import EnvelopesHelpSupportContent from "./pages/Budget/components/EnvelopesHelpSupport";
@@ -22,7 +22,7 @@ function App() {
           </AuthGuard>
         }
       >
-        <Route path="dashboard" element={<EnvelopesDashboardContent />} />
+        <Route path="dashboard" element={<Dashboard />} />
         <Route path="analytics" element={<EnvelopesAnalyticsContent />} />
         <Route path="settings" element={<EnvelopesSettingsContent />} />
         <Route path="help-support" element={<EnvelopesHelpSupportContent />} />

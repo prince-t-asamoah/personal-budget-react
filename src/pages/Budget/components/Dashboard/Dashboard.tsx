@@ -1,18 +1,20 @@
 import { Plus, ArrowDownCircle, ArrowRightLeft, Wallet } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
 
-import EnvelopeCard from "./EnvelopeCard";
-import SummaryCard from "./SummaryCard";
-import AddEnvelope from "./AddEnvelope";
-import DistributeFunds from "./DistributeFunds";
-import TransferFunds from "./TransferFunds";
-import useDocumentTitle from "../../../hooks/useDocumentTitle";
-import { APP_ROUTES } from "../../../constants/routes.constants";
-import { useBudgetContext } from "../../../context/budget.context";
-import { fetchEnvelopes } from "../../../services/budget-envelope-api.service";
-import { formatCurrency } from "../../../utils/ui.utils";
+import "./Dashboard.css";
 
-export default function EnvelopesDashboardContent() {
+import EnvelopeCard from "../EnvelopeCard";
+import SummaryCard from "../SummaryCard";
+import AddEnvelope from "../AddEnvelope";
+import DistributeFunds from "../DistributeFunds";
+import TransferFunds from "../TransferFunds";
+import useDocumentTitle from "../../../../hooks/useDocumentTitle";
+import { APP_ROUTES } from "../../../../constants/routes.constants";
+import { useBudgetContext } from "../../../../context/budget.context";
+import { fetchEnvelopes } from "../../../../services/budget-envelope-api.service";
+import { formatCurrency } from "../../../../utils/ui.utils";
+
+export default function Dashboard() {
   const { state, dispatch } = useBudgetContext();
   const [loading, setLoading] = useState(true);
 
