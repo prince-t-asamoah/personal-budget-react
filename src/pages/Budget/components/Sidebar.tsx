@@ -5,7 +5,7 @@ import { APP_ROUTES } from "../../../constants/routes.constants";
 import AppLogo from "../../../components/AppLogo/AppLogo";
 import SidebarNavLink from "./SidebarNavLink";
 
-export default function DashboardSidebar({
+export default function Sidebar({
   isOpen,
 }: Readonly<{ isOpen: boolean }>) {
   const [userMenuOpen, setUserMenuOpen] = useState(false);

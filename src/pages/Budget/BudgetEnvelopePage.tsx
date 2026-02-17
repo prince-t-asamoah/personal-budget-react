@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Menu } from "lucide-react";
 import "./BudgetEnvelopePage.css";
 
-import DashboardSidebar from "./components/DashboardSidebar";
+import Sidebar from "./components/Sidebar";
 import { Outlet } from "react-router-dom";
 
 function BudgetPage() {
@@ -17,7 +17,7 @@ function BudgetPage() {
       />
       {/* Page Wrapper */}
       <div className="page-wrapper">
-        <DashboardSidebar isOpen={sidebarOpen} />
+        <Sidebar isOpen={sidebarOpen} />
         {/* Main Content */}
         <div className={`main-content ${sidebarOpen ? "" : "full-width"}`}>
           {/* Mobile Topbar */}
