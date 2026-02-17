@@ -11,7 +11,7 @@ import Envelopes from "./pages/Budget/components/Envelopes/Envelopes";
 import SignupPage from "./pages/Signup/SignupPage";
 import LoginPage from "./pages/Login/LoginPage";
 import AuthGuard from "./guard/AuthGuard";
-import NotFound from "./pages/NotFound/NotFound";
+import NotFoundPage from "./pages/NotFound/NotFoundPage";
 import AppLoader from "./components/AppLoader/AppLoader";
 
 function App() {
@@ -47,7 +47,7 @@ function App() {
       </Route>
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="*" element={<NotFound />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

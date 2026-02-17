@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import "./NotFound.css";
 import { APP_ROUTES } from "../../constants/routes.constants";
 
-export default function NotFound() {
+export default function NotFoundPage() {
   return (
     <div className="error-container">
       {/* <!-- 404 Illustration --> */}
