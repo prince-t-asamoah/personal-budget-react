@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+
 import BudgetStateProvider from "./providers/BudgetStateProvider";
 import Dashboard from "./pages/Budget/components/Dashboard/Dashboard";
 import EnvelopesAnalyticsContent from "./pages/Budget/components/EnvelopesAnalyticsContent";
@@ -9,8 +11,21 @@ import SignupPage from "./pages/Signup/SignupPage";
 import LoginPage from "./pages/Login/LoginPage";
 import AuthGuard from "./guard/AuthGuard";
 import NotFound from "./pages/NotFound/NotFound";
+import AppLoader from "./components/AppLoader/AppLoader";
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <AppLoader />;
+  }
+
   return (
     <Routes>
       <Route index element={<Navigate to="/dashboard" replace />} />
