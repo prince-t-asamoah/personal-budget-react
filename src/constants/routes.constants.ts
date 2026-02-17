@@ -5,6 +5,10 @@ export const APP_ROUTES = {
     NAME: "dashboard",
     URL: "/dashboard",
   },
+  ENVELOPES: {
+    NAME: 'envelopes',
+    URL: "/envelopes"
+  },
   ANALYTICS: {
     NAME: "analytics",
     URL: "/analytics",

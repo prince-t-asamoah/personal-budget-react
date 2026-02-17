@@ -21,12 +21,17 @@ export default function Sidebar({
   const routes: {
     name: string;
     path: string;
-    iconName: "home" | "dashboard" | "analytics" | "settings" | "helpcircle";
+    iconName: "home" | "dashboard" | "analytics" | "settings" | "helpcircle" | "wallet";
   }[] = [
     {
       name: APP_ROUTES.DASHBOARD.NAME,
       path: APP_ROUTES.DASHBOARD.URL,
       iconName: "dashboard",
+    },
+     {
+      name: APP_ROUTES.ENVELOPES.NAME,
+      path: APP_ROUTES.ENVELOPES.URL,
+      iconName: "wallet",
     },
     {
       name: APP_ROUTES.ANALYTICS.NAME,

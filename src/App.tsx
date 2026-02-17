@@ -7,6 +7,7 @@ import EnvelopesAnalyticsContent from "./pages/Budget/components/EnvelopesAnalyt
 import EnvelopesSettingsContent from "./pages/Budget/components/EnvelopesSettingsContent";
 import EnvelopesHelpSupportContent from "./pages/Budget/components/EnvelopesHelpSupport";
 import BudgetPage from "./pages/Budget/BudgetEnvelopePage";
+import Envelopes from "./pages/Budget/components/Envelopes/Envelopes";
 import SignupPage from "./pages/Signup/SignupPage";
 import LoginPage from "./pages/Login/LoginPage";
 import AuthGuard from "./guard/AuthGuard";
@@ -39,6 +40,7 @@ function App() {
         }
       >
         <Route path="dashboard" element={<Dashboard />} />
+        <Route path="envelopes" element={<Envelopes />} />
         <Route path="analytics" element={<EnvelopesAnalyticsContent />} />
         <Route path="settings" element={<EnvelopesSettingsContent />} />
         <Route path="help-support" element={<EnvelopesHelpSupportContent />} />
