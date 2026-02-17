@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 type SidebarNavLinkProps = {
   name: string;
   path: string;
-  iconName: "home" | "dashboard" | "analytics" | "settings" | "helpcircle";
+  iconName: "home" | "dashboard" | "analytics" | "settings" | "helpcircle" | "wallet";
 };
 
 const iconMap: Record<SidebarNavLinkProps["iconName"], IconName> = {
@@ -13,6 +13,7 @@ const iconMap: Record<SidebarNavLinkProps["iconName"], IconName> = {
   analytics: "bar-chart-3",
   settings: "settings",
   helpcircle: "help-circle",
+  wallet: 'wallet'
 };
 
 export default function SidebarNavLink({
