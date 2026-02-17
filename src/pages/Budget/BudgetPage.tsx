@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Menu } from "lucide-react";
-import "./BudgetEnvelopePage.css";
+import "./BudgetPage.css";
 
 import Sidebar from "./components/Sidebar";
 import { Outlet } from "react-router-dom";

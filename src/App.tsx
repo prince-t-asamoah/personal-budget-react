@@ -6,7 +6,7 @@ import Dashboard from "./pages/Budget/components/Dashboard/Dashboard";
 import EnvelopesAnalyticsContent from "./pages/Budget/components/EnvelopesAnalyticsContent";
 import EnvelopesSettingsContent from "./pages/Budget/components/EnvelopesSettingsContent";
 import EnvelopesHelpSupportContent from "./pages/Budget/components/EnvelopesHelpSupport";
-import BudgetPage from "./pages/Budget/BudgetEnvelopePage";
+import BudgetPage from "./pages/Budget/BudgetPage";
 import Envelopes from "./pages/Budget/components/Envelopes/Envelopes";
 import SignupPage from "./pages/Signup/SignupPage";
 import LoginPage from "./pages/Login/LoginPage";
