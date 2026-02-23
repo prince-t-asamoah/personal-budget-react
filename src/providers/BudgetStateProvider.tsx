@@ -1,5 +1,5 @@
 import { type ReactNode, useReducer } from "react";
-import { budgetReducer, initialStateBudgetEnvelope } from "../store/budget-envelope.store";
+import { envelopeReducer, envelopeState } from "../store/budget-envelope.store";
 
 import { BudgetContext } from "../context/budget.context";
 
@@ -9,8 +9,8 @@ type BudgetStateProviderProps = {
 
 export default function BudgetStateProvider({ children }: BudgetStateProviderProps) {
   const [state, dispatch] = useReducer(
-    budgetReducer,
-    initialStateBudgetEnvelope,
+    envelopeReducer,
+    envelopeState,
   );
 
   return (

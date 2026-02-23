@@ -1,6 +1,6 @@
-import type { BudgetEnvelopeActions, BudgetEnvelopeInitialState } from "../models/envelopes.model";
+import type { EnvelopeStateActions, EnvelopeState } from "../models/envelopes.model";
 
-export const initialStateBudgetEnvelope: BudgetEnvelopeInitialState = {
+export const envelopeState: EnvelopeState = {
     envelopes: [],
     totalAllocated: 0,
     totalSpent: 0,
@@ -11,14 +11,14 @@ export const initialStateBudgetEnvelope: BudgetEnvelopeInitialState = {
     loading: false,
 };
 
-export const budgetReducer = (state: BudgetEnvelopeInitialState, action: BudgetEnvelopeActions) => {
+export const envelopeReducer = (state: EnvelopeState, action: EnvelopeStateActions) => {
     switch (action.type) {
         case 'ADD_ENVELOPES': {
             if (action.payload instanceof Array) {
                 return {
                     ...state,
                     envelopes: action.payload
-                } as BudgetEnvelopeInitialState
+                } as EnvelopeState
             } else {
                 return {
                     ...state,
@@ -26,7 +26,7 @@ export const budgetReducer = (state: BudgetEnvelopeInitialState, action: BudgetE
                         ...state.envelopes,
                         action.payload
                     ]
-                } as BudgetEnvelopeInitialState
+                } as EnvelopeState
             }
         }
         case 'DELETE_ENVELOPE': {
@@ -34,31 +34,31 @@ export const budgetReducer = (state: BudgetEnvelopeInitialState, action: BudgetE
             return {
                 ...state,
                 envelopes: newEnvelopes
-            } as BudgetEnvelopeInitialState
+            } as EnvelopeState
         }
         case 'SET_NEW_ENVELOPE_MODAL': {
             return {
                 ...state,
                 isAddingEnvelope: action.payload
-            } as BudgetEnvelopeInitialState
+            } as EnvelopeState
         }
         case 'SET_IS_TRANSFERING_FUNDS': {
             return {
                 ...state,
                 isTransferringFunds: action.payload
-            } as BudgetEnvelopeInitialState
+            } as EnvelopeState
         }
         case 'SET_IS_DELETING_FUNDS': {
             return {
                 ...state,
                 isDeletingEnvelope: action.payload
-            } as BudgetEnvelopeInitialState
+            } as EnvelopeState
         }
         case 'SET_IS_DISTRIBUTING_FUNDS': {
             return {
                 ...state,
                 isDistributingFunds: action.payload
-            } as BudgetEnvelopeInitialState
+            } as EnvelopeState
         }
         default:
             return state;
