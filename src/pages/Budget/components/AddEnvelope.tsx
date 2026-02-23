@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import { useBudgetContext } from "../../../context/budget.context";
 import type { BudgetEnvelope } from "../../../models/envelopes.model";
-import { createEnvelope } from "../../../services/envelope-api.service";
+import { createEnvelope } from "../../../services/envelopes-api.service";
 
 export default function AddEnvelope() {
   const { dispatch } = useBudgetContext();

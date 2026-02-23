@@ -2,7 +2,7 @@ import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useBudgetContext } from "../../../context/budget.context";
 import type { BudgetEnvelope } from "../../../models/envelopes.model";
-import { deleteEnvelope } from "../../../services/envelope-api.service";
+import { deleteEnvelope } from "../../../services/envelopes-api.service";
 
 export default function DeleteEnvelope({
   envelope,
