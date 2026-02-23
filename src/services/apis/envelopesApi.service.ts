@@ -1,5 +1,5 @@
-import type { Envelope } from "../models/envelopes.model";
-import httpClientService from "./httpClient.service";
+import type { Envelope } from "../../models/envelopes.model";
+import httpClientService from "../httpClient.service";
 
 const BASE_ROUTE = '/envelopes';
 
