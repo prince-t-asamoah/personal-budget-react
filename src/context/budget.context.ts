@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 import type { ActionDispatch } from "react";
-import type { BudgetEnvelopeInitialState } from "../models/budget-envelope.model";
-import type { BudgetEnvelopeActions } from "../models/budget-envelope.model";
+import type { BudgetEnvelopeInitialState } from "../models/envelopes.model";
+import type { BudgetEnvelopeActions } from "../models/envelopes.model";
 
 
 export const BudgetContext = createContext<{

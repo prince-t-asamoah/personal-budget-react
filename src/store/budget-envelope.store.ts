@@ -1,4 +1,4 @@
-import type { BudgetEnvelopeActions, BudgetEnvelopeInitialState } from "../models/budget-envelope.model";
+import type { BudgetEnvelopeActions, BudgetEnvelopeInitialState } from "../models/envelopes.model";
 
 export const initialStateBudgetEnvelope: BudgetEnvelopeInitialState = {
     envelopes: [],
