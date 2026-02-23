@@ -1,20 +1,21 @@
-import type { ReactNode } from "react";
+import { type ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { APP_ROUTES } from "../constants/routes.constants";
+import { useAuthContext } from "../context/auth.context";
 
 export default function AuthGuard({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
-  const isAuthenticated = true;
+  const { state } = useAuthContext();
 
   return (
     <>
-      {isAuthenticated ? (
+      {state.isAuthenticated ? (
         children
       ) : (
-        <Navigate to={APP_ROUTES.CREATE_ACCOUNT.URL} replace />
+        <Navigate to={APP_ROUTES.LOGIN.URL} replace />
       )}
     </>
   );
