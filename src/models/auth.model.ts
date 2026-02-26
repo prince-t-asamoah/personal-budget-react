@@ -3,6 +3,14 @@ export type LoginFormData = {
   password: string;
 };
 
+export type SignupFormData = {
+  fullname: string;
+  email: string;
+  password: string;
+  confirmPassword?: string;
+  agreedTotermsOfService?: boolean;
+}
+
 export type AuthUser = {
   id: string;
   fullName: string;

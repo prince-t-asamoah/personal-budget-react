@@ -1,11 +1,49 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import "./SingupPage.css";
 import { APP_ROUTES } from "../../constants/routes.constants";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
-import "./SingupPage.css";
 import AppLogo from "../../components/AppLogo/AppLogo";
+import type { AuthUser, SignupFormData } from "../../models/auth.model";
+import { signupUser } from "../../services/apis/authApi.service";
+import type { SuccessApiResponse } from "../../models/api.model";
 
 export default function SignupPage() {
   useDocumentTitle(APP_ROUTES.CREATE_ACCOUNT.NAME);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<SignupFormData>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<SignupFormData> = ({
+    fullname,
+    email,
+    password,
+    confirmPassword,
+  }) => {
+    if (password !== confirmPassword) return;
+    setIsSubmitting(true);
+    signupUser({ fullname, email, password })
+      .then((response) => {
+        if (!response.ok) return;
+        return response.json();
+      })
+      .then((response: SuccessApiResponse<AuthUser>) => {
+        if (!response?.data) return;
+        navigate(APP_ROUTES.LOGIN.URL);
+      })
+      .catch((error) => {
+        console.error("Signup Error: ", error);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
+  };
 
   return (
     <div className="auth-container">
@@ -22,7 +60,7 @@ export default function SignupPage() {
         </div>
 
         {/* <!-- SSO Buttons --> */}
-        <div className="sso-buttons">
+        {/* <div className="sso-buttons">
           <button className="sso-btn google">
             <svg viewBox="0 0 24 24" fill="currentColor">
               <path
@@ -58,15 +96,19 @@ export default function SignupPage() {
             </svg>
             Continue with Apple
           </button>
-        </div>
+        </div> */}
 
         {/* <!-- Divider --> */}
-        <div className="divider">
+        {/* <div className="divider">
           <span>Or sign up with email</span>
-        </div>
+        </div> */}
 
         {/* <!-- Signup Form --> */}
-        <form className="auth-form" id="signupForm">
+        <form
+          className="auth-form"
+          id="signupForm"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           {/* <!-- Full Name --> */}
           <div className="form-group">
             <label htmlFor="fullName">
@@ -76,12 +118,17 @@ export default function SignupPage() {
             <input
               type="text"
               id="fullName"
-              name="fullName"
               placeholder="John Doe"
-              required
               autoComplete="name"
+              {...register("fullname", { required: "Fullname is required." })}
+              disabled={isSubmitting}
             />
-            <span className="error-message" id="nameError"></span>
+            <span
+              className={`error-message ${errors.fullname?.message ? "show" : ""}`}
+              id="nameError"
+            >
+              {errors.fullname?.message}
+            </span>
           </div>
 
           {/* <!-- Email --> */}
@@ -93,12 +140,17 @@ export default function SignupPage() {
             <input
               type="email"
               id="email"
-              name="email"
               placeholder="john.doe@example.com"
-              required
               autoComplete="email"
+              {...register("email", { required: "Email is required." })}
+              disabled={isSubmitting}
             />
-            <span className="error-message" id="emailError"></span>
+            <span
+              className={`error-message ${errors.email?.message ? "show" : ""}`}
+              id="emailError"
+            >
+              {errors.email?.message}
+            </span>
           </div>
 
           {/* <!-- Password --> */}
@@ -111,10 +163,16 @@ export default function SignupPage() {
               <input
                 type="password"
                 id="password"
-                name="password"
                 placeholder="Create a strong password"
-                required
                 autoComplete="new-password"
+                {...register("password", {
+                  required: "Password is required.",
+                  minLength: {
+                    value: 12,
+                    message: "Password must be at least 12 characters long.",
+                  },
+                })}
+                disabled={isSubmitting}
               />
               <button
                 type="button"
@@ -145,7 +203,12 @@ export default function SignupPage() {
               </div>
               <div className="strength-text" id="strengthText"></div>
             </div>
-            <span className="error-message" id="passwordError"></span>
+            <span
+              className={`error-message ${errors.password?.message ? "show" : ""}`}
+              id="passwordError"
+            >
+              {errors.password?.message}
+            </span>
           </div>
 
           {/* <!-- Confirm Password --> */}
@@ -158,10 +221,15 @@ export default function SignupPage() {
               <input
                 type="password"
                 id="confirmPassword"
-                name="confirmPassword"
                 placeholder="Re-enter your password"
-                required
                 autoComplete="new-password"
+                {...register("confirmPassword", {
+                  required: "Confirm your password.",
+                  validate: (value) =>
+                    // eslint-disable-next-line react-hooks/incompatible-library
+                    value === watch("password") || "Passwords do not match",
+                })}
+                disabled={isSubmitting}
               />
               <button
                 type="button"
@@ -181,30 +249,50 @@ export default function SignupPage() {
                 </svg>
               </button>
             </div>
-            <span className="error-message" id="confirmPasswordError"></span>
+            <span
+              className={`error-message ${errors.confirmPassword?.message ? "show" : ""}`}
+              id="confirmPasswordError"
+            >
+              {errors.confirmPassword?.message}
+            </span>
             <span className="success-message" id="confirmPasswordSuccess">
               Passwords match ✓
             </span>
           </div>
 
           {/* <!-- Terms and Conditions --> */}
-          <div className="checkbox-group">
-            <input type="checkbox" id="terms" name="terms" required />
-            <label htmlFor="terms">
-              I agree to the <a href="#">Terms of Service</a> and{" "}
-              <a href="#">Privacy Policy</a>
-            </label>
+          <div className="terms-conditions">
+            <div className="checkbox-group">
+              <input
+                type="checkbox"
+                id="terms"
+                {...register("agreedTotermsOfService", {
+                  required:
+                    "You must agree to terms of service and privacy policy.",
+                })}
+                disabled={isSubmitting}
+              />
+              <label htmlFor="terms">
+                I agree to the <a href="#">Terms of Service</a> and{" "}
+                <a href="#">Privacy Policy</a>
+              </label>
+            </div>
+            <span
+              className={`error-message ${errors.agreedTotermsOfService?.message ? "show" : ""}`}
+            >
+              {errors.agreedTotermsOfService?.message}
+            </span>
           </div>
 
           {/* <!-- Submit Button --> */}
-          <button type="submit" className="submit-btn">
-            Create Account
+          <button type="submit" className="submit-btn" disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Create Account"}
           </button>
         </form>
 
         {/* <!-- Sign In Link --> */}
         <div className="auth-link">
-          Already have an account? <NavLink to="/login">Login In</NavLink>
+          Already have an account? <NavLink to="/login">Login</NavLink>
         </div>
       </div>
     </div>
