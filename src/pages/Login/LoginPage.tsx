@@ -1,11 +1,61 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { useState } from "react";
 import "./LoginPage.css";
 import AppLogo from "../../components/AppLogo/AppLogo";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import { APP_ROUTES } from "../../constants/routes.constants";
+import { loginUser } from "../../services/apis/authApi.service";
+import type {
+  ErrorApiResponse,
+  SuccessApiResponse,
+} from "../../models/api.model";
+import type { AuthUser, LoginFormData } from "../../models/auth.model";
+import { useAuthContext } from "../../context/auth.context";
 
 export default function LoginPage() {
   useDocumentTitle(APP_ROUTES.LOGIN.NAME);
+  const { dispatch } = useAuthContext();
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [toast, setToast] = useState({
+    success: false,
+    message: "",
+  });
+
+  const onSubmit: SubmitHandler<LoginFormData> = (data) => {
+    setIsSubmitting(true);
+    setToast({ success: false, message: "" });
+    loginUser(data)
+      .then(async (response) => {
+        if (!response.ok) {
+          const errorResponse = (await response.json()) as ErrorApiResponse;
+          throw new Error(errorResponse.message);
+        }
+        return await response.json();
+      })
+      .then(async (response: SuccessApiResponse<AuthUser>) => {
+        if (!response?.data) return;
+        dispatch({ type: "SET_USER", payload: response?.data ?? null });
+        dispatch({ type: "SET_IS_AUTHENTICATED", payload: true });
+        setToast({ success: true, message: response.message });
+        navigate(APP_ROUTES.DASHBOARD.URL);
+      })
+      .catch((error: ErrorApiResponse) => {
+        console.error("Login Error: ", error.message);
+        dispatch({ type: "SET_IS_AUTHENTICATED", payload: false });
+        dispatch({ type: "SET_USER", payload: null });
+        setToast({ success: false, message: error.message });
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
+  };
 
   return (
     <div className="auth-container">
@@ -72,7 +122,11 @@ export default function LoginPage() {
         </div>
 
         {/* <!-- login Form --> */}
-        <form className="auth-form" id="loginForm">
+        <form
+          className="auth-form"
+          id="loginForm"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           {/* <!-- Email --> */}
           <div className="form-group">
             <label htmlFor="email">
@@ -82,12 +136,19 @@ export default function LoginPage() {
             <input
               type="email"
               id="email"
-              name="email"
               placeholder="john.doe@example.com"
-              required
               autoComplete="email"
+              {...register("email", { required: "Email is required" })}
+              disabled={isSubmitting}
             />
-            <span className="error-message" id="emailError"></span>
+            {errors.email && (
+              <span
+                className={`error-message ${errors.email ? "show" : ""}`}
+                id="emailError"
+              >
+                {errors.email?.message}
+              </span>
+            )}
           </div>
 
           {/* <!-- Password --> */}
@@ -100,10 +161,10 @@ export default function LoginPage() {
               <input
                 type="password"
                 id="password"
-                name="password"
                 placeholder="Enter your password"
-                required
                 autoComplete="current-password"
+                {...register("password", { required: "Password is required" })}
+                disabled={isSubmitting}
               />
               <button
                 type="button"
@@ -124,13 +185,25 @@ export default function LoginPage() {
                 </svg>
               </button>
             </div>
-            <span className="error-message" id="passwordError"></span>
+            {errors.password && (
+              <span
+                className={`error-message ${errors.password ? "show" : ""}`}
+                id="passwordError"
+              >
+                {errors.password.message}
+              </span>
+            )}
           </div>
 
           {/* <!-- Form Options --> */}
           <div className="form-options">
             <div className="check-group remember-me">
-              <input type="checkbox" id="remember" name="remember" />
+              <input
+                type="checkbox"
+                id="remember"
+                name="remember"
+                disabled={isSubmitting}
+              />
               <label htmlFor="remember">Remember me</label>
             </div>
 
@@ -140,11 +213,22 @@ export default function LoginPage() {
           </div>
 
           {/* <!-- Submit Button --> */}
-          <button type="submit" className="submit-btn">
-            Login
+          <button type="submit" className="submit-btn" disabled={isSubmitting}>
+            {isSubmitting ? "Submitting.." : "Login"}
           </button>
         </form>
-
+        <div className="toast-message">
+          <p
+            className={`error-message ${!toast.success && toast.message ? "show" : ""}`}
+          >
+            {toast.message}
+          </p>
+          <p
+            className={`success-message ${toast.success && toast.message ? "show" : ""}`}
+          >
+            {toast.message}
+          </p>
+        </div>
         {/* <!-- Sign Up Link --> */}
         <div className="auth-link">
           Don't have an account? <NavLink to="/signup">Sign Up</NavLink>
