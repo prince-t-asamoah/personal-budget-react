@@ -11,4 +11,9 @@ export const loginUser = (data: LoginFormData) => httpClientService(`${BASE_ROUT
 
     },
     credentials: 'include'
-})
+});
+
+export const logoutUser = () => httpClientService(`${BASE_ROUTES}/logout`, {
+    method: 'POST',
+    credentials: 'include'
+});
