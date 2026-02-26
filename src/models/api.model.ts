@@ -4,7 +4,7 @@ type ApiResponse = {
 }
 
 export interface SuccessApiResponse<T> extends ApiResponse {
-    data: T
+    data?: T
 }
 
 export interface ErrorApiResponse extends ApiResponse {
