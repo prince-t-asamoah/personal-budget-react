@@ -25,7 +25,7 @@ export default function Dashboard() {
     const getAllEnvelopes = () => {
       fetchEnvelopes()
         .then((response) => {
-          if (!response.ok) return;
+          if (!response.ok) return [];
           return response.json();
         })
         .then((data) => {
@@ -42,6 +42,9 @@ export default function Dashboard() {
   }, [dispatch]);
 
   const totals = useMemo(() => {
+    if (state.envelopes.length === 0) {
+      return { allocated: 0, spent: 0, balance: 0 };
+    }
     const allocated = state.envelopes.reduce(
       (sum, env) => sum + env.allocatedAmount,
       0,
