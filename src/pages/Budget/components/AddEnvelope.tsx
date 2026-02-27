@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { useBudgetContext } from "../../../context/budget.context";
-import type { BudgetEnvelope } from "../../../models/envelopes.model";
+import type { Envelope } from "../../../models/envelopes.model";
 import { createEnvelope } from "../../../services/apis/envelopesApi.service";
+import useNotification from "../../../hooks/useNotification";
 
 export default function AddEnvelope() {
   const { dispatch } = useBudgetContext();
@@ -14,6 +15,7 @@ export default function AddEnvelope() {
     spentAmount: 0,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const notification = useNotification();
 
   const createNewEnvelope = () => {
     setIsSubmitting(true);
@@ -24,14 +26,24 @@ export default function AddEnvelope() {
         }
         return response.json();
       })
-      .then((response: BudgetEnvelope) => {
+      .then((response: Envelope) => {
         if (!response) {
           throw Error("Invalid response from server.");
         }
+        notification.success({
+          title: "Create Envelope",
+          message: "New envelope created successfully",
+        });
         dispatch({ type: "ADD_ENVELOPES", payload: response });
         closeModal();
       })
-      .catch((error) => console.log("Error creating a new envelope: ", error))
+      .catch((error) =>{
+        notification.error({
+          title: "Create Envelope ",
+          message: "New envelope creation failed",
+        });
+        console.log("Error creating a new envelope: ", error);
+      })
       .finally(() => {
         setIsSubmitting(false);
       });
