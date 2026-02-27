@@ -23,4 +23,5 @@ export const signupUser = (data: SignupFormData) => httpClientService(`${BASE_RO
     headers: {
         'Content-Type': 'application/json',
     },
+    credentials: 'include'
 })
