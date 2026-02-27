@@ -133,11 +133,6 @@
     color: var(--sage);
 }
 
-.toast-message {
-    font-size: var(--text-base);
-    margin-top: var(--space-6);
-}
-
 .error-message {
     font-size: var(--text-sm);
     color: var(--danger);
