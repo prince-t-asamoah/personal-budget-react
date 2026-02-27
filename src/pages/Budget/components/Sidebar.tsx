@@ -1,5 +1,5 @@
 import { Settings, ChevronDown, User, Bell, LogOut } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { APP_ROUTES } from "../../../constants/routes.constants";
 import AppLogo from "../../../components/AppLogo/AppLogo";
@@ -10,6 +10,7 @@ import { logoutUser } from "../../../services/apis/authApi.service";
 
 export default function Sidebar({ isOpen }: Readonly<{ isOpen: boolean }>) {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
   const { state, dispatch } = useAuthContext();
   const navigate = useNavigate();
 
@@ -80,7 +81,25 @@ export default function Sidebar({ isOpen }: Readonly<{ isOpen: boolean }>) {
     return initials;
   };
 
-  const closeUserMenu = () => setUserMenuOpen(false);
+  // Click outside handler
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target as Node)
+      ) {
+        setUserMenuOpen(false);
+      }
+    }
+    if (userMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [userMenuOpen]);
 
   return (
     <>
@@ -106,8 +125,10 @@ export default function Sidebar({ isOpen }: Readonly<{ isOpen: boolean }>) {
         <div className="sidebar-footer">
           <div
             className="user-profile"
-            onClick={() => setUserMenuOpen(!userMenuOpen)}
-            onBlur={closeUserMenu}
+            tabIndex={0}
+            onClick={() => setUserMenuOpen((open) => !open)}
+            ref={userMenuRef}
+            style={{ position: "relative" }} // <-- Ensure this is set
           >
             <div className="user-avatar">
               {state?.user?.profileImageUrl ? (
@@ -131,24 +152,24 @@ export default function Sidebar({ isOpen }: Readonly<{ isOpen: boolean }>) {
                 transition: "transform 0.2s ease",
               }}
             />
-          </div>
-          {/* User Menu Dropdown */}
-          <div className={`user-menu-dropdown ${userMenuOpen ? "open" : ""}`}>
-            <div className="user-menu-item">
-              <User size={18} />
-              <span>My Profile</span>
-            </div>
-            <div className="user-menu-item">
-              <Bell size={18} />
-              <span>Notifications</span>
-            </div>
-            <div className="user-menu-item">
-              <Settings size={18} />
-              <span>Account Settings</span>
-            </div>
-            <div className="user-menu-item danger" onClick={logoOut}>
-              <LogOut size={18} />
-              <span>Log Out</span>
+            {/* User profile dropdown menu */}
+            <div className={`user-menu-dropdown ${userMenuOpen ? "open" : ""}`}>
+              <div className="user-menu-item">
+                <User size={18} />
+                <span>My Profile</span>
+              </div>
+              <div className="user-menu-item">
+                <Bell size={18} />
+                <span>Notifications</span>
+              </div>
+              <div className="user-menu-item">
+                <Settings size={18} />
+                <span>Account Settings</span>
+              </div>
+              <div className="user-menu-item danger" onClick={logoOut}>
+                <LogOut size={18} />
+                <span>Log Out</span>
+              </div>
             </div>
           </div>
         </div>
