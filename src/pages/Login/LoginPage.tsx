@@ -12,6 +12,8 @@ import type {
 } from "../../models/api.model";
 import type { AuthUser, LoginFormData } from "../../models/auth.model";
 import { useAuthContext } from "../../context/auth.context";
+import useNotification from "../../hooks/useNotification";
+import { NAVIGATION_TIMEOUT } from "../../constants/ui.constants";
 
 export default function LoginPage() {
   useDocumentTitle(APP_ROUTES.LOGIN.NAME);
@@ -23,14 +25,10 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm<LoginFormData>();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [toast, setToast] = useState({
-    success: false,
-    message: "",
-  });
+  const notification = useNotification();
 
   const onSubmit: SubmitHandler<LoginFormData> = (data) => {
     setIsSubmitting(true);
-    setToast({ success: false, message: "" });
     loginUser(data)
       .then(async (response) => {
         if (!response.ok) {
@@ -43,14 +41,22 @@ export default function LoginPage() {
         if (!response?.data) return;
         dispatch({ type: "SET_USER", payload: response?.data ?? null });
         dispatch({ type: "SET_IS_AUTHENTICATED", payload: true });
-        setToast({ success: true, message: response.message });
-        navigate(APP_ROUTES.DASHBOARD.URL);
+        notification.success({
+          title: "Login Successful",
+          message: response.message,
+        });
+        setTimeout(() => {
+          navigate(APP_ROUTES.DASHBOARD.URL);
+        }, NAVIGATION_TIMEOUT);
       })
       .catch((error: ErrorApiResponse) => {
         console.error("Login Error: ", error.message);
         dispatch({ type: "SET_IS_AUTHENTICATED", payload: false });
         dispatch({ type: "SET_USER", payload: null });
-        setToast({ success: false, message: error.message });
+        notification.error({
+          title: "Login Failed",
+          message: error.message,
+        });
       })
       .finally(() => {
         setIsSubmitting(false);
@@ -217,18 +223,6 @@ export default function LoginPage() {
             {isSubmitting ? "Submitting.." : "Login"}
           </button>
         </form>
-        <div className="toast-message">
-          <p
-            className={`error-message ${!toast.success && toast.message ? "show" : ""}`}
-          >
-            {toast.message}
-          </p>
-          <p
-            className={`success-message ${toast.success && toast.message ? "show" : ""}`}
-          >
-            {toast.message}
-          </p>
-        </div>
         {/* <!-- Sign Up Link --> */}
         <div className="auth-link">
           Don't have an account? <NavLink to="/signup">Sign Up</NavLink>

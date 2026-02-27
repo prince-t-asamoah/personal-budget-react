@@ -1,0 +1,1 @@
+export type ToastNotificationType =  "success" | "error" | "warning" | "info";

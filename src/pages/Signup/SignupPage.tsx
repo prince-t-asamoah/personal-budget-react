@@ -2,12 +2,18 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import "./SingupPage.css";
+
 import { APP_ROUTES } from "../../constants/routes.constants";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import AppLogo from "../../components/AppLogo/AppLogo";
 import type { AuthUser, SignupFormData } from "../../models/auth.model";
 import { signupUser } from "../../services/apis/authApi.service";
-import type { SuccessApiResponse } from "../../models/api.model";
+import type {
+  ErrorApiResponse,
+  SuccessApiResponse,
+} from "../../models/api.model";
+import useNotification from "../../hooks/useNotification";
+import { NAVIGATION_TIMEOUT } from "../../constants/ui.constants";
 
 export default function SignupPage() {
   useDocumentTitle(APP_ROUTES.CREATE_ACCOUNT.NAME);
@@ -19,6 +25,7 @@ export default function SignupPage() {
   } = useForm<SignupFormData>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+  const notification = useNotification();
 
   const onSubmit: SubmitHandler<SignupFormData> = ({
     fullname,
@@ -29,19 +36,27 @@ export default function SignupPage() {
     if (password !== confirmPassword) return;
     setIsSubmitting(true);
     signupUser({ fullname, email, password })
-      .then((response) => {
-        if (!response.ok) return;
-        return response.json();
+      .then(async (response) => {
+        if (!response.ok) {
+          throw await response.json();
+        }
+        return await response.json();
       })
       .then((response: SuccessApiResponse<AuthUser>) => {
         if (!response?.data) return;
-        navigate(APP_ROUTES.LOGIN.URL);
-      })
-      .catch((error) => {
-        console.error("Signup Error: ", error);
-      })
-      .finally(() => {
         setIsSubmitting(false);
+        notification.success({
+          title: "Signup Successful",
+          message: response.message,
+        });
+        setTimeout(() => {
+          navigate(APP_ROUTES.LOGIN.URL);
+        }, NAVIGATION_TIMEOUT);
+      })
+      .catch((error: ErrorApiResponse) => {
+        setIsSubmitting(false);
+        console.error("Signup Error: ", error);
+        notification.error({ title: "Signup Failed", message: error.message });
       });
   };
 

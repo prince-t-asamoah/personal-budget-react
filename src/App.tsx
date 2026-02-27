@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 import Dashboard from "./pages/Budget/components/Dashboard/Dashboard";
 import EnvelopesAnalyticsContent from "./pages/Budget/components/EnvelopesAnalyticsContent";
@@ -11,33 +12,43 @@ import BudgetRoot from "./pages/Budget/components/BudgetRoot";
 import NotFoundPage from "./pages/NotFound/NotFoundPage";
 import AuthGuard from "./guard/AuthGuard";
 import AppProvider from "./providers/AppProvider";
+import { TOAST_NOTIFICATION_DURATION } from "./constants/ui.constants";
 
 function App() {
   return (
-    <AppProvider>
-      <Routes>
-        <Route index element={<Navigate to="/dashboard" replace />} />
-        <Route
-          element={
-            <AuthGuard>
-              <BudgetRoot />
-            </AuthGuard>
-          }
-        >
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="envelopes" element={<Envelopes />} />
-          <Route path="analytics" element={<EnvelopesAnalyticsContent />} />
-          <Route path="settings" element={<EnvelopesSettingsContent />} />
+    <>
+      <AppProvider>
+        <Routes>
+          <Route index element={<Navigate to="/dashboard" replace />} />
           <Route
-            path="help-support"
-            element={<EnvelopesHelpSupportContent />}
-          />
-        </Route>
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </AppProvider>
+            element={
+              <AuthGuard>
+                <BudgetRoot />
+              </AuthGuard>
+            }
+          >
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="envelopes" element={<Envelopes />} />
+            <Route path="analytics" element={<EnvelopesAnalyticsContent />} />
+            <Route path="settings" element={<EnvelopesSettingsContent />} />
+            <Route
+              path="help-support"
+              element={<EnvelopesHelpSupportContent />}
+            />
+          </Route>
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </AppProvider>
+      <Toaster
+        toastOptions={{
+          position: "top-right",
+          className: 'toast-container',
+          duration: TOAST_NOTIFICATION_DURATION
+        }}
+      />
+    </>
   );
 }
 
