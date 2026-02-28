@@ -13,6 +13,11 @@ import { APP_ROUTES } from "../../../../constants/routes.constants";
 import { useBudgetContext } from "../../../../context/budget.context";
 import { fetchEnvelopes } from "../../../../services/apis/envelopesApi.service";
 import { formatCurrency } from "../../../../utils/ui.utils";
+import type {
+  ErrorApiResponse,
+  SuccessApiResponse,
+} from "../../../../models/api.model";
+import type { Envelope } from "../../../../models/envelopes.model";
 
 export default function Dashboard() {
   const { state, dispatch } = useBudgetContext();
@@ -24,13 +29,20 @@ export default function Dashboard() {
   useEffect(() => {
     const getAllEnvelopes = () => {
       fetchEnvelopes()
-        .then((response) => {
-          if (!response.ok) return [];
-          return response.json();
+        .then(async (response) => {
+          if (!response.ok) {
+            const errorResponse = await response.json() as ErrorApiResponse;
+            throw errorResponse;
+          }
+          return await response.json() as SuccessApiResponse<Envelope[]>;
         })
-        .then((data) => {
+        .then((response) => {
           setLoading(false);
-          dispatch({ type: "ADD_ENVELOPES", payload: data });
+          if (response.data && response.data.length > 0) {
+            dispatch({ type: "ADD_ENVELOPES", payload: response.data });
+          } else {
+            dispatch({ type: "ADD_ENVELOPES", payload: [] });
+          }
         })
         .catch((error) => {
           setLoading(false);
