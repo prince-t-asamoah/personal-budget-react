@@ -46,7 +46,7 @@ export default function LoginPage() {
           message: response.message,
         });
         setTimeout(() => {
-          navigate(APP_ROUTES.DASHBOARD.URL);
+          navigate(APP_ROUTES.DASHBOARD.URL, { replace: true });
         }, NAVIGATION_TIMEOUT);
       })
       .catch((error: ErrorApiResponse) => {
