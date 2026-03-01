@@ -7,6 +7,7 @@ export interface Envelope {
   balance: number;
   createdAt: string;
   updatedAt: string;
+  notes?: string;
 }
 
 export interface EnvelopeState {
