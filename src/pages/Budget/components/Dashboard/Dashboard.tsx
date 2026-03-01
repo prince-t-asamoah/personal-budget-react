@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import "./Dashboard.css";
 import EnvelopeCard from "../EnvelopeCard";
-import SummaryCard from "../SummaryCard";
+import OverviewCard from "../OverviewCard";
 import AddEnvelope from "../AddEnvelope";
 import DistributeFunds from "../DistributeFunds";
 import EmptyEnvelopes from "../EmptyEnvelopes/EmptEnvelopes";
@@ -119,25 +119,25 @@ export default function Dashboard() {
             </div>
             {/* Overview Cards */}
             <div className="overview-cards">
-              <SummaryCard
+              <OverviewCard
                 id="totalEnvelopes"
                 label="Total Envelopes"
                 value={String(totals.envelopes)}
                 change="Active budget categories"
               />
-              <SummaryCard
+              <OverviewCard
                 id="totalAllocated"
                 label="Total Allocated"
                 value={formatCurrency(totals.allocated)}
                 change="Across all envelopes"
               />
-              <SummaryCard
+              <OverviewCard
                 id="totalBalance"
                 label="Total Balance"
                 value={formatCurrency(totals.balance)}
                 change="+₵250.00 this month"
               />
-              <SummaryCard
+              <OverviewCard
                 id="totalSpent"
                 label="Total Spent"
                 value={formatCurrency(totals.spent)}

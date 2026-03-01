@@ -1,4 +1,4 @@
-export default function SummaryCard({
+export default function OverviewCard({
   id,
   label,
   value,
