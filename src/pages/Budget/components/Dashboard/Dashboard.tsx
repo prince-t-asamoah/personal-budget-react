@@ -7,7 +7,7 @@ import EnvelopeCard from "../EnvelopeCard";
 import OverviewCard from "../OverviewCard";
 import AddEnvelope from "../AddEnvelope";
 import DistributeFunds from "../DistributeFunds";
-import EmptyEnvelopes from "../EmptyEnvelopes/EmptEnvelopes";
+import EmptyEnvelopes from "../EmptyEnvelopes/EmptyEnvelopes";
 import TransferFunds from "../TransferFunds";
 
 import useDocumentTitle from "../../../../hooks/useDocumentTitle";
