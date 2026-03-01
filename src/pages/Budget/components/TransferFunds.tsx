@@ -1,6 +1,6 @@
 import { ArrowRightLeft } from "lucide-react";
 import { useState } from "react";
-import { useBudgetContext } from "../../../context/envelopes.context";
+import { useEnvelopesContext } from "../../../context/envelopes.context";
 import { transferEnvelopeFunds } from "../../../services/apis/envelopesApi.service";
 import { formatCurrency } from "../../../utils/ui.utils";
 
@@ -17,7 +17,7 @@ export default function TransferFunds() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { state, dispatch } = useBudgetContext();
+  const { state, dispatch } = useEnvelopesContext();
 
   const closeModal = () =>
     dispatch({ type: "SET_IS_TRANSFERING_FUNDS", payload: false });

@@ -1,11 +1,11 @@
 import { TrendingUp } from "lucide-react";
 import { useState } from "react";
-import { useBudgetContext } from "../../../context/envelopes.context";
+import { useEnvelopesContext } from "../../../context/envelopes.context";
 import { distributeFunds, fetchEnvelopes } from "../../../services/apis/envelopesApi.service";
 import { formatCurrency } from "../../../utils/ui.utils";
 
 export default function DistributeFunds() {
-  const { state, dispatch } = useBudgetContext();
+  const { state, dispatch } = useEnvelopesContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [distributionAmount, setDistributionAmount] = useState(0);
   const [selectedEnvelopes, setSelectedEnvelopes] = useState<{
