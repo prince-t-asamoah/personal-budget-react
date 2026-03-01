@@ -84,7 +84,7 @@ export default function Dashboard() {
     dispatch({ type: "SET_IS_DISTRIBUTING_FUNDS", payload: true });
 
   return (
-    <>
+    <div className="dashboard">
       <h2 className="page-title">{APP_ROUTES.DASHBOARD.NAME}</h2>
       {loading ? (
         <div className="loading">
@@ -171,6 +171,6 @@ export default function Dashboard() {
       {state.isTransferringFunds && <TransferFunds />}
       {/* Distribute Funds */}
       {state.isDistributingFunds && <DistributeFunds />}
-    </>
+    </div>
   );
 }
