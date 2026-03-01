@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import { envelopeReducer, envelopeState } from "../store/budget-envelope.store";
+import { envelopesReducer, envelopesState } from "../store/envelopes.store";
 
 import { BudgetContext } from "../context/budget.context";
 import usePersistentReducer from "../hooks/usePersistentReducer";
@@ -20,8 +20,8 @@ export default function BudgetStateProvider({
     EnvelopeStateActions
   >({
     key: "envelopes",
-    reducer: envelopeReducer,
-    initialState: envelopeState,
+    reducer: envelopesReducer,
+    initialState: envelopesState,
   });
 
   return (

@@ -1,6 +1,6 @@
 import type { EnvelopeStateActions, EnvelopeState } from "../models/envelopes.model";
 
-export const envelopeState: EnvelopeState = {
+export const envelopesState: EnvelopeState = {
     envelopes: [],
     totalAllocated: 0,
     totalSpent: 0,
@@ -11,7 +11,7 @@ export const envelopeState: EnvelopeState = {
     loading: false,
 };
 
-export const envelopeReducer = (state: EnvelopeState, action: EnvelopeStateActions) => {
+export const envelopesReducer = (state: EnvelopeState, action: EnvelopeStateActions) => {
     switch (action.type) {
         case 'ADD_ENVELOPES': {
             if (action.payload instanceof Array) {
