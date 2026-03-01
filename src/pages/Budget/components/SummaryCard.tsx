@@ -1,11 +1,21 @@
-export default function SummaryCard({ label, amount}: {
-    label: string,
-    amount: string
-}) {
+export default function SummaryCard({
+  id,
+  label,
+  value,
+  change,
+}: Readonly<{
+  id: string;
+  label: string;
+  value: string;
+  change: string;
+}>) {
   return (
     <div className="overview-card">
       <div className="overview-label">{label}</div>
-      <div className="overview-amount">{amount}</div>
+      <div className="overview-value" id={id}>
+        {value}
+      </div>
+      <div className="overview-change positive">{change}</div>
     </div>
   );
 }
