@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
 import { envelopesReducer, envelopesState } from "../store/envelopes.store";
 
-import { EnvelopesContext } from "../context/budget.context";
+import { EnvelopesContext } from "../context/envelopes.context";
 import usePersistentReducer from "../hooks/usePersistentReducer";
 import {
   type EnvelopeState,

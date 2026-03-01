@@ -12,7 +12,7 @@ import TransferFunds from "../TransferFunds";
 
 import useDocumentTitle from "../../../../hooks/useDocumentTitle";
 import { APP_ROUTES } from "../../../../constants/routes.constants";
-import { useEnvelopesContext } from "../../../../context/budget.context";
+import { useEnvelopesContext } from "../../../../context/envelopes.context";
 import { fetchEnvelopes } from "../../../../services/apis/envelopesApi.service";
 import { formatCurrency } from "../../../../utils/ui.utils";
 import type {

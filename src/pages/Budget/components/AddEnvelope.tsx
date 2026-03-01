@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { useEnvelopesContext } from "../../../context/budget.context";
+import { useEnvelopesContext } from "../../../context/envelopes.context";
 import type { Envelope } from "../../../models/envelopes.model";
 import { createEnvelope } from "../../../services/apis/envelopesApi.service";
 import useNotification from "../../../hooks/useNotification";

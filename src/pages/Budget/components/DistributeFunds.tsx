@@ -1,6 +1,6 @@
 import { TrendingUp } from "lucide-react";
 import { useState } from "react";
-import { useBudgetContext } from "../../../context/budget.context";
+import { useBudgetContext } from "../../../context/envelopes.context";
 import { distributeFunds, fetchEnvelopes } from "../../../services/apis/envelopesApi.service";
 import { formatCurrency } from "../../../utils/ui.utils";
 

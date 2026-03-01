@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Edit2, MinusCircle, Trash2, Check, X } from "lucide-react";
 import DeleteEnvelope from "./DeleteEnvelope";
-import { useEnvelopesContext } from "../../../context/budget.context";
+import { useEnvelopesContext } from "../../../context/envelopes.context";
 import type { Envelope } from "../../../models/envelopes.model";
 import { updateEnvelopeFunds } from "../../../services/apis/envelopesApi.service";
 import {

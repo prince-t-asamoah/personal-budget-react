@@ -2,7 +2,7 @@ import "./Envelopes.css";
 import AddEnvelope from "../AddEnvelope";
 import EnvelopeCard from "../EnvelopeCard";
 import EmptyEnvelopes from "../EmptyEnvelopes/EmptEnvelopes";
-import { useEnvelopesContext } from "../../../../context/budget.context";
+import { useEnvelopesContext } from "../../../../context/envelopes.context";
 import { type ChangeEvent } from "react";
 
 export default function Envelopes() {
