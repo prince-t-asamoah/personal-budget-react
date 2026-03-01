@@ -221,7 +221,7 @@
 }
 
 /* Easter egg - search box */
-.search-box {
+/* .search-box {
     margin-top: var(--space-8);
     max-width: 400px;
     margin-left: auto;
@@ -230,9 +230,9 @@
 
 .search-input-wrapper {
     position: relative;
-}
+} */
 
-.search-input {
+/* .search-input {
     width: 100%;
     padding: var(--space-4) var(--space-12) var(--space-4) var(--space-4);
     border: 2px solid var(--light-gold);
@@ -268,7 +268,7 @@
 
 .search-btn:hover {
     background: var(--dark-sage);
-}
+} */
 
 /* Responsive */
 @media (max-width: 640px) {
