@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { useBudgetContext } from "../../../context/budget.context";
+import { useEnvelopesContext } from "../../../context/budget.context";
 import type { Envelope } from "../../../models/envelopes.model";
 import { createEnvelope } from "../../../services/apis/envelopesApi.service";
 import useNotification from "../../../hooks/useNotification";
 
 export default function AddEnvelope() {
-  const { dispatch } = useBudgetContext();
+  const { dispatch } = useEnvelopesContext();
 
   const [newEnvelope, setNewEnvelope] = useState({
     name: "",

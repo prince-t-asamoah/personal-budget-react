@@ -12,7 +12,7 @@ import TransferFunds from "../TransferFunds";
 
 import useDocumentTitle from "../../../../hooks/useDocumentTitle";
 import { APP_ROUTES } from "../../../../constants/routes.constants";
-import { useBudgetContext } from "../../../../context/budget.context";
+import { useEnvelopesContext } from "../../../../context/budget.context";
 import { fetchEnvelopes } from "../../../../services/apis/envelopesApi.service";
 import { formatCurrency } from "../../../../utils/ui.utils";
 import type {
@@ -22,7 +22,7 @@ import type {
 import type { Envelope } from "../../../../models/envelopes.model";
 
 export default function Dashboard() {
-  const { state, dispatch } = useBudgetContext();
+  const { state, dispatch } = useEnvelopesContext();
   const [loading, setLoading] = useState(true);
 
   useDocumentTitle(APP_ROUTES.DASHBOARD.NAME);

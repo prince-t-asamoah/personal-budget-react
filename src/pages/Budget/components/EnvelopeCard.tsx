@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Edit2, MinusCircle, Trash2, Check, X } from "lucide-react";
 import DeleteEnvelope from "./DeleteEnvelope";
-import { useBudgetContext } from "../../../context/budget.context";
+import { useEnvelopesContext } from "../../../context/budget.context";
 import type { Envelope } from "../../../models/envelopes.model";
 import { updateEnvelopeFunds } from "../../../services/apis/envelopesApi.service";
 import {
@@ -17,7 +17,7 @@ interface EnvelopeCardProps {
 export default function EnvelopeCard({
   envelope,
 }: Readonly<EnvelopeCardProps>) {
-  const { state, dispatch } = useBudgetContext();
+  const { state, dispatch } = useEnvelopesContext();
   const [isEditingAllocation, setIsEditingAllocation] = useState(false);
   const [isEditingSpending, setIsEditingSpending] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);

@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
 
 import AuthProvider from "./AuthProvider";
-import BudgetStateProvider from "./BudgetStateProvider";
+import BudgetStateProvider from "./EnvelopesProvider";
 
 type AppProviderProps = {
   children: ReactNode;

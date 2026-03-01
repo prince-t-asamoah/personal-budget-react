@@ -2,11 +2,11 @@ import "./Envelopes.css";
 import AddEnvelope from "../AddEnvelope";
 import EnvelopeCard from "../EnvelopeCard";
 import EmptyEnvelopes from "../EmptyEnvelopes/EmptEnvelopes";
-import { useBudgetContext } from "../../../../context/budget.context";
+import { useEnvelopesContext } from "../../../../context/budget.context";
 import { type ChangeEvent } from "react";
 
 export default function Envelopes() {
-  const { state, dispatch } = useBudgetContext();
+  const { state, dispatch } = useEnvelopesContext();
 
   const filterEnvelopes = (e: ChangeEvent<HTMLInputElement>) => {
     console.log(e.currentTarget.value);
