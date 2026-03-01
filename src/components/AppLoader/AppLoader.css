@@ -1,4 +1,4 @@
- .loader-container {
+ .app-loader {
      position: fixed;
      top: 0;
      left: 0;
@@ -13,13 +13,13 @@
      transition: opacity 0.5s ease, visibility 0.5s ease;
  }
 
- .loader-container.hidden {
+ .app-loader.hidden {
      opacity: 0;
      visibility: hidden;
  }
 
  /* Animated background */
- .loader-background {
+ .app-loader-background {
      position: absolute;
      top: 0;
      left: 0;
@@ -112,14 +112,14 @@
  }
 
  /* Loader content */
- .loader-content {
+ .app-loader-content {
      position: relative;
      z-index: 2;
      text-align: center;
  }
 
  /* Logo animation */
- .loader-logo {
+ .app-loader-logo {
      margin-bottom: var(--space-8);
      animation: fadeInScale 0.6s ease-out;
  }
@@ -179,7 +179,7 @@
  }
 
  /* Spinner */
- .loader-spinner {
+ .app-loader-spinner {
      margin-bottom: var(--space-6);
  }
 
@@ -211,7 +211,7 @@
  }
 
  /* Loading text */
- .loader-text {
+ .app-loader-text {
      animation: fadeInUp 0.8s ease-out 0.2s backwards;
  }
 
@@ -227,7 +227,7 @@
      }
  }
 
- .loader-text h2 {
+ .app-loader-text h2 {
      font-family: var(--font-display);
      font-size: var(--text-2xl);
      font-weight: var(--font-semibold);
@@ -235,7 +235,7 @@
      margin-bottom: var(--space-2);
  }
 
- .loader-text p {
+ .app-loader-text p {
      font-size: var(--text-base);
      color: var(--text-secondary);
      animation: fadeText 2s ease-in-out infinite;
@@ -254,7 +254,7 @@
  }
 
  /* Progress bar */
- .progress-container {
+ .app-loader-progress-container {
      width: 300px;
      height: 4px;
      background: var(--cream);
@@ -274,7 +274,7 @@
      }
  }
 
- .progress-bar {
+ .app-loader-progress-container .progress-bar {
      height: 100%;
      background: linear-gradient(90deg, var(--sage) 0%, var(--gold) 100%);
      border-radius: var(--radius-full);
@@ -370,11 +370,11 @@
          font-size: var(--text-4xl);
      }
 
-     .loader-text h2 {
+     .app-loader-text h2 {
          font-size: var(--text-xl);
      }
 
-     .progress-container {
+     .app-loader-progress-container {
          width: 250px;
      }
  }

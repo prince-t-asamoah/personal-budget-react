@@ -3,30 +3,30 @@ import AppLogo from "../AppLogo/AppLogo";
 
 export default function AppLoader() {
   return (
-    <div className="loader-container" id="appLoader">
+    <div className="app-loader" id="appLoader">
       {/* <!-- Animated background --> */}
-      <div className="loader-background">
+      <div className="app-loader-background">
         <div className="floating-circle circle-1"></div>
         <div className="floating-circle circle-2"></div>
         <div className="floating-circle circle-3"></div>
       </div>
 
       {/* <!-- Loader content --> */}
-      <div className="loader-content">
+      <div className="app-loader-content">
         {/* <!-- Logo --> */}
-        <div className="loader-logo">
+        <div className="app-loader-logo">
           <AppLogo />
         </div>
 
         {/* <!-- Spinner --> */}
-        <div className="loader-spinner">
+        <div className="app-loader-spinner">
           <div className="spinner">
             <div className="spinner-ring"></div>
           </div>
         </div>
 
         {/* <!-- Loading text --> */}
-        {/* <div className="loader-text">
+        {/* <div className="app-loader-text">
           <h2>Loading Your Dashboard</h2>
           <p>
             Please wait
@@ -39,7 +39,7 @@ export default function AppLoader() {
         </div> */}
 
         {/* <!-- Progress bar --> */}
-        <div className="progress-container">
+        <div className="app-loader-progress-container">
           <div className="progress-bar" id="progressBar"></div>
         </div>
 
