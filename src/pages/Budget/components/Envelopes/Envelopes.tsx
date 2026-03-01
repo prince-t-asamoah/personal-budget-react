@@ -51,7 +51,7 @@ export default function Envelopes() {
                 className="search-input"
                 placeholder="Search envelopes..."
                 id="searchInput"
-                onInput={filterEnvelopes}
+                onChange={filterEnvelopes}
               />
             </div>
 
