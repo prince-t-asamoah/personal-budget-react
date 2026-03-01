@@ -2,12 +2,16 @@ import { useRef, useState } from "react";
 import { Edit2, MinusCircle, Trash2, Check, X } from "lucide-react";
 import DeleteEnvelope from "./DeleteEnvelope";
 import { useBudgetContext } from "../../../context/budget.context";
-import type { BudgetEnvelope } from "../../../models/envelopes.model";
+import type { Envelope } from "../../../models/envelopes.model";
 import { updateEnvelopeFunds } from "../../../services/apis/envelopesApi.service";
-import { getProgressPercentage, getProgressColor, formatCurrency } from "../../../utils/ui.utils";
+import {
+  getProgressPercentage,
+  getProgressColor,
+  formatCurrency,
+} from "../../../utils/ui.utils";
 
 interface EnvelopeCardProps {
-  envelope: BudgetEnvelope;
+  envelope: Envelope;
 }
 
 export default function EnvelopeCard({
@@ -43,7 +47,7 @@ export default function EnvelopeCard({
     }
   };
 
-  const updateEnvelopeById = (data: Partial<BudgetEnvelope>) => {
+  const updateEnvelopeById = (data: Partial<Envelope>) => {
     updateEnvelopeFunds(envelope.id, data)
       .then((response) => {
         if (!response.ok) {
@@ -51,7 +55,7 @@ export default function EnvelopeCard({
         }
         return response.json();
       })
-      .then((data: BudgetEnvelope) => {
+      .then((data: Envelope) => {
         if (!data) {
           throw new Error("Response data is invalid.");
         }
@@ -86,10 +90,16 @@ export default function EnvelopeCard({
       spentAmount: Number(editSpendingInputRef.current?.value),
     });
   };
+  const getBalanceStatus = (allocated: number, balance: number) => {
+    const percentage = (balance / allocated) * 100;
+    if (percentage <= 20) return "low";
+    if (percentage <= 50) return "mid";
+    return "high";
+  };
 
   return (
     <>
-      <div className="envelope-card">
+      <div className={`envelope-card ${getBalanceStatus(envelope.allocatedAmount, envelope.balance)}-balance`}>
         <div className="envelope-header">
           <div className="envelope-title">{envelope.name}</div>
           <div className="envelope-actions">
