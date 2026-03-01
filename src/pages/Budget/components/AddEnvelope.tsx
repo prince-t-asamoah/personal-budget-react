@@ -37,7 +37,7 @@ export default function AddEnvelope() {
         dispatch({ type: "ADD_ENVELOPES", payload: response });
         closeModal();
       })
-      .catch((error) =>{
+      .catch((error) => {
         notification.error({
           title: "Create Envelope ",
           message: "New envelope creation failed",
@@ -99,6 +99,16 @@ export default function AddEnvelope() {
             <option value="EUR">EUR (Euro)</option>
             <option value="GBP">GBP (British Pound)</option>
           </select>
+        </div>
+        <div className="form-group">
+          <label className="form-label" htmlFor="envelopeNotes">
+            Notes (Optional)
+          </label>
+          <textarea
+            className="form-input"
+            id="envelopeNotes"
+            placeholder="Add any notes about this envelope"
+          />
         </div>
         <div className="modal-actions">
           <button onClick={closeModal}>Cancel</button>
