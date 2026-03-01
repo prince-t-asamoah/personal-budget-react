@@ -1,17 +1,17 @@
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
-import { useBudgetContext } from "../../../context/envelopes.context";
-import type { BudgetEnvelope } from "../../../models/envelopes.model";
+import { useEnvelopesContext } from "../../../context/envelopes.context";
+import type { Envelope } from "../../../models/envelopes.model";
 import { deleteEnvelope } from "../../../services/apis/envelopesApi.service";
 
 export default function DeleteEnvelope({
   envelope,
   closeModal
 }: {
-  envelope: BudgetEnvelope,
+  envelope: Envelope,
   closeModal: () => void;
 }) {
-  const { dispatch } = useBudgetContext();
+  const { dispatch } = useEnvelopesContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const deleteEnvelopeById = () => {
