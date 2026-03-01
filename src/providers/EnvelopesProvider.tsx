@@ -1,12 +1,7 @@
-import { type ReactNode } from "react";
+import { useReducer, type ReactNode } from "react";
 import { envelopesReducer, envelopesState } from "../store/envelopes.store";
 
 import { EnvelopesContext } from "../context/envelopes.context";
-import usePersistentReducer from "../hooks/usePersistentReducer";
-import {
-  type EnvelopeState,
-  type EnvelopeStateActions,
-} from "../models/envelopes.model";
 
 type EnvelopesProviderProps = {
   children: ReactNode;
@@ -15,14 +10,8 @@ type EnvelopesProviderProps = {
 export default function EnvelopesProvider({
   children,
 }: EnvelopesProviderProps) {
-  const [state, dispatch] = usePersistentReducer<
-    EnvelopeState,
-    EnvelopeStateActions
-  >({
-    key: "envelopes",
-    reducer: envelopesReducer,
-    initialState: envelopesState,
-  });
+
+  const [state, dispatch] = useReducer(envelopesReducer, envelopesState);
 
   return (
     <EnvelopesContext.Provider value={{ state, dispatch }}>
