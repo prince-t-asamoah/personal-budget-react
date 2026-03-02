@@ -38,7 +38,7 @@ export default function DistributeFunds() {
         dispatch({ type: "ADD_ENVELOPES", payload: updatedEnvelopes });
         closeModal();
       })
-      .catch((error) => console.log(error.message))
+      .catch((error) => console.error(error.message))
       .finally(() => {
         setIsSubmitting(false);
       });

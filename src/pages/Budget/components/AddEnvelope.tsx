@@ -42,7 +42,7 @@ export default function AddEnvelope() {
           title: "Create Envelope ",
           message: "New envelope creation failed",
         });
-        console.log("Error creating a new envelope: ", error);
+        console.error("Error creating a new envelope: ", error);
       })
       .finally(() => {
         setIsSubmitting(false);
