@@ -1,6 +1,6 @@
-import type { BudgetEnvelope } from "../models/envelopes.model";
+import type { Envelope } from "../models/envelopes.model";
 
- export const mockData: BudgetEnvelope[] = [
+ export const mockData: Envelope[] = [
       {
         id: "1",
         name: "Groceries",
