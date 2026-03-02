@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
 import { Edit2, MinusCircle, Trash2, Check, X } from "lucide-react";
 import DeleteEnvelope from "./DeleteEnvelope";
+import EditEnvelope from "./EditEnvelope";
+
 import { useEnvelopesContext } from "../../../context/envelopes.context";
 import type { Envelope } from "../../../models/envelopes.model";
 import { updateEnvelopeFunds } from "../../../services/apis/envelopesApi.service";
@@ -25,6 +27,7 @@ export default function EnvelopeCard({
   const [isDeleting, setIsDeleting] = useState(false);
   const editAllocationInputRef = useRef<HTMLInputElement | null>(null);
   const editSpendingInputRef = useRef<HTMLInputElement | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   const progressPercentage = getProgressPercentage(
     envelope.spentAmount,
@@ -32,7 +35,6 @@ export default function EnvelopeCard({
   );
   const progressColor = getProgressColor(progressPercentage);
 
-  const editAllocation = () => setIsEditingAllocation(true);
   const editSpending = () => setIsEditingSpending(true);
   const cancelEditSpeding = () => setIsEditingSpending(false);
   const openDeleteModal = () => setIsDeleting(true);
@@ -99,6 +101,10 @@ export default function EnvelopeCard({
     return "high";
   };
 
+  const editEnvelope = () => setIsEditing(true);
+
+  const closeEditModal = () => setIsEditing(false);
+
   return (
     <>
       <div
@@ -115,7 +121,7 @@ export default function EnvelopeCard({
                     className="btn-icon btn-success"
                     aria-label="Edit allocation"
                     title="Edit allocation"
-                    onClick={editAllocation}
+                    onClick={editEnvelope}
                   >
                     <Edit2 size={16} />
                   </button>
@@ -238,6 +244,10 @@ export default function EnvelopeCard({
       {/* Delete Envelope */}
       {isDeleting && (
         <DeleteEnvelope envelope={envelope} closeModal={closeDeleteModal} />
+      )}
+      {/* Edit Envelope */}
+      {isEditing && (
+        <EditEnvelope envelope={envelope} closeModal={closeEditModal} />
       )}
     </>
   );
