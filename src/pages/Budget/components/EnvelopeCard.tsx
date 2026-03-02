@@ -12,10 +12,12 @@ import {
 
 interface EnvelopeCardProps {
   envelope: Envelope;
+  allowActions?: boolean;
 }
 
 export default function EnvelopeCard({
   envelope,
+  allowActions = true,
 }: Readonly<EnvelopeCardProps>) {
   const { state, dispatch } = useEnvelopesContext();
   const [isEditingAllocation, setIsEditingAllocation] = useState(false);
@@ -99,44 +101,48 @@ export default function EnvelopeCard({
 
   return (
     <>
-      <div className={`envelope-card ${getBalanceStatus(envelope.allocatedAmount, envelope.balance)}-balance`}>
+      <div
+        className={`envelope-card ${getBalanceStatus(envelope.allocatedAmount, envelope.balance)}-balance`}
+      >
         <div className="envelope-header">
           <div className="envelope-title">{envelope.name}</div>
-          <div className="envelope-actions">
-            {/* Actions */}
-            {!(isEditingAllocation || isEditingSpending) && (
-              <>
-                <button
-                  className="btn-icon btn-success"
-                  aria-label="Edit allocation"
-                  title="Edit allocation"
-                  onClick={editAllocation}
-                >
-                  <Edit2 size={16} />
-                </button>
-                <button
-                  className="btn-icon"
-                  aria-label="Record spending"
-                  title="Record spending"
-                  onClick={editSpending}
-                  style={{
-                    background: "var(--gold)",
-                    color: "white",
-                  }}
-                >
-                  <MinusCircle size={16} />
-                </button>
-                <button
-                  className="btn-icon btn-danger"
-                  aria-label="Delete envelope"
-                  title="Delete envelope"
-                  onClick={openDeleteModal}
-                >
-                  <Trash2 size={16} />
-                </button>
-              </>
-            )}
-          </div>
+          {allowActions && (
+            <div className="envelope-actions">
+              {/* Actions */}
+              {!(isEditingAllocation || isEditingSpending) && (
+                <>
+                  <button
+                    className="btn-icon btn-success"
+                    aria-label="Edit allocation"
+                    title="Edit allocation"
+                    onClick={editAllocation}
+                  >
+                    <Edit2 size={16} />
+                  </button>
+                  <button
+                    className="btn-icon"
+                    aria-label="Record spending"
+                    title="Record spending"
+                    onClick={editSpending}
+                    style={{
+                      background: "var(--gold)",
+                      color: "white",
+                    }}
+                  >
+                    <MinusCircle size={16} />
+                  </button>
+                  <button
+                    className="btn-icon btn-danger"
+                    aria-label="Delete envelope"
+                    title="Delete envelope"
+                    onClick={openDeleteModal}
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Edit Allocation UI*/}

@@ -124,7 +124,7 @@ export default function Dashboard() {
               </div>
               <div className="envelopes-grid">
                 {state.envelopes.map((envelope) => (
-                  <EnvelopeCard key={envelope.id} envelope={envelope} />
+                  <EnvelopeCard key={envelope.id} envelope={envelope} allowActions={false} />
                 ))}
               </div>
             </div>
