@@ -27,7 +27,7 @@ export default function AppLoader() {
 
         {/* <!-- Loading text --> */}
         {/* <div className="app-loader-text">
-          <h2>Loading Your Dashboard</h2>
+          <h2>Starting app</h2>
           <p>
             Please wait
             <span className="loading-dots">
@@ -39,14 +39,14 @@ export default function AppLoader() {
         </div> */}
 
         {/* <!-- Progress bar --> */}
-        <div className="app-loader-progress-container">
+        {/* <div className="app-loader-progress-container">
           <div className="progress-bar" id="progressBar"></div>
-        </div>
+        </div> */}
 
         {/* <!-- Loading message --> */}
-        {/* <div className="loading-message" id="loadingMessage">
+        <div className="loading-message" id="loadingMessage">
           Loading...
-        </div> */}
+        </div>
       </div>
     </div>
   );
