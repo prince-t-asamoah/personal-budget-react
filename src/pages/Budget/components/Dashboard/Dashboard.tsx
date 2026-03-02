@@ -1,5 +1,5 @@
 import { Plus, ArrowDownCircle, ArrowRightLeft } from "lucide-react";
-import { useState, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 
 import "./Dashboard.css";
@@ -13,52 +13,18 @@ import TransferFunds from "../TransferFunds";
 import useDocumentTitle from "../../../../hooks/useDocumentTitle";
 import { APP_ROUTES } from "../../../../constants/routes.constants";
 import { useEnvelopesContext } from "../../../../context/envelopes.context";
-import { fetchEnvelopes } from "../../../../services/apis/envelopesApi.service";
 import { formatCurrency } from "../../../../utils/ui.utils";
-import type {
-  ErrorApiResponse,
-  SuccessApiResponse,
-} from "../../../../models/api.model";
-import type { Envelope } from "../../../../models/envelopes.model";
 
 export default function Dashboard() {
   const { state, dispatch } = useEnvelopesContext();
-  const [loading, setLoading] = useState(true);
 
   useDocumentTitle(APP_ROUTES.DASHBOARD.NAME);
-
-  // Fetch envelopes on mount
-  useEffect(() => {
-    const getAllEnvelopes = () => {
-      fetchEnvelopes()
-        .then(async (response) => {
-          if (!response.ok) {
-            const errorResponse = (await response.json()) as ErrorApiResponse;
-            throw errorResponse;
-          }
-          return (await response.json()) as SuccessApiResponse<Envelope[]>;
-        })
-        .then((response) => {
-          setLoading(false);
-          if (response.data && response.data.length > 0) {
-            dispatch({ type: "ADD_ENVELOPES", payload: response.data });
-          } else {
-            dispatch({ type: "ADD_ENVELOPES", payload: [] });
-          }
-        })
-        .catch((error) => {
-          setLoading(false);
-          console.error("Error fetching all envelopes: ", error);
-        });
-    };
-
-    getAllEnvelopes();
-  }, [dispatch]);
 
   const totals = useMemo(() => {
     if (state.envelopes.length === 0) {
       return { allocated: 0, spent: 0, balance: 0, envelopes: 0 };
     }
+    console.log(state.envelopes);
     const allocated = state.envelopes.reduce(
       (sum, env) => sum + env.allocatedAmount,
       0,
@@ -86,7 +52,7 @@ export default function Dashboard() {
   return (
     <div className="dashboard">
       <h2 className="page-title">{APP_ROUTES.DASHBOARD.NAME}</h2>
-      {loading ? (
+      {state.loading ? (
         <div className="loading">
           <div className="spinner large"></div>
           <p>Loading your envelopes...</p>
