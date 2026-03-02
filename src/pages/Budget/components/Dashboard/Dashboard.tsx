@@ -24,7 +24,7 @@ export default function Dashboard() {
     if (state.envelopes.length === 0) {
       return { allocated: 0, spent: 0, balance: 0, envelopes: 0 };
     }
-    console.log(state.envelopes);
+
     const allocated = state.envelopes.reduce(
       (sum, env) => sum + env.allocatedAmount,
       0,
