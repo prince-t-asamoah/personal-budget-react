@@ -394,3 +394,171 @@
          font-size: var(--text-3xl);
      }
  }
+
+ /* App Load Error */
+ .splash-error-container {
+     position: relative;
+     z-index: 2;
+     text-align: center;
+     padding: var(--space-8);
+     height: 100vh;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+
+ }
+
+ @keyframes fadeInScale {
+     from {
+         opacity: 0;
+         transform: scale(0.8);
+     }
+
+     to {
+         opacity: 1;
+         transform: scale(1);
+     }
+ }
+
+
+
+ /* Failed State */
+ .splash-failed {
+     margin-bottom: var(--space-6);
+ }
+
+ .splash-failed .error-icon {
+     width: 80px;
+     height: 80px;
+     background: rgba(199, 109, 109, 0.1);
+     border-radius: var(--radius-full);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     margin: 0 auto var(--space-4);
+     animation: shakeError 0.5s ease-out;
+ }
+
+ @keyframes shakeError {
+
+     0%,
+     100% {
+         transform: translateX(0);
+     }
+
+     25% {
+         transform: translateX(-10px);
+     }
+
+     75% {
+         transform: translateX(10px);
+     }
+ }
+
+ .splash-failed .error-icon svg {
+     width: 40px;
+     height: 40px;
+     color: var(--danger);
+ }
+
+ .splash-failed .error-title {
+     font-family: var(--font-display);
+     font-size: var(--text-2xl);
+     font-weight: var(--font-bold);
+     color: var(--charcoal);
+     margin-bottom: var(--space-3);
+ }
+
+ .splash-failed .error-message {
+     font-size: var(--text-base);
+     color: var(--text-secondary);
+     margin-bottom: var(--space-6);
+     max-width: 400px;
+     margin-left: auto;
+     margin-right: auto;
+     line-height: var(--leading-relaxed);
+     display: block;
+ }
+
+ .splash-failed .error-code {
+     display: inline-block;
+     padding: var(--space-2) var(--space-4);
+     background: rgba(199, 109, 109, 0.1);
+     border-radius: var(--radius-lg);
+     color: var(--danger);
+     font-size: var(--text-sm);
+     font-weight: var(--font-semibold);
+     font-family: var(--font-mono);
+     margin-bottom: var(--space-6);
+ }
+
+ .splash-failed .error-actions {
+     display: flex;
+     gap: var(--space-3);
+     justify-content: center;
+     flex-wrap: wrap;
+ }
+
+ /* App Load Success */
+ .splash-success {
+     margin-bottom: var(--space-6);
+ }
+
+ .success-icon {
+     width: 80px;
+     height: 80px;
+     background: rgba(139, 154, 126, 0.1);
+     border-radius: var(--radius-full);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     margin: 0 auto var(--space-4);
+     animation: scaleSuccess 0.5s ease-out;
+ }
+
+ @keyframes scaleSuccess {
+     0% {
+         transform: scale(0);
+     }
+
+     50% {
+         transform: scale(1.1);
+     }
+
+     100% {
+         transform: scale(1);
+     }
+ }
+
+ .success-icon svg {
+     width: 40px;
+     height: 40px;
+     color: var(--sage);
+ }
+
+ .success-title {
+     font-family: var(--font-display);
+     font-size: var(--text-3xl);
+     font-weight: var(--font-bold);
+     color: var(--sage);
+     margin-bottom: var(--space-3);
+ }
+
+ .success-message {
+     font-size: var(--text-base);
+     color: var(--text-secondary);
+     margin-bottom: var(--space-6);
+ }
+
+ /* Responsive */
+ @media (max-width: 768px) {
+
+     .splash-screen {
+         height: 500px;
+     }
+
+     .logo-text {
+         font-size: var(--text-4xl);
+     }
+
+ }
