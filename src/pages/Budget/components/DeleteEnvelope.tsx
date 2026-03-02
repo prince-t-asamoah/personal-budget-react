@@ -3,28 +3,49 @@ import { useState } from "react";
 import { useEnvelopesContext } from "../../../context/envelopes.context";
 import type { Envelope } from "../../../models/envelopes.model";
 import { deleteEnvelope } from "../../../services/apis/envelopesApi.service";
+import useNotification from "../../../hooks/useNotification";
+import type {
+  ErrorApiResponse,
+  SuccessApiResponse,
+} from "../../../models/api.model";
+
+const TOAST_NOTIFICATION_TITLE = "Delete Envelope";
 
 export default function DeleteEnvelope({
   envelope,
-  closeModal
+  closeModal,
 }: {
-  envelope: Envelope,
+  envelope: Envelope;
   closeModal: () => void;
 }) {
   const { dispatch } = useEnvelopesContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const notification = useNotification();
 
   const deleteEnvelopeById = () => {
     setIsSubmitting(true);
     deleteEnvelope(envelope.id)
-      .then((response) => {
+      .then(async (response) => {
         if (!response.ok) {
-          throw new Error(response.statusText);
+          throw new Error(await response.json());
         }
+        const jsonResponse =
+          (await response.json()) as unknown as SuccessApiResponse<Envelope>;
         dispatch({ type: "DELETE_ENVELOPE", payload: envelope.id });
+        notification.success({
+          title: TOAST_NOTIFICATION_TITLE,
+          message: jsonResponse.message,
+        });
         closeModal();
       })
-      .catch((error) => console.error(error))
+      .catch((error: unknown) => {
+        console.error(error);
+        const apiError = error as ErrorApiResponse;
+        notification.error({
+          title: TOAST_NOTIFICATION_TITLE,
+          message: apiError.message,
+        });
+      })
       .finally(() => setIsSubmitting(false));
   };
 
