@@ -1,5 +1,7 @@
 @import url('./styles/design-system.css');
 
-body {
-  min-height: 100%;
+html,
+body,
+#root {
+  min-height: 100vh;
 }
