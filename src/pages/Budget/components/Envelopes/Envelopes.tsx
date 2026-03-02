@@ -103,7 +103,7 @@ export default function Envelopes() {
         {state.envelopes.length > 0 ? (
           <div className="envelopes-grid" id="envelopesGrid">
             {state.envelopes.map((env) => (
-              <EnvelopeCard envelope={env} />
+              <EnvelopeCard key={env.id} envelope={env} />
             ))}
           </div>
         ) : (
