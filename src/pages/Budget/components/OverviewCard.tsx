@@ -7,7 +7,7 @@ export default function OverviewCard({
   id: string;
   label: string;
   value: string;
-  change: string;
+  change?: string;
 }>) {
   return (
     <div className="overview-card">
@@ -15,7 +15,7 @@ export default function OverviewCard({
       <div className="overview-value" id={id}>
         {value}
       </div>
-      <div className="overview-change positive">{change}</div>
+      {change && <div className="overview-change positive">{change}</div>}
     </div>
   );
 }
