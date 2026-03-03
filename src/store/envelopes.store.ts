@@ -2,6 +2,7 @@ import type { EnvelopeStateActions, EnvelopeState } from "../models/envelopes.mo
 
 export const envelopesState: EnvelopeState = {
     envelopes: [],
+    currentEnvelope: null,
     totalAllocated: 0,
     totalSpent: 0,
     totalBalance: 0,
@@ -28,6 +29,12 @@ export const envelopesReducer = (state: EnvelopeState, action: EnvelopeStateActi
                     ]
                 } as EnvelopeState
             }
+        }
+        case 'SET_CURRENT_ENVELOPE': {
+            return {
+                ...state,
+                currentEnvelope: action.payload
+            } as EnvelopeState
         }
         case 'DELETE_ENVELOPE': {
             const newEnvelopes = state.envelopes.filter(envelope => envelope.id !== action.payload);

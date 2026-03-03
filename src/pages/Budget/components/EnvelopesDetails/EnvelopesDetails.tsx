@@ -13,7 +13,13 @@ import EditEnvelope from "../EditEnvelope";
 import OverviewCard from "../OverviewCard";
 import { useEnvelopesContext } from "../../../../context/envelopes.context";
 import type { Envelope } from "../../../../models/envelopes.model";
-import { formatDate, formatTime, formatCurrency } from '../../../../utils/ui.utils';
+import {
+  formatDate,
+  formatTime,
+  formatCurrency,
+} from "../../../../utils/ui.utils";
+import { getEnvelope } from "../../../../services/apis/envelopesApi.service";
+import type { SuccessApiResponse } from "../../../../models/api.model";
 
 Chart.register(ArcElement, Tooltip, Legend, DoughnutController);
 
@@ -38,10 +44,28 @@ export default function EnvelopesDetails() {
     }),
     [],
   );
-  const envelope = useMemo(
-    () => state.envelopes.find((env) => env.id === id) ?? defaultEnvelope,
-    [state.envelopes, id, defaultEnvelope],
-  );
+  const envelope = useMemo(() => {
+    // return state.envelopes.find((env) => env.id === id) ?? defaultEnvelope},
+    return state.currentEnvelope ?? defaultEnvelope;
+  }, [state.currentEnvelope, defaultEnvelope]);
+
+  useEffect(() => {
+    getEnvelope(id ?? "")
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`Error fetching envelope with id: ${id}`);
+        }
+        const jsonResponse =
+          (await response.json()) as SuccessApiResponse<Envelope>;
+        dispatch({
+          type: "SET_CURRENT_ENVELOPE",
+          payload: jsonResponse?.data ?? null,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [id, dispatch]);
 
   const remainingAmount = Math.max(envelope.balance, 0);
   const spentAmount = Math.max(envelope.spentAmount, 0);
@@ -183,12 +207,26 @@ export default function EnvelopesDetails() {
 
         {/* <!-- Stats --> */}
         <div className="stats-grid">
-          <OverviewCard  id="allocatedAmount" label="Allocated" value={`${envelope.currency} ${envelope.allocatedAmount}`} />
-          <OverviewCard  id="balanceAmount" label="Balance" value={`${envelope.currency} ${envelope.balance}`} />
-          <OverviewCard  id="spentAmount" label="Spent" value={`${envelope.currency} ${envelope.spentAmount}`} />
-          <OverviewCard  id="remaingPercentage" label="Remaining pecentage" value={`%0`} />
-          
-
+          <OverviewCard
+            id="allocatedAmount"
+            label="Allocated"
+            value={`${envelope.currency} ${envelope.allocatedAmount}`}
+          />
+          <OverviewCard
+            id="balanceAmount"
+            label="Balance"
+            value={`${envelope.currency} ${envelope.balance}`}
+          />
+          <OverviewCard
+            id="spentAmount"
+            label="Spent"
+            value={`${envelope.currency} ${envelope.spentAmount}`}
+          />
+          <OverviewCard
+            id="remaingPercentage"
+            label="Remaining pecentage"
+            value={`%0`}
+          />
         </div>
       </div>
 
