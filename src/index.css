@@ -3,7 +3,7 @@
 html,
 body,
 #root {
-  min-height: 100vh;
+    min-height: 100vh;
 }
 
 
@@ -27,7 +27,8 @@ body,
     margin-left: var(--space-1);
 }
 
-.form-group input {
+.form-group input,
+.form-group textarea {
     width: 100%;
     padding: var(--space-4) var(--space-4);
     border: 2px solid var(--light-gold);
@@ -39,14 +40,29 @@ body,
     color: var(--charcoal);
 }
 
+.form-group textarea {
+    resize: none;
+    font-family: var(--font-body);
+    line-height: var(--leading-normal);
+}
+
 .input-wrapper {
     position: relative;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group textarea:focus {
     outline: none;
     border-color: var(--sage);
     box-shadow: 0 0 0 3px rgba(139, 154, 126, 0.1);
+}
+
+.form-group input:disabled,
+.form-group textarea:disabled {
+    opacity: 0.8;
+    cursor: not-allowed;
+    background-color: var(--cream);
+    transform: none;
 }
 
 .form-group input.error {

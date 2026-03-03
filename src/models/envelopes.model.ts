@@ -25,10 +25,4 @@ export type EnvelopeStateActions = { type: 'ADD_ENVELOPES', payload: Envelope | 
 
 export type AddEnvelopeFormData = Omit<Envelope, 'id' | 'createdAt' | 'updatedAt'>;
 
-export type EditEnvelopeFormData = {
-  name: string;
-  allocatedAmount: number;
-  spentAmount: number;
-  currency: string;
-  balance: number;
-};
+export type EditEnvelopeFormData = Omit<Envelope, 'id' | 'createdAt' | 'updatedAt'>;

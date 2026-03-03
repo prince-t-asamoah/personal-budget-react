@@ -31,8 +31,9 @@ export default function EditEnvelope({
     defaultValues: {
       name: envelope.name,
       allocatedAmount: envelope.allocatedAmount,
+      spentAmount: envelope.spentAmount,
       currency: envelope.currency,
-      balance: envelope.allocatedAmount - envelope.spentAmount,
+      balance: (envelope.allocatedAmount - envelope.spentAmount) || 0.00,
     },
   });
 
@@ -73,11 +74,12 @@ export default function EditEnvelope({
         closeModal();
       })
       .catch((error: unknown) => {
-        console.log(error)
+        console.log(error);
         console.error("Error updating envelope: ", error);
         notification.error({
           title: EDIT_ENVELOPE_NOTIFICATION_TITLE,
-          message: (error as ErrorApiResponse).message || 'Updating envelope failed',
+          message:
+            (error as ErrorApiResponse).message || "Updating envelope failed",
         });
       })
       .finally(() => {
@@ -123,7 +125,6 @@ export default function EditEnvelope({
                 disabled={issSubmitting}
               />
             </div>
-
             {/* <!-- Alloacated Amount --> */}
             <div className="form-group">
               <label className="form-label" htmlFor="envelopeAmount">
@@ -141,6 +142,22 @@ export default function EditEnvelope({
               />
             </div>
 
+            {/* Spent Amount */}
+            <div className="form-group">
+              <label className="form-label" htmlFor="spentAmount">
+                Spent Amount
+              </label>
+              <input
+                {...register("spentAmount")}
+                type="number"
+                className="form-input"
+                id="spentAmount"
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+                disabled={true}
+              />
+            </div>
             {/* <!-- Currency --> */}
             <div className="form-group">
               <label className="form-label" htmlFor="envelopeCurrency">
@@ -158,7 +175,6 @@ export default function EditEnvelope({
                 <option value="GBP">GBP (£)</option>
               </select>
             </div>
-
             {/* <!-- Notes --> */}
             <div className="form-group">
               <label className="form-label" htmlFor="envelopeNotes">
@@ -168,20 +184,22 @@ export default function EditEnvelope({
                 className="form-input"
                 id="envelopeNotes"
                 placeholder="Add any notes about this envelope"
-                disabled={true}
-              />
+                rows={5}
+              ></textarea>
             </div>
-
-            {/* Balance */}
+            {/* Current Balance */}
             <div className="form-group">
               <label className="form-label" htmlFor="envelopeBalance">
-                Balance
+                Current Balance
               </label>
-              <output
+              <input
+                {...register("balance")}
+                type="text"
                 className="form-input"
                 id="envelopeBalance"
-                min="0"
-                {...register("balance")}
+                value="₵350.00"
+                disabled
+                readOnly
               />
             </div>
             {/* <!-- Modal Footer --> */}
@@ -193,7 +211,11 @@ export default function EditEnvelope({
               >
                 Cancel
               </button>
-              <button type="submit" className="btn btn-primary" disabled={issSubmitting}>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={issSubmitting}
+              >
                 {issSubmitting ? "Saving..." : "Save Changes"}
               </button>
             </div>
