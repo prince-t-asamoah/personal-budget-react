@@ -59,3 +59,7 @@ export const distributeFunds = (data: {
         body: JSON.stringify(data),
         headers: BODY_HEADERS
     });
+
+export const getEnvelope = (id: string) => envelopesApiService(`/${id}`, {
+    method: "GET"
+});
