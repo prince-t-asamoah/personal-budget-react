@@ -1,6 +1,9 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
+import { TOAST_NOTIFICATION_DURATION } from "./constants/ui.constants";
+import AppProvider from "./providers/AppProvider";
+import AuthGuard from "./guard/AuthGuard";
 import Dashboard from "./pages/Budget/components/Dashboard/Dashboard";
 import EnvelopesAnalyticsContent from "./pages/Budget/components/EnvelopesAnalyticsContent";
 import EnvelopesSettingsContent from "./pages/Budget/components/EnvelopesSettingsContent";
@@ -10,9 +13,8 @@ import SignupPage from "./pages/Signup/SignupPage";
 import LoginPage from "./pages/Login/LoginPage";
 import BudgetRoot from "./pages/Budget/components/BudgetRoot";
 import NotFoundPage from "./pages/NotFound/NotFoundPage";
-import AuthGuard from "./guard/AuthGuard";
-import AppProvider from "./providers/AppProvider";
-import { TOAST_NOTIFICATION_DURATION } from "./constants/ui.constants";
+import EnvelopesHome from "./pages/Budget/components/Envelopes/EnvelopesHome";
+import EnvelopesDetails  from "./pages/Budget/components/Envelopes/EnvelopesDetails";
 
 function App() {
   return (
@@ -28,7 +30,10 @@ function App() {
             }
           >
             <Route path="dashboard" element={<Dashboard />} />
-            <Route path="envelopes" element={<Envelopes />} />
+            <Route path="envelopes" element={<Envelopes />}>
+              <Route index element={<EnvelopesHome />} />
+              <Route path="details/:id" element={<EnvelopesDetails />} />
+            </Route>
             <Route path="analytics" element={<EnvelopesAnalyticsContent />} />
             <Route path="settings" element={<EnvelopesSettingsContent />} />
             <Route
@@ -44,8 +49,8 @@ function App() {
       <Toaster
         toastOptions={{
           position: "top-right",
-          className: 'toast-container',
-          duration: TOAST_NOTIFICATION_DURATION
+          className: "toast-container",
+          duration: TOAST_NOTIFICATION_DURATION,
         }}
       />
     </>
