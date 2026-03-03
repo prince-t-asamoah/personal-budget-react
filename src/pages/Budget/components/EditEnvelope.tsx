@@ -1,8 +1,18 @@
+import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import type {
   EditEnvelopeFormData,
   Envelope,
 } from "../../../models/envelopes.model";
+import { updateEnvelopeFunds } from "../../../services/apis/envelopesApi.service";
+import { useEnvelopesContext } from "../../../context/envelopes.context";
+import type {
+  ErrorApiResponse,
+  SuccessApiResponse,
+} from "../../../models/api.model";
+import useNotification from "../../../hooks/useNotification";
+
+const EDIT_ENVELOPE_NOTIFICATION_TITLE = "Edit Envelope";
 
 type EditEnvelopeProps = {
   envelope: Envelope;
@@ -13,6 +23,10 @@ export default function EditEnvelope({
   envelope,
   closeModal,
 }: Readonly<EditEnvelopeProps>) {
+  const { state, dispatch } = useEnvelopesContext();
+  const notification = useNotification();
+  const [issSubmitting, setIsSubmitting] = useState(false);
+
   const { register, handleSubmit } = useForm<EditEnvelopeFormData>({
     defaultValues: {
       name: envelope.name,
@@ -23,6 +37,53 @@ export default function EditEnvelope({
   });
 
   const onSubmit: SubmitHandler<EditEnvelopeFormData> = (data) => {
+    setIsSubmitting(true);
+    updateEnvelopeFunds(envelope.id, data)
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error(await response.json());
+        }
+        return await response.json();
+      })
+      .then((response: SuccessApiResponse<Envelope>) => {
+        if (!response.data) {
+          throw new Error("Response data is invalid.");
+        }
+
+        const updatedEnvelopeIndex = state.envelopes.findIndex(
+          (envelope) => envelope.id === response.data?.id,
+        );
+        if (updatedEnvelopeIndex === -1) {
+          throw new Error(`Envelope with id: ${response.data?.id} not found.`);
+        }
+
+        state.envelopes[updatedEnvelopeIndex] = {
+          ...state.envelopes[updatedEnvelopeIndex],
+          ...response.data,
+        };
+        dispatch({
+          type: "ADD_ENVELOPES",
+          payload: [...state.envelopes],
+        });
+
+        notification.success({
+          title: EDIT_ENVELOPE_NOTIFICATION_TITLE,
+          message: "Evelope updated successfully",
+        });
+        closeModal();
+      })
+      .catch((error: unknown) => {
+        console.log(error)
+        console.error("Error updating envelope: ", error);
+        notification.error({
+          title: EDIT_ENVELOPE_NOTIFICATION_TITLE,
+          message: (error as ErrorApiResponse).message || 'Updating envelope failed',
+        });
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
+
     console.log(data);
   };
 
@@ -37,7 +98,7 @@ export default function EditEnvelope({
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
+              strokeWidth="2"
             >
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
@@ -54,11 +115,12 @@ export default function EditEnvelope({
                 Envelope Name *
               </label>
               <input
+                {...register("name")}
                 type="text"
                 className="form-input"
                 id="envelopeName"
                 placeholder="e.g., Groceries, Rent, Entertainment"
-                {...register("name")}
+                disabled={issSubmitting}
               />
             </div>
 
@@ -68,13 +130,14 @@ export default function EditEnvelope({
                 Allocated Amount *
               </label>
               <input
+                {...register("allocatedAmount")}
                 type="number"
                 className="form-input"
                 id="envelopeAmount"
                 placeholder="0.00"
                 step="0.01"
                 min="0"
-                {...register("allocatedAmount")}
+                disabled={issSubmitting}
               />
             </div>
 
@@ -84,13 +147,12 @@ export default function EditEnvelope({
                 Currency
               </label>
               <select
+                {...register("currency")}
                 className="form-input"
                 id="envelopeCurrency"
-                {...register("currency")}
+                disabled={issSubmitting}
               >
-                <option value="GHS" selected>
-                  GHS (₵)
-                </option>
+                <option value="GHS">GHS (₵)</option>
                 <option value="USD">USD ($)</option>
                 <option value="EUR">EUR (€)</option>
                 <option value="GBP">GBP (£)</option>
@@ -122,15 +184,20 @@ export default function EditEnvelope({
                 {...register("balance")}
               />
             </div>
+            {/* <!-- Modal Footer --> */}
+            <div className="modal-actions">
+              <button
+                className="btn"
+                onClick={closeModal}
+                disabled={issSubmitting}
+              >
+                Cancel
+              </button>
+              <button type="submit" className="btn btn-primary" disabled={issSubmitting}>
+                {issSubmitting ? "Saving..." : "Save Changes"}
+              </button>
+            </div>
           </form>
-        </div>
-
-        {/* <!-- Modal Footer --> */}
-        <div className="modal-actions">
-          <button className="btn" onClick={closeModal}>
-            Cancel
-          </button>
-          <button className="btn btn-primary">Save Changes</button>
         </div>
       </div>
     </div>

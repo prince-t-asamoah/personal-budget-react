@@ -40,7 +40,7 @@ export const transferEnvelopeFunds = ({
 
 export const updateEnvelopeFunds = (id: string, data: Partial<Envelope>) =>
     envelopesApiService(`/${id}`, {
-        method: "PATCH",
+        method: "PUT",
         body: JSON.stringify(data),
         headers: BODY_HEADERS
     });
