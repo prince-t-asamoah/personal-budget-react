@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { type MouseEvent, useRef, useState } from "react";
 import { Edit2, MinusCircle, Trash2, Check, X } from "lucide-react";
 import DeleteEnvelope from "./DeleteEnvelope";
 import EditEnvelope from "./EditEnvelope";
@@ -28,6 +29,7 @@ export default function EnvelopeCard({
   const editAllocationInputRef = useRef<HTMLInputElement | null>(null);
   const editSpendingInputRef = useRef<HTMLInputElement | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const navigate = useNavigate();
 
   const progressPercentage = getProgressPercentage(
     envelope.spentAmount,
@@ -101,14 +103,21 @@ export default function EnvelopeCard({
     return "high";
   };
 
-  const editEnvelope = () => setIsEditing(true);
+  const editEnvelope = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsEditing(true);
+  };
 
   const closeEditModal = () => setIsEditing(false);
+  
+  const viewEnvelopeDetails = () => navigate(`/envelopes/details/${envelope.id}`);
 
   return (
     <>
       <div
         className={`envelope-card ${getBalanceStatus(envelope.allocatedAmount, envelope.balance)}-balance`}
+        onClick={viewEnvelopeDetails}
       >
         <div className="envelope-header">
           <div className="envelope-title">{envelope.name}</div>
