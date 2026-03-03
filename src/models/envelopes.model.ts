@@ -8,6 +8,7 @@ export interface Envelope {
   createdAt: string;
   updatedAt: string;
   notes?: string;
+  category?: string;
 }
 
 export interface EnvelopeState {
