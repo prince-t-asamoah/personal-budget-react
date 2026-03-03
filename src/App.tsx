@@ -13,8 +13,8 @@ import SignupPage from "./pages/Signup/SignupPage";
 import LoginPage from "./pages/Login/LoginPage";
 import BudgetRoot from "./pages/Budget/components/BudgetRoot";
 import NotFoundPage from "./pages/NotFound/NotFoundPage";
-import EnvelopesHome from "./pages/Budget/components/Envelopes/EnvelopesHome";
-import EnvelopesDetails  from "./pages/Budget/components/Envelopes/EnvelopesDetails";
+import EnvelopesHome from "./pages/Budget/components/EnvelopesHome/EnvelopesHome";
+import EnvelopesDetails  from "./pages/Budget/components/EnvelopesDetails/EnvelopesDetails";
 
 function App() {
   return (
