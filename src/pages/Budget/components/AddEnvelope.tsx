@@ -17,7 +17,7 @@ const ADD_ENVELOPE_NOTIFICATION_TITLE = "Create Envelope";
 
 export default function AddEnvelope() {
   const { register, handleSubmit } = useForm<AddEnvelopeFormData>();
-  const { dispatch } = useEnvelopesContext();
+  const { state, dispatch } = useEnvelopesContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const notification = useNotification();
 
@@ -43,7 +43,7 @@ export default function AddEnvelope() {
           title: ADD_ENVELOPE_NOTIFICATION_TITLE,
           message: "New envelope created successfully",
         });
-        dispatch({ type: "ADD_ENVELOPES", payload: response?.data });
+        dispatch({ type: "SET_ENVELOPES", payload: [...state.envelopes, response?.data] });
         closeModal();
       })
       .catch((error: unknown) => {
