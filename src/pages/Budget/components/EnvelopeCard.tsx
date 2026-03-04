@@ -37,9 +37,17 @@ export default function EnvelopeCard({
   );
   const progressColor = getProgressColor(progressPercentage);
 
-  const editSpending = () => setIsEditingSpending(true);
+  const editSpending = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsEditingSpending(true);
+  };
   const cancelEditSpeding = () => setIsEditingSpending(false);
-  const openDeleteModal = () => setIsDeleting(true);
+  const openDeleteModal = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDeleting(true);
+  };
   const closeDeleteModal = () => setIsDeleting(false);
 
   const resetEditState = () => {
@@ -73,7 +81,7 @@ export default function EnvelopeCard({
         }
         state.envelopes[updatedEnvelopeIndex] = data;
         dispatch({
-          type: "ADD_ENVELOPES",
+          type: "SET_ENVELOPES",
           payload: [...state.envelopes],
         });
         resetEditState();
@@ -110,8 +118,9 @@ export default function EnvelopeCard({
   };
 
   const closeEditModal = () => setIsEditing(false);
-  
-  const viewEnvelopeDetails = () => navigate(`/envelopes/details/${envelope.id}`);
+
+  const viewEnvelopeDetails = () =>
+    navigate(`/envelopes/details/${envelope.id}`);
 
   return (
     <>
