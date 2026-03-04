@@ -13,7 +13,6 @@ import type {
 import type { AuthUser, LoginFormData } from "../../models/auth.model";
 import { useAuthContext } from "../../context/auth.context";
 import useNotification from "../../hooks/useNotification";
-import { NAVIGATION_TIMEOUT } from "../../constants/ui.constants";
 
 export default function LoginPage() {
   useDocumentTitle(APP_ROUTES.LOGIN.NAME);
