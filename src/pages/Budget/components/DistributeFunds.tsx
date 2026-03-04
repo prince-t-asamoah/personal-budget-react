@@ -1,44 +1,87 @@
 import { TrendingUp } from "lucide-react";
 import { useState } from "react";
+import { useForm, type SubmitHandler, useWatch } from "react-hook-form";
 import { useEnvelopesContext } from "../../../context/envelopes.context";
-import { distributeFunds, fetchEnvelopes } from "../../../services/apis/envelopesApi.service";
+import { distributeFunds } from "../../../services/apis/envelopesApi.service";
 import { formatCurrency } from "../../../utils/ui.utils";
+import type {
+  DistributeFundsFormData,
+  Envelope,
+} from "../../../models/envelopes.model";
+import type {
+  ErrorApiResponse,
+  SuccessApiResponse,
+} from "../../../models/api.model";
+import useNotification from "../../../hooks/useNotification";
+
+const TOAST_NOTIFICATION_TITLE = "Distribute Funds";
 
 export default function DistributeFunds() {
   const { state, dispatch } = useEnvelopesContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [distributionAmount, setDistributionAmount] = useState(0);
-  const [selectedEnvelopes, setSelectedEnvelopes] = useState<{
-    [key: string]: boolean;
-  }>({});
+  const notification = useNotification();
+
+  const { register, handleSubmit, control } = useForm<DistributeFundsFormData>({
+    defaultValues: {
+      amount: 0,
+      envelopesId: [],
+    },
+  });
+
+  const distributionAmount = useWatch({
+    control,
+    name: "amount",
+  });
+
+  const envelopesId = useWatch({
+    control,
+    name: "envelopesId",
+  });
 
   const closeModal = () => {
     dispatch({ type: "SET_IS_DISTRIBUTING_FUNDS", payload: false });
-    setSelectedEnvelopes({});
-    setDistributionAmount(0);
   };
 
-  const distributeAmount = () => {
+  const onSubmit: SubmitHandler<DistributeFundsFormData> = (data) => {
     setIsSubmitting(true);
 
-    distributeFunds({
-      amount: distributionAmount,
-      envelopesId: Object.keys(selectedEnvelopes),
-    })
+    distributeFunds(data)
       .then(async (response) => {
         if (!response.ok) {
-          throw new Error(response.statusText);
+          const errorResponse = (await response.json()) as ErrorApiResponse;
+          throw new Error(errorResponse.message);
+        }
+        const successReponse = (await response.json()) as SuccessApiResponse<
+          Envelope[]
+        >;
+
+        if (!successReponse.data) {
+          throw new Error("Distribute Funds: Invalid data reponse from server");
         }
 
-        const getEnvelopesResponse = await fetchEnvelopes();
-        if (!getEnvelopesResponse.ok) {
-          throw new Error(getEnvelopesResponse.statusText);
-        }
-        const updatedEnvelopes = await getEnvelopesResponse.json();
-        dispatch({ type: "ADD_ENVELOPES", payload: updatedEnvelopes });
+        const updatedEnvelopes = new Map(
+          successReponse.data.map((env) => [env.id, env]),
+        );
+
+        dispatch({
+          type: "SET_ENVELOPES",
+          payload: state.envelopes.map(
+            (env) => updatedEnvelopes.get(env.id) ?? env,
+          ),
+        });
+        notification.success({
+          title: TOAST_NOTIFICATION_TITLE,
+          message: "Funds distributed successfully",
+        });
         closeModal();
       })
-      .catch((error) => console.error(error.message))
+      .catch((error) => {
+        console.error(error.message);
+        notification.error({
+          title: TOAST_NOTIFICATION_TITLE,
+          message: "Funds distribution failed",
+        });
+      })
       .finally(() => {
         setIsSubmitting(false);
       });
@@ -46,45 +89,39 @@ export default function DistributeFunds() {
 
   return (
     <div className="modal-overlay">
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <h3>Distribute Funds</h3>
-        <div className="form-group">
-          <label htmlFor="distribution-amount">Amount to Distribute</label>
-          <input
-            id="distribution-amount"
-            type="number"
-            value={distributionAmount}
-            onChange={(e) => setDistributionAmount(Number(e.target.value))}
-            placeholder="0.00"
-            step="0.01"
-            min="0"
-          />
-        </div>
-        <div className="form-group">
-          <label>Select Envelopes</label>
-          <div className="checkbox-list">
-            {state.envelopes.map((envelope) => (
-              <label key={envelope.id} className="checkbox-item">
-                <input
-                  type="checkbox"
-                  checked={selectedEnvelopes[envelope.id] || false}
-                  onChange={(e) =>
-                    setSelectedEnvelopes({
-                      ...selectedEnvelopes,
-                      [envelope.id]: e.target.checked,
-                    })
-                  }
-                />
-                <span className="checkbox-label">{envelope.name}</span>
-                <span className="checkbox-amount">
-                  {formatCurrency(envelope.balance, envelope.currency)}
-                </span>
-              </label>
-            ))}
+      <div className="modal">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <h3>Distribute Funds</h3>
+          <div className="form-group">
+            <label htmlFor="distribution-amount">Amount to Distribute</label>
+            <input
+              {...register("amount")}
+              id="distribution-amount"
+              type="number"
+              placeholder="0.00"
+              step="0.01"
+              min="0"
+            />
           </div>
-        </div>
-        {distributionAmount &&
-          Object.values(selectedEnvelopes).filter(Boolean).length > 0 && (
+          <div className="form-group">
+            <label>Select Envelopes</label>
+            <div className="checkbox-list">
+              {state.envelopes.map((envelope) => (
+                <label key={envelope.id} className="checkbox-item">
+                  <input
+                    type="checkbox"
+                    value={envelope.id}
+                    {...register("envelopesId")}
+                  />
+                  <span className="checkbox-label">{envelope.name}</span>
+                  <span className="checkbox-amount">
+                    {formatCurrency(envelope.balance, envelope.currency)}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </div>
+          {distributionAmount > 0 && envelopesId.length > 0 && (
             <p
               style={{
                 marginTop: "1rem",
@@ -93,34 +130,32 @@ export default function DistributeFunds() {
               }}
             >
               Each envelope will receive:{" "}
-              {formatCurrency(
-                distributionAmount /
-                  Object.values(selectedEnvelopes).filter(Boolean).length,
-              )}
+              {formatCurrency(distributionAmount / envelopesId.length)}
             </p>
           )}
-        <div className="modal-actions">
-          <button onClick={closeModal} disabled={isSubmitting}>
-            Cancel
-          </button>
-          <button
-            className="btn-primary"
-            onClick={distributeAmount}
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? (
-              <>
-                <span className="spinner small"></span>
-                Distributing...
-              </>
-            ) : (
-              <>
-                <TrendingUp size={20} />
-                Distribute
-              </>
-            )}
-          </button>
-        </div>
+          <div className="modal-actions">
+            <button onClick={closeModal} disabled={isSubmitting}>
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="btn-primary"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <span className="spinner small"></span>
+                  Distributing...
+                </>
+              ) : (
+                <>
+                  <TrendingUp size={20} />
+                  Distribute
+                </>
+              )}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
