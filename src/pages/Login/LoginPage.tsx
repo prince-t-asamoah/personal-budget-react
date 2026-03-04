@@ -45,9 +45,7 @@ export default function LoginPage() {
           title: "Login Successful",
           message: response.message,
         });
-        setTimeout(() => {
-          navigate(APP_ROUTES.DASHBOARD.URL, { replace: true });
-        }, NAVIGATION_TIMEOUT);
+        navigate(APP_ROUTES.DASHBOARD.URL, { replace: true });
       })
       .catch((error: ErrorApiResponse) => {
         console.error("Login Error: ", error.message);
