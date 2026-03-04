@@ -63,7 +63,7 @@ export default function EditEnvelope({
           ...response.data,
         };
         dispatch({
-          type: "ADD_ENVELOPES",
+          type: "SET_ENVELOPES",
           payload: [...state.envelopes],
         });
 

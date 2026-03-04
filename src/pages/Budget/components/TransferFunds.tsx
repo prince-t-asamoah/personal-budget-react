@@ -79,7 +79,7 @@ export default function TransferFunds() {
         });
 
         dispatch({ type: "SET_IS_TRANSFERING_FUNDS", payload: false });
-        dispatch({ type: "ADD_ENVELOPES", payload: currentEnvelopes });
+        dispatch({ type: "SET_ENVELOPES", payload: currentEnvelopes });
         closeModal();
       })
       .catch((error) =>

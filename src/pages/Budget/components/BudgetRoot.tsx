@@ -39,9 +39,9 @@ export default function BudgetRoot() {
         setHasSessionError(false);
 
         if (response.data && response.data.length > 0) {
-          dispatch({ type: "ADD_ENVELOPES", payload: response.data });
+          dispatch({ type: "SET_ENVELOPES", payload: response.data });
         } else {
-          dispatch({ type: "ADD_ENVELOPES", payload: [] });
+          dispatch({ type: "SET_ENVELOPES", payload: [] });
         }
       })
       .catch((error: unknown) => {

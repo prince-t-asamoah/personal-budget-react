@@ -14,21 +14,11 @@ export const envelopesState: EnvelopeState = {
 
 export const envelopesReducer = (state: EnvelopeState, action: EnvelopeStateActions) => {
     switch (action.type) {
-        case 'ADD_ENVELOPES': {
-            if (action.payload instanceof Array) {
-                return {
-                    ...state,
-                    envelopes: action.payload
-                } as EnvelopeState
-            } else {
-                return {
-                    ...state,
-                    envelopes: [
-                        ...state.envelopes,
-                        action.payload
-                    ]
-                } as EnvelopeState
-            }
+        case 'SET_ENVELOPES': {
+            return {
+                ...state,
+                envelopes: action.payload
+            } as EnvelopeState
         }
         case 'SET_CURRENT_ENVELOPE': {
             return {
