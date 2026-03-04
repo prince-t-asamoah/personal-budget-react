@@ -3,6 +3,7 @@ import "./EnvelopesHome.css";
 import EnvelopeCard from "../EnvelopeCard";
 import EmptyEnvelopes from "../EmptyEnvelopes/EmptyEnvelopes";
 import { useEnvelopesContext } from "../../../../context/envelopes.context";
+import { ArrowDownCircle, ArrowRightLeft } from "lucide-react";
 
 export default function EnvelopesHome() {
   const { state, dispatch } = useEnvelopesContext();
@@ -18,14 +19,35 @@ export default function EnvelopesHome() {
   const openAddModal = () =>
     dispatch({ type: "SET_NEW_ENVELOPE_MODAL", payload: true });
 
+  const openTransferFundsModal = () =>
+    dispatch({ type: "SET_IS_TRANSFERING_FUNDS", payload: true });
+
+  const openDistributingFundsModal = () =>
+    dispatch({ type: "SET_IS_DISTRIBUTING_FUNDS", payload: true });
+
   return (
     <div className="envelopes-home">
       {/* Page Header */}
       <div className="page-header">
-        <h2 className="page-title">Envelopes</h2>
-        <p className="page-subtitle">
-          Manage your budget envelopes and track spending
-        </p>
+        <div className="header-title">
+          <h2 className="page-title">Envelopes</h2>
+          <p className="page-subtitle">
+            Manage your budget envelopes and track spending
+          </p>
+        </div>
+        <div className="header-actions">
+          <button
+            className="btn-secondary"
+            onClick={openDistributingFundsModal}
+          >
+            <ArrowDownCircle size={20} />
+            Distribute Funds
+          </button>
+          <button className="btn-secondary" onClick={openTransferFundsModal}>
+            <ArrowRightLeft size={20} />
+            Transfer Funds
+          </button>
+        </div>
       </div>
 
       {/* Toolbar */}
