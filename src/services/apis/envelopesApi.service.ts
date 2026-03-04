@@ -1,4 +1,4 @@
-import type { Envelope } from "../../models/envelopes.model";
+import type { DistributeFundsFormData, Envelope } from "../../models/envelopes.model";
 import httpClientService from "../httpClient.service";
 
 const BASE_ROUTE = "/envelopes";
@@ -50,10 +50,7 @@ export const deleteEnvelope = (id: string) =>
         method: "DELETE",
     });
 
-export const distributeFunds = (data: {
-    amount: number;
-    envelopesId: string[];
-}) =>
+export const distributeFunds = (data: DistributeFundsFormData) =>
     envelopesApiService('/distribute', {
         method: "POST",
         body: JSON.stringify(data),
