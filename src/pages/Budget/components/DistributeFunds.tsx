@@ -13,6 +13,7 @@ import type {
   SuccessApiResponse,
 } from "../../../models/api.model";
 import useNotification from "../../../hooks/useNotification";
+import Input from "../../../components/Forms/Input";
 
 const TOAST_NOTIFICATION_TITLE = "Distribute Funds";
 
@@ -21,7 +22,12 @@ export default function DistributeFunds() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const notification = useNotification();
 
-  const { register, handleSubmit, control } = useForm<DistributeFundsFormData>({
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<DistributeFundsFormData>({
     defaultValues: {
       amount: 0,
       envelopesId: [],
@@ -92,18 +98,20 @@ export default function DistributeFunds() {
       <div className="modal">
         <form onSubmit={handleSubmit(onSubmit)}>
           <h3>Distribute Funds</h3>
-          <div className="form-group">
-            <label htmlFor="distribution-amount">Amount to Distribute</label>
-            <input
-              {...register("amount")}
-              id="distribution-amount"
-              type="number"
-              placeholder="0.00"
-              step="0.01"
-              min="0"
-            />
-          </div>
-          <div className="form-group">
+          <Input
+            id="distributionAmount"
+            label="Amount to Distribute"
+            type="number"
+            placeholder="0.00"
+            step="0.01"
+            min="0"
+            {...register("amount", {
+              required: "Distribution amount is required",
+            })}
+            error={errors.amount?.message}
+          />
+
+          <div className={`form-group ${errors.envelopesId?.message ? "error" : ""}`}>
             <label>Select Envelopes</label>
             <div className="checkbox-list">
               {state.envelopes.map((envelope) => (
@@ -111,7 +119,9 @@ export default function DistributeFunds() {
                   <input
                     type="checkbox"
                     value={envelope.id}
-                    {...register("envelopesId")}
+                    {...register("envelopesId", {
+                      required: "Select an envelope to distribute amount",
+                    })}
                   />
                   <span className="checkbox-label">{envelope.name}</span>
                   <span className="checkbox-amount">
@@ -120,6 +130,11 @@ export default function DistributeFunds() {
                 </label>
               ))}
             </div>
+            <p
+              className={`error-message ${errors.envelopesId?.message ? "show" : ""} `}
+            >
+              {errors.envelopesId?.message}
+            </p>
           </div>
           {distributionAmount > 0 && envelopesId.length > 0 && (
             <p

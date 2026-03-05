@@ -11,6 +11,10 @@ import type {
   SuccessApiResponse,
 } from "../../../models/api.model";
 import useNotification from "../../../hooks/useNotification";
+import { FORM_CURRENCY_DATA } from "../../../constants/ui.constants";
+import Input from "../../../components/Forms/Input";
+import Select from "../../../components/Forms/Select";
+import Textarea from "../../../components/Forms/Textarea";
 
 const EDIT_ENVELOPE_NOTIFICATION_TITLE = "Edit Envelope";
 
@@ -27,13 +31,17 @@ export default function EditEnvelope({
   const notification = useNotification();
   const [issSubmitting, setIsSubmitting] = useState(false);
 
-  const { register, handleSubmit } = useForm<EditEnvelopeFormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<EditEnvelopeFormData>({
     defaultValues: {
       name: envelope.name,
       allocatedAmount: envelope.allocatedAmount,
       spentAmount: envelope.spentAmount,
       currency: envelope.currency,
-      balance: (envelope.allocatedAmount - envelope.spentAmount) || 0.00,
+      balance: envelope.allocatedAmount - envelope.spentAmount || 0.0,
     },
   });
 
@@ -112,96 +120,77 @@ export default function EditEnvelope({
         <div className="modal-body">
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* <!-- Envelope Name --> */}
-            <div className="form-group">
-              <label className="form-label" htmlFor="envelopeName">
-                Envelope Name *
-              </label>
-              <input
-                {...register("name")}
-                type="text"
-                className="form-input"
-                id="envelopeName"
-                placeholder="e.g., Groceries, Rent, Entertainment"
-                disabled={issSubmitting}
-              />
-            </div>
+            <Input
+              {...register("name", {
+                required: "Envelope name is required",
+              })}
+              id="envelopeName"
+              label="Envelope Name *"
+              placeholder="e.g., Groceries, Rent, Entertainment"
+              disabled={issSubmitting}
+              error={errors.name?.message}
+            />
+            
             {/* <!-- Alloacated Amount --> */}
-            <div className="form-group">
-              <label className="form-label" htmlFor="envelopeAmount">
-                Allocated Amount *
-              </label>
-              <input
-                {...register("allocatedAmount")}
-                type="number"
-                className="form-input"
-                id="envelopeAmount"
-                placeholder="0.00"
-                step="0.01"
-                min="0"
-                disabled={issSubmitting}
-              />
-            </div>
+            <Input
+              {...register("allocatedAmount", {
+                required: "Allocated amount is required",
+              })}
+              type="number"
+              id="allocatedAmount"
+              label="Allocated Amount *"
+              placeholder="0.00"
+              step="0.01"
+              min="0"
+              disabled={issSubmitting}
+              error={errors.allocatedAmount?.message}
+            />
 
             {/* Spent Amount */}
-            <div className="form-group">
-              <label className="form-label" htmlFor="spentAmount">
-                Spent Amount
-              </label>
-              <input
-                {...register("spentAmount")}
-                type="number"
-                className="form-input"
-                id="spentAmount"
-                placeholder="0.00"
-                step="0.01"
-                min="0"
-                disabled={true}
-              />
-            </div>
+            <Input
+              {...register("spentAmount")}
+              type="number"
+              id="spentAmount"
+              label="Spent Amount"
+              placeholder="0.00"
+              step="0.01"
+              min="0"
+              disabled={true}
+            />
+
             {/* <!-- Currency --> */}
-            <div className="form-group">
-              <label className="form-label" htmlFor="envelopeCurrency">
-                Currency
-              </label>
-              <select
-                {...register("currency")}
-                className="form-input"
-                id="envelopeCurrency"
-                disabled={issSubmitting}
-              >
-                <option value="GHS">GHS (₵)</option>
-                <option value="USD">USD ($)</option>
-                <option value="EUR">EUR (€)</option>
-                <option value="GBP">GBP (£)</option>
-              </select>
-            </div>
+            <Select
+              {...register("currency", {
+                required: "Currency must be selected",
+              })}
+              id="envelopeCurrency"
+              label="Currency"
+              options={FORM_CURRENCY_DATA}
+              disabled={issSubmitting}
+              error={errors.currency?.message}
+            />
+
             {/* <!-- Notes --> */}
-            <div className="form-group">
-              <label className="form-label" htmlFor="envelopeNotes">
-                Notes (Optional)
-              </label>
-              <textarea
-                className="form-input"
-                id="envelopeNotes"
-                placeholder="Add any notes about this envelope"
-                rows={5}
-              ></textarea>
-            </div>
+            <Textarea
+              id="envelopeNotes"
+              label="Notes (Optional)"
+              placeholder="Add any notes about this envelope"
+              rows={5}
+              disabled={true}
+            />
+
             {/* Current Balance */}
-            <div className="form-group">
-              <label className="form-label" htmlFor="envelopeBalance">
-                Current Balance
-              </label>
-              <input
-                {...register("balance")}
-                type="text"
-                className="form-input"
-                id="envelopeBalance"
-                value="₵350.00"
-                disabled
-                readOnly
-              />
-            </div>
+            <Input
+              {...register("balance")}
+              id="envelopeBalance"
+              label="Spent Amount"
+              placeholder="0.00"
+              step="0.01"
+              min="0"
+              disabled={true}
+              readOnly
+            />
+
             {/* <!-- Modal Footer --> */}
             <div className="modal-actions">
               <button

@@ -15,6 +15,7 @@ import type {
 import Input from "../../../components/Forms/Input";
 import Select from "../../../components/Forms/Select";
 import Textarea from "../../../components/Forms/Textarea";
+import { FORM_CURRENCY_DATA } from "../../../constants/ui.constants";
 
 const ADD_ENVELOPE_NOTIFICATION_TITLE = "Create Envelope";
 
@@ -98,21 +99,7 @@ export default function AddEnvelope() {
             <Select
               id="envelopeCurrency"
               label="Currency"
-              options={[
-                { name: "GHS (Ghanaian Cedi)", value: "GHS" },
-                {
-                  name: "USD (US Dollar)",
-                  value: "USD",
-                },
-                {
-                  name: "EUR (Euro)",
-                  value: "EUR",
-                },
-                {
-                  name: "GBP (British Pound)",
-                  value: "GBP",
-                },
-              ]}
+              options={FORM_CURRENCY_DATA}
               {...register("currency")}
             />
             <Textarea
