@@ -12,11 +12,18 @@ import type {
   ErrorApiResponse,
   SuccessApiResponse,
 } from "../../../models/api.model";
+import Input from "../../../components/Forms/Input";
+import Select from "../../../components/Forms/Select";
+import Textarea from "../../../components/Forms/Textarea";
 
 const ADD_ENVELOPE_NOTIFICATION_TITLE = "Create Envelope";
 
 export default function AddEnvelope() {
-  const { register, handleSubmit } = useForm<AddEnvelopeFormData>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AddEnvelopeFormData>();
   const { state, dispatch } = useEnvelopesContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const notification = useNotification();
@@ -43,7 +50,10 @@ export default function AddEnvelope() {
           title: ADD_ENVELOPE_NOTIFICATION_TITLE,
           message: "New envelope created successfully",
         });
-        dispatch({ type: "SET_ENVELOPES", payload: [...state.envelopes, response?.data] });
+        dispatch({
+          type: "SET_ENVELOPES",
+          payload: [...state.envelopes, response?.data],
+        });
         closeModal();
       })
       .catch((error: unknown) => {
@@ -66,46 +76,52 @@ export default function AddEnvelope() {
         <div className="modal-body">
           <form onSubmit={handleSubmit(onSubmit)}>
             <h3>Create New Envelope</h3>
-            <div className="form-group">
-              <label htmlFor="envelope-name">Envelope Name</label>
-              <input
-                {...register("name")}
-                id="envelope-name"
-                type="text"
-                placeholder="e.g., Groceries, Rent, Entertainment"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="allocatedAmount">Allocated Amount</label>
-              <input
-                {...register("allocatedAmount")}
-                id="allocatedAmount"
-                type="number"
-                placeholder="0.00"
-                step="0.01"
-                min="0"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="envelopeCurrency">Currency</label>
-              <select id="envelopeCurrency" {...register("currency")}>
-                <option value="GHS">GHS (Ghanaian Cedi)</option>
-                <option value="USD">USD (US Dollar)</option>
-                <option value="EUR">EUR (Euro)</option>
-                <option value="GBP">GBP (British Pound)</option>
-              </select>
-            </div>
-            <div className="form-group">
-              <label className="form-label" htmlFor="envelopeNotes">
-                Notes (Optional)
-              </label>
-              <textarea
-                className="form-input"
-                id="envelopeNotes"
-                placeholder="Add any notes about this envelope"
-                disabled={true}
-              />
-            </div>
+            <Input
+              id="name"
+              label="Name"
+              placeholder="e.g., Groceries, Rent, Entertainment"
+              {...register("name", { required: "Name is required" })}
+              error={errors.name?.message}
+            />
+            <Input
+              id="allocatedAmount"
+              label="Allocated amount"
+              type="number"
+              placeholder="0.00"
+              step="0.01"
+              min="0"
+              {...register("allocatedAmount", {
+                required: "Allocated amount is required",
+              })}
+              error={errors.allocatedAmount?.message}
+            />
+            <Select
+              id="envelopeCurrency"
+              label="Currency"
+              options={[
+                { name: "GHS (Ghanaian Cedi)", value: "GHS" },
+                {
+                  name: "USD (US Dollar)",
+                  value: "USD",
+                },
+                {
+                  name: "EUR (Euro)",
+                  value: "EUR",
+                },
+                {
+                  name: "GBP (British Pound)",
+                  value: "GBP",
+                },
+              ]}
+              {...register("currency")}
+            />
+            <Textarea
+              id="envelopesNotes"
+              label="Notes (Optional)"
+              placeholder="Add any notes about this envelope"
+              disabled={true}
+              {...register('notes')}
+            />
             <div className="modal-actions">
               <button onClick={closeModal}>Cancel</button>
               <button
