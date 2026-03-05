@@ -47,6 +47,7 @@ body,
 .form-group.error input,
 .form-group.error textarea,
 .form-group.error select,
+.form-group.error .checkbox-list,
 .form-group.error input:focus,
 .form-group.error textarea:focus,
 .form-group.error select:focus {
