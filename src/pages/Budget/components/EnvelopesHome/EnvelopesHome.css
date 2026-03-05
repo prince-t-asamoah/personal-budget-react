@@ -1,22 +1,4 @@
- /* Envelopes Home Header */
- .envelopes-home .page-header {
-     display: flex;
-     justify-content: space-between;
-     margin: var(--space-5) 0;
- }
-
- .envelopes-home .page-header .page-subtitle {
-     margin-bottom: 0;
- }
-
- .envelopes-home .header-actions {
-     height: auto;
-     flex: none;
-     display: flex;
-     align-items: end;
- }
-
- /* Toolbar */
+/* Toolbar */
  .toolbar {
      background: var(--white);
      padding: var(--space-5);

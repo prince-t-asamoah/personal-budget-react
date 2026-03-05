@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { ArrowDownCircle, ArrowRightLeft, Plus } from "lucide-react";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 
@@ -12,6 +12,8 @@ import useDocumentTitle from "../../../../hooks/useDocumentTitle";
 import { APP_ROUTES } from "../../../../constants/routes.constants";
 import { useEnvelopesContext } from "../../../../context/envelopes.context";
 import { formatCurrency } from "../../../../utils/ui.utils";
+import DistributeFunds from "../DistributeFunds";
+import TransferFunds from "../TransferFunds";
 
 export default function Dashboard() {
   const { state, dispatch } = useEnvelopesContext();
@@ -41,6 +43,12 @@ export default function Dashboard() {
   const openAddEnvelopeModal = () =>
     dispatch({ type: "SET_NEW_ENVELOPE_MODAL", payload: true });
 
+  const openTransferFundsModal = () =>
+    dispatch({ type: "SET_IS_TRANSFERING_FUNDS", payload: true });
+
+  const openDistributingFundsModal = () =>
+    dispatch({ type: "SET_IS_DISTRIBUTING_FUNDS", payload: true });
+
   return (
     <div className="dashboard">
       <h2 className="page-title">{APP_ROUTES.DASHBOARD.NAME}</h2>
@@ -59,7 +67,20 @@ export default function Dashboard() {
                   <Plus size={20} />
                   New Envelope
                 </button>
-               
+                <button
+                  className="btn-secondary"
+                  onClick={openDistributingFundsModal}
+                >
+                  <ArrowDownCircle size={20} />
+                  Distribute Funds
+                </button>
+                <button
+                  className="btn-secondary"
+                  onClick={openTransferFundsModal}
+                >
+                  <ArrowRightLeft size={20} />
+                  Transfer Funds
+                </button>
               </div>
             </div>
             {/* Overview Cards */}
@@ -103,7 +124,11 @@ export default function Dashboard() {
               </div>
               <div className="envelopes-grid">
                 {state.envelopes.map((envelope) => (
-                  <EnvelopeCard key={envelope.id} envelope={envelope} allowActions={false} />
+                  <EnvelopeCard
+                    key={envelope.id}
+                    envelope={envelope}
+                    allowActions={false}
+                  />
                 ))}
               </div>
             </div>
@@ -112,6 +137,12 @@ export default function Dashboard() {
       )}
       {/* Add New Envelope */}
       {state.isAddingEnvelope && <AddEnvelope />}
+
+      {/* Transfer Funds */}
+      {state.isTransferringFunds && <TransferFunds />}
+
+      {/* Distribute Funds */}
+      {state.isDistributingFunds && <DistributeFunds />}
     </div>
   );
 }
