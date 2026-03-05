@@ -18,7 +18,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     };
 
     return (
-      <div className="form-group">
+      <div className={`form-group ${error ? "error" : ""}`}>
         <label htmlFor={id}>
           {label}
           {/* {required && <span className="required">*</span>} */}

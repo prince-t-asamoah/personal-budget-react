@@ -19,7 +19,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
     };
 
     return (
-      <div className="form-group">
+      <div className={`form-group ${error ? "error" : ""}`}>
         <label htmlFor={id}>{label}</label>
         <select ref={setRef} id={id} {...props}>
           {options.length === 0 ? (
