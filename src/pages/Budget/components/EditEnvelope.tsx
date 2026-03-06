@@ -93,8 +93,6 @@ export default function EditEnvelope({
       .finally(() => {
         setIsSubmitting(false);
       });
-
-    console.log(data);
   };
 
   return (
@@ -177,18 +175,6 @@ export default function EditEnvelope({
               placeholder="Add any notes about this envelope"
               rows={5}
               disabled={true}
-            />
-
-            {/* Current Balance */}
-            <Input
-              {...register("balance")}
-              id="envelopeBalance"
-              label="Spent Amount"
-              placeholder="0.00"
-              step="0.01"
-              min="0"
-              disabled={true}
-              readOnly
             />
 
             {/* <!-- Modal Footer --> */}
