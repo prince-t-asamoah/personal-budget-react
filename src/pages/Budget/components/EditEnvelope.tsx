@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { useForm, useWatch, type SubmitHandler } from "react-hook-form";
 import type {
   EditEnvelopeFormData,
   Envelope,
@@ -35,6 +35,8 @@ export default function EditEnvelope({
   const {
     register,
     handleSubmit,
+    control,
+    setValue,
     formState: { errors },
   } = useForm<EditEnvelopeFormData>({
     defaultValues: {
@@ -42,13 +44,38 @@ export default function EditEnvelope({
       allocatedAmount: envelope.allocatedAmount,
       spentAmount: envelope.spentAmount,
       currency: envelope.currency,
-      balance: envelope.allocatedAmount - envelope.spentAmount || 0.00,
+      balance: envelope.allocatedAmount - envelope.spentAmount || 0.0,
     },
   });
 
+  const allocatedAmount = useWatch({ control, name: "allocatedAmount" });
+  const spentAmount = useWatch({ control, name: "spentAmount" });
+
+  useEffect(() => {
+    const safeAllocatedAmount = Number.isFinite(allocatedAmount)
+      ? allocatedAmount
+      : 0;
+    const safeSpentAmount = Number.isFinite(spentAmount) ? spentAmount : 0;
+
+    setValue("balance", safeAllocatedAmount - safeSpentAmount);
+  }, [allocatedAmount, spentAmount, setValue]);
+
   const onSubmit: SubmitHandler<EditEnvelopeFormData> = (data) => {
+    const safeAllocatedAmount = Number.isFinite(data.allocatedAmount)
+      ? data.allocatedAmount
+      : envelope.allocatedAmount;
+    const safeSpentAmount = Number.isFinite(data.spentAmount)
+      ? data.spentAmount
+      : envelope.spentAmount;
+
+    const payload: EditEnvelopeFormData = {
+      ...data,
+      spentAmount: safeSpentAmount,
+      balance: safeAllocatedAmount - safeSpentAmount,
+    };
+
     setIsSubmitting(true);
-    updateEnvelopeFunds(envelope.id, data)
+    updateEnvelopeFunds(envelope.id, payload)
       .then(async (response) => {
         if (!response.ok) {
           throw new Error(await response.json());
@@ -158,6 +185,17 @@ export default function EditEnvelope({
               step="0.01"
               min="0"
               disabled={true}
+            />
+
+            {/* Balance Amount */}
+            <Input
+              {...register("balance")}
+              type="number"
+              id="balanceAmount"
+              label="Balance"
+              placeholder="0.00"
+              disabled={true}
+              readOnly
             />
 
             {/* <!-- Currency --> */}
