@@ -37,10 +37,10 @@ export default function EnvelopeCard({
   );
   const progressColor = getProgressColor(progressPercentage);
 
-  const editSpending = (e: MouseEvent<HTMLButtonElement>) => {
+  const addTransaction = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsEditingSpending(true);
+    dispatch({ type: "OPEN_TRANSACTING_MODAL", payload: envelope });
   };
   const cancelEditSpeding = () => setIsEditingSpending(false);
   const openDeleteModal = (e: MouseEvent<HTMLButtonElement>) => {
@@ -137,17 +137,17 @@ export default function EnvelopeCard({
                 <>
                   <button
                     className="btn-icon btn-success"
-                    aria-label="Edit allocation"
-                    title="Edit allocation"
+                    aria-label="Edit envelope"
+                    title="Edit envelope"
                     onClick={editEnvelope}
                   >
                     <Edit2 size={16} />
                   </button>
                   <button
                     className="btn-icon"
-                    aria-label="Record spending"
-                    title="Record spending"
-                    onClick={editSpending}
+                    aria-label="Add transaction"
+                    title="Add transaction"
+                    onClick={addTransaction}
                     style={{
                       background: "var(--gold)",
                       color: "white",
