@@ -64,6 +64,20 @@ export const envelopesReducer = (state: EnvelopeState, action: EnvelopeStateActi
                 isTransacting: action.payload
             } as EnvelopeState
         }
+        case 'OPEN_TRANSACTING_MODAL': {
+            return {
+                ...state,
+                isTransacting: true,
+                currentEnvelope: action.payload
+            } as EnvelopeState
+        }
+        case 'CLOSE_TRANSACTING_MODAL': {
+            return {
+                ...state,
+                isTransacting: false,
+                currentEnvelope: null
+            } as EnvelopeState
+        }
         default:
             return state;
     }
