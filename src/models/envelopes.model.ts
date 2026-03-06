@@ -21,6 +21,7 @@ export interface EnvelopeState {
   isDistributingFunds: boolean;
   isTransferringFunds: boolean;
   isTransacting: boolean;
+  isDeleting: boolean;
   loading: boolean;
 
 }
@@ -35,7 +36,9 @@ export type EnvelopeStateActions = { type: 'SET_ENVELOPES', payload: Envelope | 
 { type: 'SET_CURRENT_ENVELOPE', payload: Envelope | null } |
 { type: 'SET_IS_TRANSACTING', payload: boolean } |
 { type: 'OPEN_TRANSACTING_MODAL', payload: Envelope | null } |
-{ type: 'CLOSE_TRANSACTING_MODAL' }
+{ type: 'CLOSE_TRANSACTING_MODAL' } |
+{ type: 'OPEN_DELETE_MODAL', payload: Envelope | null } |
+{ type: 'CLOSE_DELETE_MODAL' }
 
 export type AddEnvelopeFormData = Omit<Envelope, 'id' | 'createdAt' | 'updatedAt'>;
 

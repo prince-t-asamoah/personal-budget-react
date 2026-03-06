@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { type MouseEvent, useRef, useState } from "react";
 import { Edit2, MinusCircle, Trash2, Check, X } from "lucide-react";
-import DeleteEnvelope from "./DeleteEnvelope";
 import EditEnvelope from "./EditEnvelope";
 
 import { useEnvelopesContext } from "../../../context/envelopes.context";
@@ -25,7 +24,6 @@ export default function EnvelopeCard({
   const { state, dispatch } = useEnvelopesContext();
   const [isEditingAllocation, setIsEditingAllocation] = useState(false);
   const [isEditingSpending, setIsEditingSpending] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
   const editAllocationInputRef = useRef<HTMLInputElement | null>(null);
   const editSpendingInputRef = useRef<HTMLInputElement | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -43,12 +41,12 @@ export default function EnvelopeCard({
     dispatch({ type: "OPEN_TRANSACTING_MODAL", payload: envelope });
   };
   const cancelEditSpeding = () => setIsEditingSpending(false);
+
   const openDeleteModal = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsDeleting(true);
+    dispatch({ type: "OPEN_DELETE_MODAL", payload: envelope });
   };
-  const closeDeleteModal = () => setIsDeleting(false);
 
   const resetEditState = () => {
     setIsEditingAllocation(false);
@@ -259,10 +257,7 @@ export default function EnvelopeCard({
           </div>
         )}
       </div>
-      {/* Delete Envelope */}
-      {isDeleting && (
-        <DeleteEnvelope envelope={envelope} closeModal={closeDeleteModal} />
-      )}
+
       {/* Edit Envelope */}
       {isEditing && (
         <EditEnvelope envelope={envelope} closeModal={closeEditModal} />

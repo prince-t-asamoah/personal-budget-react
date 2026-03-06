@@ -8,35 +8,38 @@ import type {
   ErrorApiResponse,
   SuccessApiResponse,
 } from "../../../models/api.model";
+import { useNavigate } from "react-router-dom";
+import { APP_ROUTES } from "../../../constants/routes.constants";
 
 const TOAST_NOTIFICATION_TITLE = "Delete Envelope";
 
-export default function DeleteEnvelope({
-  envelope,
-  closeModal,
-}: {
-  envelope: Envelope;
-  closeModal: () => void;
-}) {
-  const { dispatch } = useEnvelopesContext();
+export default function DeleteEnvelope() {
+  const { state, dispatch } = useEnvelopesContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const notification = useNotification();
+  const navigate = useNavigate();
+
+  const closeModal = () => dispatch({ type: "CLOSE_DELETE_MODAL" });
 
   const deleteEnvelopeById = () => {
     setIsSubmitting(true);
-    deleteEnvelope(envelope.id)
+    deleteEnvelope(state.currentEnvelope?.id ?? "")
       .then(async (response) => {
         if (!response.ok) {
           throw new Error(await response.json());
         }
         const jsonResponse =
           (await response.json()) as unknown as SuccessApiResponse<Envelope>;
-        dispatch({ type: "DELETE_ENVELOPE", payload: envelope.id });
+        dispatch({
+          type: "DELETE_ENVELOPE",
+          payload: state.currentEnvelope?.id ?? "",
+        });
         notification.success({
           title: TOAST_NOTIFICATION_TITLE,
           message: jsonResponse.message,
         });
         closeModal();
+        navigate(APP_ROUTES.ENVELOPES.URL);
       })
       .catch((error: unknown) => {
         console.error(error);
@@ -55,7 +58,8 @@ export default function DeleteEnvelope({
         <h3>Delete Envelope</h3>
         <div>
           <p>
-            You're about to delete <strong>{envelope.name}</strong> envelope.
+            You're about to delete{" "}
+            <strong>{state.currentEnvelope?.name}</strong> envelope.
             <br />
             Click cancel to stop and confirm to delete.
           </p>

@@ -10,6 +10,7 @@ export const envelopesState: EnvelopeState = {
     isDistributingFunds: false,
     isTransferringFunds: false,
     isTransacting: false,
+    isDeleting: false,
     loading: false,
 };
 
@@ -75,6 +76,20 @@ export const envelopesReducer = (state: EnvelopeState, action: EnvelopeStateActi
             return {
                 ...state,
                 isTransacting: false,
+                currentEnvelope: null
+            } as EnvelopeState
+        }
+        case 'OPEN_DELETE_MODAL': {
+            return {
+                ...state,
+                isDeleting: true,
+                currentEnvelope: action.payload
+            } as EnvelopeState
+        }
+        case 'CLOSE_DELETE_MODAL': {
+            return {
+                ...state,
+                isDeleting: false,
                 currentEnvelope: null
             } as EnvelopeState
         }
