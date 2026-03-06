@@ -37,7 +37,7 @@ export default function EnvelopeCard({
   );
   const progressColor = getProgressColor(progressPercentage);
 
-  const addTransaction = (e: MouseEvent<HTMLButtonElement>) => {
+  const openAddTransaction = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
     dispatch({ type: "OPEN_TRANSACTING_MODAL", payload: envelope });
@@ -147,7 +147,7 @@ export default function EnvelopeCard({
                     className="btn-icon"
                     aria-label="Add transaction"
                     title="Add transaction"
-                    onClick={addTransaction}
+                    onClick={openAddTransaction}
                     style={{
                       background: "var(--gold)",
                       color: "white",
