@@ -41,7 +41,7 @@ export default function EditEnvelope({
       allocatedAmount: envelope.allocatedAmount,
       spentAmount: envelope.spentAmount,
       currency: envelope.currency,
-      balance: envelope.allocatedAmount - envelope.spentAmount || 0.0,
+      balance: envelope.allocatedAmount - envelope.spentAmount || 0.00,
     },
   });
 
@@ -128,11 +128,20 @@ export default function EditEnvelope({
               disabled={issSubmitting}
               error={errors.name?.message}
             />
-            
+
             {/* <!-- Alloacated Amount --> */}
             <Input
               {...register("allocatedAmount", {
                 required: "Allocated amount is required",
+                valueAsNumber: true,
+                validate: (value) => {
+                  if (!Number.isFinite(value)) {
+                    return true;
+                  }
+                  return (
+                    value !== 0 || "Allocated amount must not be zero"
+                  );
+                },
               })}
               type="number"
               id="allocatedAmount"
