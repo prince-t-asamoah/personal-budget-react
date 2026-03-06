@@ -12,18 +12,28 @@ export interface Envelope {
 }
 
 export interface EnvelopeState {
-  envelopes: Envelope[],
+  envelopes: Envelope[];
   currentEnvelope: Envelope | null;
-  totalAllocated: number,
-  totalSpent: number,
-  totalBalance: number,
-  isAddingEnvelope: boolean,
-  isDistributingFunds: boolean,
-  isTransferringFunds: boolean,
-  loading: boolean,
+  totalAllocated: number;
+  totalSpent: number;
+  totalBalance: number;
+  isAddingEnvelope: boolean;
+  isDistributingFunds: boolean;
+  isTransferringFunds: boolean;
+  isTransacting: boolean;
+  loading: boolean;
+
 }
 
-export type EnvelopeStateActions = { type: 'SET_ENVELOPES', payload: Envelope | Envelope[] } | { type: 'UPDATE_ALL_ENVELOPES', payload: Envelope | Envelope[] } | { type: 'SET_NEW_ENVELOPE_MODAL', payload: boolean } | { type: 'SET_IS_TRANSFERING_FUNDS', payload: boolean } | { type: 'SET_IS_DELETING_FUNDS', payload: boolean } | { type: 'DELETE_ENVELOPE', payload: string } | { type: 'SET_IS_DISTRIBUTING_FUNDS', payload: boolean } | { type: 'SET_CURRENT_ENVELOPE', payload: Envelope | null };
+export type EnvelopeStateActions = { type: 'SET_ENVELOPES', payload: Envelope | Envelope[] } |
+{ type: 'UPDATE_ALL_ENVELOPES', payload: Envelope | Envelope[] } |
+{ type: 'SET_NEW_ENVELOPE_MODAL', payload: boolean } |
+{ type: 'SET_IS_TRANSFERING_FUNDS', payload: boolean } |
+{ type: 'SET_IS_DELETING_FUNDS', payload: boolean } |
+{ type: 'DELETE_ENVELOPE', payload: string } |
+{ type: 'SET_IS_DISTRIBUTING_FUNDS', payload: boolean } |
+{ type: 'SET_CURRENT_ENVELOPE', payload: Envelope | null } |
+{ type: 'SET_IS_TRANSACTING', payload: boolean };
 
 export type AddEnvelopeFormData = Omit<Envelope, 'id' | 'createdAt' | 'updatedAt'>;
 

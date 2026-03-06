@@ -9,6 +9,7 @@ export const envelopesState: EnvelopeState = {
     isAddingEnvelope: false,
     isDistributingFunds: false,
     isTransferringFunds: false,
+    isTransacting: false,
     loading: false,
 };
 
@@ -55,6 +56,12 @@ export const envelopesReducer = (state: EnvelopeState, action: EnvelopeStateActi
             return {
                 ...state,
                 isDistributingFunds: action.payload
+            } as EnvelopeState
+        }
+        case 'SET_IS_TRANSACTING': {
+            return {
+                ...state,
+                isTransacting: action.payload
             } as EnvelopeState
         }
         default:
