@@ -76,8 +76,7 @@ export const envelopesReducer = (state: EnvelopeState, action: EnvelopeStateActi
         case 'CLOSE_TRANSACTING_MODAL': {
             return {
                 ...state,
-                isTransacting: false,
-                currentEnvelope: null
+                isTransacting: false
             } as EnvelopeState
         }
         case 'OPEN_DELETE_MODAL': {
@@ -90,8 +89,7 @@ export const envelopesReducer = (state: EnvelopeState, action: EnvelopeStateActi
         case 'CLOSE_DELETE_MODAL': {
             return {
                 ...state,
-                isDeleting: false,
-                currentEnvelope: null
+                isDeleting: false
             } as EnvelopeState
         }
         case 'OPEN_EDITING_MODAL': {
@@ -105,7 +103,6 @@ export const envelopesReducer = (state: EnvelopeState, action: EnvelopeStateActi
             return {
                 ...state,
                 isEditing: false,
-                currentEnvelope: null
             } as EnvelopeState
         }
         default:
