@@ -1,5 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import { Trash2 } from "lucide-react";
 import {
   Chart,
   ArcElement,
@@ -141,6 +142,9 @@ export default function EnvelopesDetails() {
   const openAddTransaction = () =>
     dispatch({ type: "OPEN_TRANSACTING_MODAL", payload: envelope });
 
+  const openDeleteTransaction = () =>
+    dispatch({ type: "OPEN_DELETE_MODAL", payload: envelope });
+
   const closeEditEnvelopes = () => setIsEditing(false);
 
   return (
@@ -201,6 +205,13 @@ export default function EnvelopesDetails() {
                 <line x1="5" y1="12" x2="19" y2="12" />
               </svg>
               Add Transaction
+            </button>
+            <button
+              className="btn btn-danger btn-sm"
+              onClick={openDeleteTransaction}
+            >
+              <Trash2 size={16} />
+              Delete
             </button>
           </div>
         </div>
