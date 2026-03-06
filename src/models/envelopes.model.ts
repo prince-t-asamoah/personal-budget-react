@@ -33,3 +33,9 @@ export type DistributeFundsFormData = {
   amount: number;
   envelopesId: string[];
 }
+
+export type TransferFundsFormData = {
+  toId: string;
+  fromId: string;
+  amount: number;
+};
