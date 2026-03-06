@@ -1,11 +1,12 @@
 import { Outlet } from "react-router-dom";
 import "./Envelopes.css";
 
-import AddEnvelope from "../AddEnvelope";
 import { APP_ROUTES } from "../../../../constants/routes.constants";
 import useDocumentTitle from "../../../../hooks/useDocumentTitle";
 import { useEnvelopesContext } from "../../../../context/envelopes.context";
+import AddEnvelope from "../AddEnvelope";
 import DeleteEnvelope from "../DeleteEnvelope";
+import AddTransaction from "../AddTransaction";
 
 export default function Envelopes() {
   useDocumentTitle(APP_ROUTES.ENVELOPES.NAME);
@@ -24,6 +25,9 @@ export default function Envelopes() {
 
       {/* Delete Envelope */}
       {state.isDeleting && <DeleteEnvelope />}
+
+      {/* Edit Envelope */}
+      {state.isTransacting && <AddTransaction />}
     </>
   );
 }
