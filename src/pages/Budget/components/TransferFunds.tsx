@@ -7,6 +7,7 @@ import { useForm, useWatch, type SubmitHandler } from "react-hook-form";
 import Select from "../../../components/Forms/Select";
 import Input from "../../../components/Forms/Input";
 import type { TransferFundsFormData } from "../../../models/envelopes.model";
+import { validatePositiveAmount } from "../../../utils/validation.utils";
 
 export default function TransferFunds() {
   const {
@@ -145,7 +146,11 @@ export default function TransferFunds() {
                     ?.balance
                 : undefined
             }
-            {...register("amount", { required: "Amount is required" })}
+            {...register("amount", {
+              required: "Amount is required",
+              valueAsNumber: true,
+              validate: (value) => validatePositiveAmount(value),
+            })}
             error={errors?.amount?.message}
           />
           {transferData.fromId && transferData.toId && transferData.amount && (

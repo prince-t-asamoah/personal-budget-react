@@ -14,6 +14,7 @@ import type {
 } from "../../../models/api.model";
 import useNotification from "../../../hooks/useNotification";
 import Input from "../../../components/Forms/Input";
+import { validatePositiveAmount } from "../../../utils/validation.utils";
 
 const TOAST_NOTIFICATION_TITLE = "Distribute Funds";
 
@@ -107,6 +108,9 @@ export default function DistributeFunds() {
             min="0"
             {...register("amount", {
               required: "Distribution amount is required",
+              valueAsNumber: true,
+              validate: (value) =>
+                validatePositiveAmount(value, "Distribution amount"),
             })}
             error={errors.amount?.message}
           />

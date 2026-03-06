@@ -16,6 +16,7 @@ import Input from "../../../components/Forms/Input";
 import Select from "../../../components/Forms/Select";
 import Textarea from "../../../components/Forms/Textarea";
 import { FORM_CURRENCY_DATA } from "../../../constants/ui.constants";
+import { validatePositiveAmount } from "../../../utils/validation.utils";
 
 const ADD_ENVELOPE_NOTIFICATION_TITLE = "Create Envelope";
 
@@ -93,6 +94,9 @@ export default function AddEnvelope() {
               min="0"
               {...register("allocatedAmount", {
                 required: "Allocated amount is required",
+                valueAsNumber: true,
+                validate: (value) =>
+                  validatePositiveAmount(value, "Allocated amount"),
               })}
               error={errors.allocatedAmount?.message}
             />
@@ -100,14 +104,16 @@ export default function AddEnvelope() {
               id="envelopeCurrency"
               label="Currency"
               options={FORM_CURRENCY_DATA}
-              {...register("currency")}
+              {...register("currency", {
+                required: "Currency is required",
+              })}
             />
             <Textarea
               id="envelopesNotes"
               label="Notes (Optional)"
               placeholder="Add any notes about this envelope"
               disabled={true}
-              {...register('notes')}
+              {...register("notes")}
             />
             <div className="modal-actions">
               <button onClick={closeModal}>Cancel</button>

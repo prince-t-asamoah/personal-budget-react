@@ -15,6 +15,7 @@ import { FORM_CURRENCY_DATA } from "../../../constants/ui.constants";
 import Input from "../../../components/Forms/Input";
 import Select from "../../../components/Forms/Select";
 import Textarea from "../../../components/Forms/Textarea";
+import { validatePositiveAmount } from "../../../utils/validation.utils";
 
 const EDIT_ENVELOPE_NOTIFICATION_TITLE = "Edit Envelope";
 
@@ -134,14 +135,8 @@ export default function EditEnvelope({
               {...register("allocatedAmount", {
                 required: "Allocated amount is required",
                 valueAsNumber: true,
-                validate: (value) => {
-                  if (!Number.isFinite(value)) {
-                    return true;
-                  }
-                  return (
-                    value !== 0 || "Allocated amount must not be zero"
-                  );
-                },
+                validate: (value) =>
+                  validatePositiveAmount(value, "Allocated amount"),
               })}
               type="number"
               id="allocatedAmount"
