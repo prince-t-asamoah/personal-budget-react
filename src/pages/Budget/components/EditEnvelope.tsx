@@ -19,15 +19,7 @@ import { validatePositiveAmount } from "../../../utils/validation.utils";
 
 const EDIT_ENVELOPE_NOTIFICATION_TITLE = "Edit Envelope";
 
-type EditEnvelopeProps = {
-  envelope: Envelope;
-  closeModal: () => void;
-};
-
-export default function EditEnvelope({
-  envelope,
-  closeModal,
-}: Readonly<EditEnvelopeProps>) {
+export default function EditEnvelope() {
   const { state, dispatch } = useEnvelopesContext();
   const notification = useNotification();
   const [issSubmitting, setIsSubmitting] = useState(false);
@@ -40,16 +32,20 @@ export default function EditEnvelope({
     formState: { errors },
   } = useForm<EditEnvelopeFormData>({
     defaultValues: {
-      name: envelope.name,
-      allocatedAmount: envelope.allocatedAmount,
-      spentAmount: envelope.spentAmount,
-      currency: envelope.currency,
-      balance: envelope.allocatedAmount - envelope.spentAmount || 0.0,
+      name: state.currentEnvelope?.name,
+      allocatedAmount: state.currentEnvelope?.allocatedAmount,
+      spentAmount: state.currentEnvelope?.spentAmount,
+      currency: state.currentEnvelope?.currency,
+      balance:
+        (state.currentEnvelope?.allocatedAmount ?? 0) -
+        (state.currentEnvelope?.spentAmount ?? 0),
     },
   });
 
   const allocatedAmount = useWatch({ control, name: "allocatedAmount" });
   const spentAmount = useWatch({ control, name: "spentAmount" });
+
+  const closeModal = () => dispatch({ type: "CLOSE_EDITING_MODAL" });
 
   useEffect(() => {
     const safeAllocatedAmount = Number.isFinite(allocatedAmount)
@@ -63,10 +59,10 @@ export default function EditEnvelope({
   const onSubmit: SubmitHandler<EditEnvelopeFormData> = (data) => {
     const safeAllocatedAmount = Number.isFinite(data.allocatedAmount)
       ? data.allocatedAmount
-      : envelope.allocatedAmount;
+      : (state.currentEnvelope?.allocatedAmount ?? 0);
     const safeSpentAmount = Number.isFinite(data.spentAmount)
       ? data.spentAmount
-      : envelope.spentAmount;
+      : (state.currentEnvelope?.spentAmount ?? 0);
 
     const payload: EditEnvelopeFormData = {
       ...data,
@@ -75,7 +71,7 @@ export default function EditEnvelope({
     };
 
     setIsSubmitting(true);
-    updateEnvelopeFunds(envelope.id, payload)
+    updateEnvelopeFunds(state.currentEnvelope?.id ?? "", payload)
       .then(async (response) => {
         if (!response.ok) {
           throw new Error(await response.json());
@@ -129,7 +125,7 @@ export default function EditEnvelope({
         {/* <!-- Modal Header --> */}
         <div className="modal-header">
           <h3 className="modal-title">Edit Envelope</h3>
-          <button className="modal-close">
+          <button className="modal-close" onClick={closeModal}>
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -222,6 +218,7 @@ export default function EditEnvelope({
             {/* <!-- Modal Footer --> */}
             <div className="modal-actions">
               <button
+                type="button"
                 className="btn"
                 onClick={closeModal}
                 disabled={issSubmitting}

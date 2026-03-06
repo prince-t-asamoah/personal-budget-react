@@ -7,6 +7,7 @@ import { useEnvelopesContext } from "../../../../context/envelopes.context";
 import AddEnvelope from "../AddEnvelope";
 import DeleteEnvelope from "../DeleteEnvelope";
 import AddTransaction from "../AddTransaction";
+import EditEnvelope from "../EditEnvelope";
 
 export default function Envelopes() {
   useDocumentTitle(APP_ROUTES.ENVELOPES.NAME);
@@ -22,6 +23,9 @@ export default function Envelopes() {
 
       {/* Add New Envelope */}
       {state.isAddingEnvelope && <AddEnvelope />}
+
+      {/* Edit Envelope */}
+      {state.isEditing && <EditEnvelope />}
 
       {/* Delete Envelope */}
       {state.isDeleting && <DeleteEnvelope />}

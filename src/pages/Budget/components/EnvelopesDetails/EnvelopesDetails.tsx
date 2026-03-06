@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useMemo, useRef, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Trash2 } from "lucide-react";
 import {
@@ -10,7 +10,6 @@ import {
 } from "chart.js";
 
 import "./EnvelopesDetails.css";
-import EditEnvelope from "../EditEnvelope";
 import OverviewCard from "../OverviewCard";
 import { useEnvelopesContext } from "../../../../context/envelopes.context";
 import type { Envelope } from "../../../../models/envelopes.model";
@@ -26,7 +25,6 @@ Chart.register(ArcElement, Tooltip, Legend, DoughnutController);
 
 export default function EnvelopesDetails() {
   const { state, dispatch } = useEnvelopesContext();
-  const [isEditing, setIsEditing] = useState(false);
   const { id } = useParams<{ id: string }>();
   const spendingChart = useRef<HTMLCanvasElement | null>(null);
   const chartInstance = useRef<Chart<"doughnut", number[], string> | null>(
@@ -137,15 +135,14 @@ export default function EnvelopesDetails() {
     };
   }, [chartData, envelope.currency]);
 
-  const openEditEnvelopes = () => setIsEditing(true);
+  const openEditEnvelopes = () =>
+    dispatch({ type: "OPEN_EDITING_MODAL", payload: envelope });
 
   const openAddTransaction = () =>
     dispatch({ type: "OPEN_TRANSACTING_MODAL", payload: envelope });
 
   const openDeleteTransaction = () =>
     dispatch({ type: "OPEN_DELETE_MODAL", payload: envelope });
-
-  const closeEditEnvelopes = () => setIsEditing(false);
 
   return (
     <div className="envelopes-details">
@@ -518,10 +515,6 @@ export default function EnvelopesDetails() {
           )}
         </div>
       </div>
-
-      {isEditing && (
-        <EditEnvelope envelope={envelope} closeModal={closeEditEnvelopes} />
-      )}
     </div>
   );
 }
