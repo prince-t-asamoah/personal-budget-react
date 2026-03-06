@@ -138,10 +138,10 @@ export default function EnvelopesDetails() {
 
   const openEditEnvelopes = () => setIsEditing(true);
 
-  const closeEditEnvelopes = () => setIsEditing(false);
+  const openAddTransaction = () =>
+    dispatch({ type: "OPEN_TRANSACTING_MODAL", payload: envelope });
 
-  const openAddEnvelopes = () =>
-    dispatch({ type: "SET_NEW_ENVELOPE_MODAL", payload: true });
+  const closeEditEnvelopes = () => setIsEditing(false);
 
   return (
     <div className="envelopes-details">
@@ -187,7 +187,7 @@ export default function EnvelopesDetails() {
             </button>
             <button
               className="btn btn-primary btn-sm"
-              onClick={openAddEnvelopes}
+              onClick={openAddTransaction}
             >
               <svg
                 width="18"
