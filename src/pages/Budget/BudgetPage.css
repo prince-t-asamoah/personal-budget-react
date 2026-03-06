@@ -390,6 +390,7 @@ select:focus {
     box-shadow: 0 0 0 3px rgba(139, 154, 126, 0.1);
 }
 
+/* Modal */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -418,6 +419,11 @@ select:focus {
     overflow-y: auto;
 }
 
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+}
+
 @keyframes modalSlideIn {
     from {
         opacity: 0;
@@ -435,6 +441,55 @@ select:focus {
     font-size: 1.75rem;
     margin-bottom: 1.5rem;
     color: var(--charcoal);
+}
+
+.modal-close {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-tertiary);
+    transition: all var(--transition-base);
+}
+
+.modal-close:hover {
+    background: rgba(139, 154, 126, 0.1);
+    color: var(--charcoal);
+}
+
+.modal-close svg {
+    width: 20px;
+    height: 20px;
+}
+
+/** Modal Info **/
+.info-alert {
+    background: rgba(139, 154, 126, 0.05);
+    border-left: 4px solid var(--sage);
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-5);
+    display: flex;
+    gap: var(--space-3);
+}
+
+.info-alert svg {
+    width: 20px;
+    height: 20px;
+    color: var(--sage);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.info-alert-text {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: var(--leading-relaxed);
 }
 
 .form-group {
