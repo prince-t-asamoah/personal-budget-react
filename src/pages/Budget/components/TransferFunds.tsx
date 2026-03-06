@@ -15,7 +15,13 @@ export default function TransferFunds() {
     formState: { errors },
     control,
     handleSubmit,
-  } = useForm<TransferFundsFormData>();
+  } = useForm<TransferFundsFormData>({
+    defaultValues: {
+      amount: 0,
+      fromId: "",
+      toId: "",
+    },
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { state, dispatch } = useEnvelopesContext();
 
@@ -139,7 +145,6 @@ export default function TransferFunds() {
             label="Amount to Transfer"
             placeholder="0.00"
             step="0.01"
-            min="0.01"
             max={
               transferData.fromId
                 ? state.envelopes.find((e) => e.id === transferData.fromId)
@@ -153,7 +158,7 @@ export default function TransferFunds() {
             })}
             error={errors?.amount?.message}
           />
-          {transferData.fromId && transferData.toId && transferData.amount && (
+          {transferData.fromId && transferData.toId && (transferData?.amount ?? 0) > 0 && (
             <div
               style={{
                 marginTop: "1rem",
@@ -190,7 +195,7 @@ export default function TransferFunds() {
                 <br />
                 Amount:{" "}
                 <strong style={{ color: "var(--sage)" }}>
-                  {formatCurrency(transferData.amount)}
+                  {formatCurrency(transferData.amount ?? 0)}
                 </strong>
               </p>
             </div>
