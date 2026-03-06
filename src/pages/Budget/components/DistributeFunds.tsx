@@ -153,7 +153,7 @@ export default function DistributeFunds() {
             </p>
           )}
           <div className="modal-actions">
-            <button onClick={closeModal} disabled={isSubmitting}>
+            <button type="button" onClick={closeModal} disabled={isSubmitting}>
               Cancel
             </button>
             <button

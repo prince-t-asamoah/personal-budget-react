@@ -201,7 +201,7 @@ export default function TransferFunds() {
             </div>
           )}
           <div className="modal-actions">
-            <button onClick={closeModal}>Cancel</button>
+            <button type="button" onClick={closeModal}>Cancel</button>
             <button type="submit" className="btn-primary">
               {isSubmitting ? (
                 <>

@@ -116,7 +116,7 @@ export default function AddEnvelope() {
               {...register("notes")}
             />
             <div className="modal-actions">
-              <button onClick={closeModal}>Cancel</button>
+              <button type="button" onClick={closeModal}>Cancel</button>
               <button
                 className="btn-primary"
                 onClick={createNewEnvelope}

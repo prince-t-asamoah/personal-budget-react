@@ -108,7 +108,7 @@ export default function AddTransaction() {
 
             {/* <!-- Modal Actions --> */}
             <div className="modal-actions">
-              <button className="btn btn-secondary" onClick={closeModal}>
+              <button type="button" className="btn btn-secondary" onClick={closeModal}>
                 Cancel
               </button>
               <button type="button" className="btn btn-primary">
