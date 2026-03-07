@@ -1,9 +1,75 @@
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { useEnvelopesContext } from "../../../context/envelopes.context";
+import Input from "../../../components/Forms/Input";
+import Textarea from "../../../components/Forms/Textarea";
+import Select from "../../../components/Forms/Select";
+import {
+  TransactionType,
+  type AddExpenseFundsFormData,
+  type Envelope,
+} from "../../../models/envelopes.model";
+import { expenseEnvelope } from "../../../services/apis/envelopesApi.service";
+import type {
+  ErrorApiResponse,
+  SuccessApiResponse,
+} from "../../../models/api.model";
+import { validatePositiveAmount } from "../../../utils/validation.utils";
+import useNotification from "../../../hooks/useNotification";
 
 export default function AddTransaction() {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<AddExpenseFundsFormData>();
   const { state, dispatch } = useEnvelopesContext();
+  const notification = useNotification();
 
   const closeModal = () => dispatch({ type: "CLOSE_TRANSACTING_MODAL" });
+
+  const onSubmit: SubmitHandler<AddExpenseFundsFormData> = async ({
+    transactionType,
+    amount,
+    description,
+    notes,
+  }) => {
+    let requestApi: Promise<Response> | undefined;
+
+    try {
+      switch (transactionType) {
+        case TransactionType.EXPENSE:
+          requestApi = expenseEnvelope(state.currentEnvelope?.id ?? "", {
+            amount,
+            description,
+            notes,
+          });
+          break;
+      }
+
+      if (!requestApi) return;
+
+      const response = await requestApi;
+
+      if (!response.ok)
+        throw new Error(((await response.json()) as ErrorApiResponse).message);
+
+      const responseJson =
+        (await response.json()) as SuccessApiResponse<Envelope>;
+
+      dispatch({ type: "UPDATE_ENVELOPE", payload: responseJson.data! });
+      notification.success({
+        title: "Add Transaction",
+        message: `${transactionType} transaction successful`,
+      });
+      closeModal();
+    } catch (error: unknown) {
+      console.error("Add Transaction Error: ", error);
+      notification.error({
+        title: "Add Transaction",
+        message: `${transactionType} transaction failed`,
+      });
+    }
+  };
 
   return (
     <div className="modal-overlay">
@@ -47,40 +113,55 @@ export default function AddTransaction() {
               </strong>
             </div>
           </div>
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             {/* <!-- Transaction Type --> */}
-            <div className="form-group">
-              <label className="form-label" htmlFor="transactionType">
-                Transaction Type *
-              </label>
-              <select className="form-input" id="transactionType" required>
-                <option value="">Select transaction type</option>
-                <option value="expense" selected>
-                  Expense (Spending)
-                </option>
-                <option value="income">Income (Deposit)</option>
-                <option value="transfer">Transfer</option>
-              </select>
-            </div>
+            <Select
+              id="transactionType"
+              label="Transaction Type *"
+              defaultOption={{
+                name: "Select transaction type",
+                value: "",
+              }}
+              options={[
+                { name: "Expense (Spending)", value: TransactionType.EXPENSE },
+                { name: "Funding (Deposit)", value: TransactionType.FUNDING },
+              ]}
+              {...register("transactionType", {
+                required: "Select a transaction type",
+              })}
+              error={errors.transactionType?.message}
+            />
 
             {/* <!-- Amount --> */}
-            <div className="form-group">
-              <label className="form-label" htmlFor="transactionAmount">
-                Amount *
-              </label>
-              <input
-                type="number"
-                className="form-input"
-                id="transactionAmount"
-                placeholder="0.00"
-                step="0.01"
-                min="0"
-                required
-              />
-            </div>
+            <Input
+              type="number"
+              label="Amount *"
+              id="transactionAmount"
+              placeholder="0.00"
+              step="0.01"
+              min="0"
+              {...register("amount", {
+                required: "Amount is required",
+                valueAsNumber: true,
+                validate: (value) =>
+                  validatePositiveAmount(value, "Transaction amount"),
+              })}
+              error={errors.amount?.message}
+            />
 
             {/* <!-- Description --> */}
-            <div className="form-group">
+            <Input
+              type="text"
+              label="Description *"
+              id="transactionDescription"
+              placeholder="e.g., Whole Foods Market, Monthly Salary"
+              {...register("description", {
+                required: "Description is required",
+              })}
+              error={errors.description?.message}
+            />
+
+            {/* <div className="form-group">
               <label className="form-label" htmlFor="transactionDescription">
                 Description *
               </label>
@@ -91,10 +172,8 @@ export default function AddTransaction() {
                 placeholder="e.g., Whole Foods Market, Monthly Salary"
                 required
               />
-            </div>
-
-            {/* <!-- Notes --> */}
-            <div className="form-group">
+            </div> */}
+            {/* <div className="form-group">
               <label className="form-label" htmlFor="transactionNotes">
                 Notes (Optional)
               </label>
@@ -104,14 +183,28 @@ export default function AddTransaction() {
                 placeholder="Add any additional notes about this transaction"
                 rows={3}
               ></textarea>
-            </div>
+            </div> */}
+
+            {/* <!-- Notes --> */}
+            <Textarea
+              label="Notes (Optional)"
+              id="transactionNotes"
+              placeholder="Add any additional notes about this transaction"
+              rows={3}
+              {...register("notes")}
+              error={errors.notes?.message}
+            />
 
             {/* <!-- Modal Actions --> */}
             <div className="modal-actions">
-              <button type="button" className="btn btn-secondary" onClick={closeModal}>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={closeModal}
+              >
                 Cancel
               </button>
-              <button type="button" className="btn btn-primary">
+              <button type="submit" className="btn btn-primary">
                 Add Transaction
               </button>
             </div>

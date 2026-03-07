@@ -1,4 +1,4 @@
-import type { DistributeFundsFormData, Envelope } from "../../models/envelopes.model";
+import type { DistributeFundsFormData, Envelope, AddExpenseFundsFormData } from "../../models/envelopes.model";
 import httpClientService from "../httpClient.service";
 
 const BASE_ROUTE = "/envelopes";
@@ -59,4 +59,10 @@ export const distributeFunds = (data: DistributeFundsFormData) =>
 
 export const getEnvelope = (id: string) => envelopesApiService(`/${id}`, {
     method: "GET"
+});
+
+export const expenseEnvelope = (id: string, data: AddExpenseFundsFormData) => envelopesApiService(`/${id}/expense`, {
+    method: 'POST',
+    headers: BODY_HEADERS,
+    body: JSON.stringify(data)
 });

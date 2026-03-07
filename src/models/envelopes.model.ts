@@ -28,7 +28,7 @@ export interface EnvelopeState {
 }
 
 export type EnvelopeStateActions = { type: 'SET_ENVELOPES', payload: Envelope | Envelope[] } |
-{ type: 'UPDATE_ALL_ENVELOPES', payload: Envelope | Envelope[] } |
+{ type: 'UPDATE_ENVELOPE', payload: Envelope } |
 { type: 'SET_NEW_ENVELOPE_MODAL', payload: boolean } |
 { type: 'SET_IS_TRANSFERING_FUNDS', payload: boolean } |
 { type: 'SET_IS_DELETING_FUNDS', payload: boolean } |
@@ -43,6 +43,8 @@ export type EnvelopeStateActions = { type: 'SET_ENVELOPES', payload: Envelope | 
 { type: 'OPEN_EDITING_MODAL', payload: Envelope | null } |
 { type: 'CLOSE_EDITING_MODAL' };
 
+
+// Forms Data
 export type AddEnvelopeFormData = Omit<Envelope, 'id' | 'createdAt' | 'updatedAt'>;
 
 export type EditEnvelopeFormData = Omit<Envelope, 'id' | 'createdAt' | 'updatedAt'>;
@@ -57,3 +59,22 @@ export type TransferFundsFormData = {
   fromId: string;
   amount: number;
 };
+
+export const TransactionType = {
+  INITIAL_ALLOCATION: 'initial_allocation',
+  FUNDING: 'funding',
+  EXPENSE: 'expense',
+  TRANSFER_IN: 'transfer_in',
+  TRANSFER_OUT: 'transfer_out',
+  DISTRIBUTION: 'distribution',
+  ADJUSTMENT: 'adjustment'
+} as const;
+
+export type TransactionType = typeof TransactionType[keyof typeof TransactionType];
+
+export type AddExpenseFundsFormData = {
+  transactionType?: TransactionType
+  amount: number;
+  description: string;
+  notes?: string;
+}
