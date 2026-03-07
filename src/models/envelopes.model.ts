@@ -41,7 +41,7 @@ export type EnvelopeStateActions = { type: 'SET_ENVELOPES', payload: Envelope | 
 { type: 'OPEN_DELETE_MODAL', payload: Envelope | null } |
 { type: 'CLOSE_DELETE_MODAL' } |
 { type: 'OPEN_EDITING_MODAL', payload: Envelope | null } |
-{ type: 'CLOSE_EDITING_MODAL' }
+{ type: 'CLOSE_EDITING_MODAL' };
 
 export type AddEnvelopeFormData = Omit<Envelope, 'id' | 'createdAt' | 'updatedAt'>;
 
