@@ -161,30 +161,6 @@ export default function AddTransaction() {
               error={errors.description?.message}
             />
 
-            {/* <div className="form-group">
-              <label className="form-label" htmlFor="transactionDescription">
-                Description *
-              </label>
-              <input
-                type="text"
-                className="form-input"
-                id="transactionDescription"
-                placeholder="e.g., Whole Foods Market, Monthly Salary"
-                required
-              />
-            </div> */}
-            {/* <div className="form-group">
-              <label className="form-label" htmlFor="transactionNotes">
-                Notes (Optional)
-              </label>
-              <textarea
-                className="form-input"
-                id="transactionNotes"
-                placeholder="Add any additional notes about this transaction"
-                rows={3}
-              ></textarea>
-            </div> */}
-
             {/* <!-- Notes --> */}
             <Textarea
               label="Notes (Optional)"
