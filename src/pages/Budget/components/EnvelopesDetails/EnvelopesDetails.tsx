@@ -43,10 +43,10 @@ export default function EnvelopesDetails() {
     }),
     [],
   );
-  const envelope = useMemo(() => {
-    // return state.envelopes.find((env) => env.id === id) ?? defaultEnvelope},
-    return state.currentEnvelope ?? defaultEnvelope;
-  }, [state.currentEnvelope, defaultEnvelope]);
+  const envelope = useMemo(
+    () => state.envelopes.find((env) => env.id === id) ?? defaultEnvelope,
+    [state.envelopes, id, defaultEnvelope],
+  );
 
   useEffect(() => {
     getEnvelope(id ?? "")
