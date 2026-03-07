@@ -30,8 +30,6 @@ export default function AddEnvelope() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const notification = useNotification();
 
-  const createNewEnvelope = () => {};
-
   const closeModal = () =>
     dispatch({ type: "SET_NEW_ENVELOPE_MODAL", payload: false });
 
@@ -112,14 +110,15 @@ export default function AddEnvelope() {
               id="envelopesNotes"
               label="Notes (Optional)"
               placeholder="Add any notes about this envelope"
-              disabled={true}
               {...register("notes")}
             />
             <div className="modal-actions">
-              <button type="button" onClick={closeModal}>Cancel</button>
+              <button type="button" onClick={closeModal}>
+                Cancel
+              </button>
               <button
                 className="btn-primary"
-                onClick={createNewEnvelope}
+                type="submit"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
