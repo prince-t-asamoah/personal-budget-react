@@ -23,6 +23,19 @@ export const envelopesReducer = (state: EnvelopeState, action: EnvelopeStateActi
                 envelopes: action.payload
             } as EnvelopeState
         }
+        case 'UPDATE_ENVELOPE': {
+            const updateEnvelopeIndex = state.envelopes.findIndex(env => env.id === action.payload.id);
+            if (updateEnvelopeIndex === -1) return;
+            const currentEnvelopes = state.envelopes;
+            currentEnvelopes[updateEnvelopeIndex] = action.payload;
+
+            return {
+                ...state,
+                envelopes: [
+                    ...currentEnvelopes
+                ]
+            } as EnvelopeState
+        }
         case 'SET_CURRENT_ENVELOPE': {
             return {
                 ...state,
