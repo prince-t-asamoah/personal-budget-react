@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm, useWatch, type SubmitHandler } from "react-hook-form";
 import { useEnvelopesContext } from "../../../context/envelopes.context";
 import type {
   AddEnvelopeFormData,
@@ -15,8 +15,11 @@ import type {
 import Input from "../../../components/Forms/Input";
 import Select from "../../../components/Forms/Select";
 import Textarea from "../../../components/Forms/Textarea";
-import { FORM_CURRENCY_DATA } from "../../../constants/ui.constants";
 import { validatePositiveAmount } from "../../../utils/validation.utils";
+import {
+  envelopeCategoriesOptions,
+  envelopeCurrencyOptions,
+} from "../../../data/envelope-forms.data";
 
 const ADD_ENVELOPE_NOTIFICATION_TITLE = "Create Envelope";
 
@@ -24,14 +27,35 @@ export default function AddEnvelope() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm<AddEnvelopeFormData>();
+    control,
+  } = useForm<AddEnvelopeFormData>({
+    defaultValues: {
+      name: "",
+      allocatedAmount: 0,
+      spentAmount: 0,
+      balance: 0,
+      currency: "GHS",
+      category: "groceries",
+      notes: "",
+    },
+  });
   const { state, dispatch } = useEnvelopesContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const notification = useNotification();
 
   const closeModal = () =>
     dispatch({ type: "SET_NEW_ENVELOPE_MODAL", payload: false });
+
+  const allocatedAmount = useWatch({
+    control,
+    name: "allocatedAmount",
+  });
+
+  useEffect(() => {
+    setValue("balance", allocatedAmount);
+  }, [allocatedAmount, setValue]);
 
   const onSubmit: SubmitHandler<AddEnvelopeFormData> = (data) => {
     setIsSubmitting(true);
@@ -76,15 +100,17 @@ export default function AddEnvelope() {
         <div className="modal-body">
           <form onSubmit={handleSubmit(onSubmit)}>
             <h3>Create New Envelope</h3>
+            {/* Envelope Name */}
             <Input
-              id="name"
+              id="envelopeName"
               label="Name"
               placeholder="e.g., Groceries, Rent, Entertainment"
               {...register("name", { required: "Name is required" })}
               error={errors.name?.message}
             />
+            {/* Allocated Amount */}
             <Input
-              id="allocatedAmount"
+              id="envelopeAllocatedAmount"
               label="Allocated amount"
               type="number"
               placeholder="0.00"
@@ -98,14 +124,44 @@ export default function AddEnvelope() {
               })}
               error={errors.allocatedAmount?.message}
             />
+            {/* Balance */}
+            <Input
+              id="envelopeBalance"
+              label="Balance"
+              type="number"
+              disabled={true}
+              placeholder="0.00"
+              min="0"
+              readOnly
+              {...register("balance", {
+                valueAsNumber: true,
+              })}
+            />
+
+            {/* Currency */}
             <Select
               id="envelopeCurrency"
               label="Currency"
-              options={FORM_CURRENCY_DATA}
+              options={envelopeCurrencyOptions}
               {...register("currency", {
                 required: "Currency is required",
               })}
+              error={errors.currency?.message}
             />
+
+            {/* Category */}
+            <Select
+              id="envelopeCategory"
+              label="Categories"
+              options={envelopeCategoriesOptions}
+              defaultOption={{ name: "Select envelope category", value: "" }}
+              {...register("category", {
+                required: "Category is required",
+              })}
+              error={errors?.category?.message}
+            />
+
+            {/* Notes */}
             <Textarea
               id="envelopesNotes"
               label="Notes (Optional)"
