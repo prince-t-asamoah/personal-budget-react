@@ -1,9 +1,7 @@
 import { ArrowDownCircle, ArrowRightLeft, Plus } from "lucide-react";
-import { useMemo } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useMemo, useReducer } from "react";
 
 import "./Dashboard.css";
-import EnvelopeCard from "../EnvelopeCard";
 import OverviewCard from "../OverviewCard";
 import AddEnvelope from "../AddEnvelope";
 import EmptyEnvelopes from "../EmptyEnvelopes/EmptyEnvelopes";
@@ -14,9 +12,21 @@ import { useEnvelopesContext } from "../../../../context/envelopes.context";
 import { formatCurrency } from "../../../../utils/ui.utils";
 import DistributeFunds from "../DistributeFunds";
 import TransferFunds from "../TransferFunds";
+import { getAllTransactions } from "../../../../services/apis/transactionsApi.service";
+import type { SuccessApiResponse } from "../../../../models/api.model";
+import type { Transaction } from "../../../../models/transactions.model";
+import {
+  transactionsReducer,
+  transactionsState,
+} from "../../../../store/transactions.store";
+import TransactionsList from "../../../../components/TransactionsList/TransactionsList";
 
 export default function Dashboard() {
   const { state, dispatch } = useEnvelopesContext();
+  const [transactionsCurrentState, transactionDispatch] = useReducer(
+    transactionsReducer,
+    transactionsState,
+  );
 
   useDocumentTitle(APP_ROUTES.DASHBOARD.NAME);
 
@@ -48,6 +58,25 @@ export default function Dashboard() {
 
   const openDistributingFundsModal = () =>
     dispatch({ type: "SET_IS_DISTRIBUTING_FUNDS", payload: true });
+
+  useEffect(() => {
+    getAllTransactions()
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error("Error all fetching transactions with id");
+        }
+        const jsonResponse = (await response.json()) as SuccessApiResponse<
+          Transaction[]
+        >;
+        transactionDispatch({
+          type: "SET_TRANSACTIONS",
+          payload: jsonResponse.data!,
+        });
+      })
+      .catch((error: unknown) => {
+        console.error("Get all envelopes transactions failed: ", error);
+      });
+  }, [transactionDispatch]);
 
   return (
     <div className="dashboard">
@@ -111,26 +140,17 @@ export default function Dashboard() {
               />
             </div>
           </div>
-
-          {state.envelopes.length === 0 ? (
+            {/* Latest Transactions */}
+          {transactionsCurrentState.transactions.length === 0 ? (
             <EmptyEnvelopes openAddModal={openAddEnvelopeModal} />
           ) : (
-            <div className="envelopes">
+            <div className="transactions">
               <div className="header">
-                <h3 className="subtitle">Latest Envelopes</h3>
-                <Link to="/envelopes" className="view-all">
-                  View all
-                </Link>
+                <h3 className="subtitle">Latest Transactions</h3>
               </div>
-              <div className="envelopes-grid">
-                {state.envelopes.map((envelope) => (
-                  <EnvelopeCard
-                    key={envelope.id}
-                    envelope={envelope}
-                    allowActions={false}
-                  />
-                ))}
-              </div>
+              <TransactionsList
+                transactions={transactionsCurrentState.transactions}
+              />
             </div>
           )}
         </>
