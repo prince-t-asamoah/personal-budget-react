@@ -1,3 +1,5 @@
+import type { TransactionType } from "./transactions.model";
+
 export interface Envelope {
   id: string;
   name: string;
@@ -42,18 +44,6 @@ export type EnvelopeStateActions = { type: 'SET_ENVELOPES', payload: Envelope | 
 { type: 'CLOSE_DELETE_MODAL' } |
 { type: 'OPEN_EDITING_MODAL', payload: Envelope | null } |
 { type: 'CLOSE_EDITING_MODAL' };
-
-export const TransactionType = {
-  INITIAL_ALLOCATION: 'initial_allocation',
-  FUNDING: 'funding',
-  EXPENSE: 'expense',
-  TRANSFER_IN: 'transfer_in',
-  TRANSFER_OUT: 'transfer_out',
-  DISTRIBUTION: 'distribution',
-  ADJUSTMENT: 'adjustment'
-} as const;
-
-export type TransactionType = typeof TransactionType[keyof typeof TransactionType];
 
 // Forms Data
 export type AddEnvelopeFormData = Omit<Envelope, 'id' | 'createdAt' | 'updatedAt'>;
