@@ -37,7 +37,7 @@ export default function TransactionsList({
           {transactions.map((transaction) => {
             const transactionInfo = getTransactionType(transaction.type);
             return (
-              <tr>
+              <tr key={transaction.id}>
                 <td>
                   <div className="transaction-date">
                     {formatDate(transaction.createdAt)}
