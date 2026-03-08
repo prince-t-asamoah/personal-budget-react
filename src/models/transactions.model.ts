@@ -14,10 +14,11 @@ export type TransactionType = typeof TransactionType[keyof typeof TransactionTyp
 
 export type Transaction = {
     id: string;
-    type: TransactionType
+    type: TransactionType;
     amount: number;
     currency: string;
     balanceAfter: number;
+    envelopeName?: string;
     description: string;
     notes: string;
     referenceId: string;
