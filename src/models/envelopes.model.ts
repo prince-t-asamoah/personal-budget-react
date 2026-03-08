@@ -1,5 +1,20 @@
 import type { TransactionType } from "./transactions.model";
 
+export const EnvelopeCategories = {
+  GROCERIES: 'groceries',
+  RENT_HOUSING: 'rent_housing',
+  UTILITIES: 'utilities',
+  TRANSPORTATION: 'transportation',
+  DINING_OUT: 'dining_out',
+  ENTERTAINMENT: 'entertainment',
+  HEALTHCARE: 'healthcare',
+  PERSONAL_CARE: 'personal_care',
+  SAVINGS: 'savings',
+  EMERGENCY_FUND: 'emergency_fund'
+} as const;
+
+export type EnvelopeCategories = typeof EnvelopeCategories[keyof typeof EnvelopeCategories];
+
 export interface Envelope {
   id: string;
   name: string;
@@ -10,7 +25,7 @@ export interface Envelope {
   createdAt: string;
   updatedAt: string;
   notes?: string;
-  category?: string;
+  category?: EnvelopeCategories;
 }
 
 export interface EnvelopeState {
