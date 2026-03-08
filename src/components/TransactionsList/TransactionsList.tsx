@@ -53,12 +53,10 @@ export default function TransactionsList({
                   </span>
                 </td>
                 <td className="transaction-amount negative">
-                  -{transaction.currrency}
-                  {transaction.amount}
+                  -{transaction.currency} {transaction.amount}
                 </td>
                 <td className="transaction-balance">
-                  {transaction.currrency}
-                  {transaction.balance}
+                  {transaction.currency} {transaction.balanceAfter}
                 </td>
               </tr>
             );

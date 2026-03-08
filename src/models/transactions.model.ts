@@ -16,8 +16,8 @@ export type Transaction = {
     id: string;
     type: TransactionType
     amount: number;
-    currrency: string;
-    balance: number;
+    currency: string;
+    balanceAfter: number;
     description: string;
     notes: string;
     referenceId: string;
