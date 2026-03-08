@@ -8,18 +8,14 @@ import {
 
 type TransactionListProps = {
   transactions: Transaction[];
+  showEnvelopeName?: boolean;
 };
 
 export default function TransactionsList({
   transactions,
+  showEnvelopeName = true,
 }: Readonly<TransactionListProps>) {
-  if (transactions.length === 0) {
-    return (
-      <div className="transaction-table-wrapper">
-        <p className="empty-transactions">No transaction history</p>
-      </div>
-    );
-  }
+
 
   return (
     <div className="transaction-table-wrapper">
@@ -27,6 +23,7 @@ export default function TransactionsList({
         <thead>
           <tr>
             <th>Date & Time</th>
+            {showEnvelopeName && <th>Envelope Name</th>}
             <th>Description</th>
             <th>Type</th>
             <th>Amount</th>
@@ -46,6 +43,7 @@ export default function TransactionsList({
                     {formatTime(transaction.createdAt)}
                   </span>
                 </td>
+                {showEnvelopeName && <td>{transaction.envelopeName}</td>}
                 <td>{transaction.description}</td>
                 <td>
                   <span className={`transaction-type ${transactionInfo.type}`}>
