@@ -1,4 +1,4 @@
-import { useMemo, useRef, useEffect } from "react";
+import { useMemo, useRef, useEffect, useReducer } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Trash2 } from "lucide-react";
 import {
@@ -20,6 +20,13 @@ import {
 } from "../../../../utils/ui.utils";
 import { getEnvelope } from "../../../../services/apis/envelopesApi.service";
 import type { SuccessApiResponse } from "../../../../models/api.model";
+import TransactionsList from "../../../../components/TransactionsList/TransactionsList";
+import { getEnvelopeTransactions } from "../../../../services/apis/transactionsApi.service";
+import {
+  transactionsReducer,
+  transactionsState,
+} from "../../../../store/transactions.store";
+import type { Transaction } from "../../../../models/transactions.model";
 
 Chart.register(ArcElement, Tooltip, Legend, DoughnutController);
 
@@ -47,6 +54,10 @@ export default function EnvelopesDetails() {
     () => state.envelopes.find((env) => env.id === id) ?? defaultEnvelope,
     [state.envelopes, id, defaultEnvelope],
   );
+  const [transactionState, transactionDispatch] = useReducer(
+    transactionsReducer,
+    transactionsState,
+  );
 
   useEffect(() => {
     getEnvelope(id ?? "")
@@ -62,9 +73,28 @@ export default function EnvelopesDetails() {
         });
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Error fetching envelope", error);
       });
   }, [id, dispatch]);
+
+  useEffect(() => {
+    getEnvelopeTransactions(id ?? "")
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`Error fetching transactions with id: ${id}`);
+        }
+        const jsonResponse = (await response.json()) as SuccessApiResponse<
+          Transaction[]
+        >;
+        transactionDispatch({
+          type: "SET_TRANSACTIONS",
+          payload: jsonResponse.data!,
+        });
+      })
+      .catch((error: unknown) => {
+        console.error("Get envelopes transactions failed: ", error);
+      });
+  }, [transactionDispatch, id]);
 
   const remainingAmount = Math.max(envelope.balance, 0);
   const spentAmount = Math.max(envelope.spentAmount, 0);
@@ -279,7 +309,8 @@ export default function EnvelopesDetails() {
           </div>
 
           {/* Transaction Table*/}
-          <div className="transaction-table-wrapper">
+          <TransactionsList transactions={transactionState.transactions} />
+          {/* <div className="transaction-table-wrapper">
             <table className="transaction-table">
               <thead>
                 <tr>
@@ -413,7 +444,7 @@ export default function EnvelopesDetails() {
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div> */}
         </div>
 
         {/* <!-- Right Sidebar --> */}
