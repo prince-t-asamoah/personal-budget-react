@@ -4,14 +4,14 @@ import { useEffect, useMemo, useReducer } from "react";
 import "./Dashboard.css";
 import OverviewCard from "../OverviewCard";
 import AddEnvelope from "../AddEnvelope";
-import EmptyEnvelopes from "../EmptyEnvelopes/EmptyEnvelopes";
+import DistributeFunds from "../DistributeFunds";
+import TransferFunds from "../TransferFunds";
+import DashboardTransactionsList from "../DashboardTransactionsList";
 
 import useDocumentTitle from "../../../../hooks/useDocumentTitle";
 import { APP_ROUTES } from "../../../../constants/routes.constants";
 import { useEnvelopesContext } from "../../../../context/envelopes.context";
 import { formatCurrency } from "../../../../utils/ui.utils";
-import DistributeFunds from "../DistributeFunds";
-import TransferFunds from "../TransferFunds";
 import { getAllTransactions } from "../../../../services/apis/transactionsApi.service";
 import type { SuccessApiResponse } from "../../../../models/api.model";
 import type { Transaction } from "../../../../models/transactions.model";
@@ -19,7 +19,6 @@ import {
   transactionsReducer,
   transactionsState,
 } from "../../../../store/transactions.store";
-import TransactionsList from "../../../../components/TransactionsList/TransactionsList";
 
 export default function Dashboard() {
   const { state, dispatch } = useEnvelopesContext();
@@ -140,19 +139,10 @@ export default function Dashboard() {
               />
             </div>
           </div>
-            {/* Latest Transactions */}
-          {transactionsCurrentState.transactions.length === 0 ? (
-            <EmptyEnvelopes openAddModal={openAddEnvelopeModal} />
-          ) : (
-            <div className="transactions">
-              <div className="header">
-                <h3 className="subtitle">Latest Transactions</h3>
-              </div>
-              <TransactionsList
-                transactions={transactionsCurrentState.transactions}
-              />
-            </div>
-          )}
+          {/* Latest Transactions */}
+          <DashboardTransactionsList
+            transactions={transactionsCurrentState.transactions}
+          />
         </>
       )}
       {/* Add New Envelope */}
