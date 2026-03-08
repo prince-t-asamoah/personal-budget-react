@@ -4,7 +4,6 @@ import Input from "../../../components/Forms/Input";
 import Textarea from "../../../components/Forms/Textarea";
 import Select from "../../../components/Forms/Select";
 import {
-  TransactionType,
   type AddExpenseFundsFormData,
   type Envelope,
 } from "../../../models/envelopes.model";
@@ -15,6 +14,7 @@ import type {
 } from "../../../models/api.model";
 import { validatePositiveAmount } from "../../../utils/validation.utils";
 import useNotification from "../../../hooks/useNotification";
+import { TransactionType } from "../../../models/transactions.model";
 
 export default function AddTransaction() {
   const {
