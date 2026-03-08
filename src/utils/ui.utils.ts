@@ -1,3 +1,5 @@
+import { TransactionType } from "../models/transactions.model";
+
 export const formatCurrency = (amount: number, currency = "GHS") => {
   return new Intl.NumberFormat("en-GH", {
     style: "currency",
@@ -52,4 +54,26 @@ export const formatTime = (isoString: string, locale = "en-US"): string => {
     minute: "2-digit",
     hour12: true, // set to false for 24hr format
   }).format(date);
+}
+
+/**
+ *  Creates a transaction details such as type and name from transaction type
+ */
+export const getTransactionType = (type: TransactionType): { type: string, name: string } => {
+  switch (type.toLowerCase()) {
+    case TransactionType.EXPENSE:
+      return { type: 'expense', name: 'Expense' };
+    case TransactionType.FUNDING:
+      return { type: 'funding', name: 'Funding' };
+    case TransactionType.TRANSFER_IN:
+      return { type: 'transfer', name: 'Transfer In' };
+    case TransactionType.TRANSFER_OUT:
+      return { type: 'transfer', name: 'Transfer Out' };
+    case TransactionType.DISTRIBUTION:
+      return { type: 'distribution', name: 'Distribution' };
+    case TransactionType.ADJUSTMENT:
+      return { type: 'adjustment', name: 'Adjustment' };
+    default:
+      return { type: 'transaction', name: 'Transaction' };
+  }
 }
