@@ -1,5 +1,5 @@
 import { ArrowRightLeft } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useEnvelopesContext } from "../../../context/envelopes.context";
 import { transferEnvelopeFunds } from "../../../services/apis/envelopesApi.service";
 import { formatCurrency } from "../../../utils/ui.utils";
@@ -8,13 +8,17 @@ import Select from "../../../components/Forms/Select";
 import Input from "../../../components/Forms/Input";
 import type { TransferFundsFormData } from "../../../models/envelopes.model";
 import { validatePositiveAmount } from "../../../utils/validation.utils";
+import useNotification from "../../../hooks/useNotification";
+
+const TRANSFER_FUNDS_NOTIFICATION_TITLE = "Transfer Funds";
 
 export default function TransferFunds() {
   const {
     register,
+    handleSubmit,
     formState: { errors },
     control,
-    handleSubmit,
+    setError,
   } = useForm<TransferFundsFormData>({
     defaultValues: {
       amount: 0,
@@ -24,6 +28,7 @@ export default function TransferFunds() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { state, dispatch } = useEnvelopesContext();
+  const notification = useNotification();
 
   const selectOptions = useMemo(
     () =>
@@ -38,10 +43,40 @@ export default function TransferFunds() {
     control,
   });
 
+  useEffect(() => {
+    if (!transferData.fromId && !transferData.toId && !transferData.amount)
+      return;
+    const envelope = state.envelopes.find((e) => e.id === transferData.fromId);
+
+    if (
+      transferData.amount != null &&
+      transferData.amount > (envelope?.balance ?? 0)
+    ) {
+      setError("amount", {
+        message: "Amount cannot be greather than transfer envelope amount",
+      });
+    } else {
+      setError("amount", { message: "" });
+    }
+  }, [
+    transferData.amount,
+    transferData.fromId,
+    transferData.toId,
+    state.envelopes,
+    setError,
+  ]);
+
   const closeModal = () =>
     dispatch({ type: "SET_IS_TRANSFERING_FUNDS", payload: false });
 
   const onSubmit: SubmitHandler<TransferFundsFormData> = (data) => {
+    if (data.fromId === data.toId) {
+      notification.info({
+        title: TRANSFER_FUNDS_NOTIFICATION_TITLE,
+        message: "Transfer envelopes should not be the same.",
+      });
+      return;
+    }
     setIsSubmitting(true);
     transferEnvelopeFunds(data)
       .then((response) => {
@@ -98,11 +133,19 @@ export default function TransferFunds() {
 
         dispatch({ type: "SET_IS_TRANSFERING_FUNDS", payload: false });
         dispatch({ type: "SET_ENVELOPES", payload: currentEnvelopes });
+        notification.success({
+          title: TRANSFER_FUNDS_NOTIFICATION_TITLE,
+          message: "Envelopes transfer successful",
+        });
         closeModal();
       })
-      .catch((error) =>
-        console.error("Error transfering envelope funds: ", error),
-      )
+      .catch((error) => {
+        console.error("Error transfering envelope funds: ", error);
+        notification.error({
+          title: TRANSFER_FUNDS_NOTIFICATION_TITLE,
+          message: "Envelopes transfer failed",
+        });
+      })
       .finally(() => {
         setIsSubmitting(false);
       });
@@ -145,12 +188,6 @@ export default function TransferFunds() {
             label="Amount to Transfer"
             placeholder="0.00"
             step="0.01"
-            max={
-              transferData.fromId
-                ? state.envelopes.find((e) => e.id === transferData.fromId)
-                    ?.balance
-                : undefined
-            }
             {...register("amount", {
               required: "Amount is required",
               valueAsNumber: true,
@@ -158,50 +195,54 @@ export default function TransferFunds() {
             })}
             error={errors?.amount?.message}
           />
-          {transferData.fromId && transferData.toId && (transferData?.amount ?? 0) > 0 && (
-            <div
-              style={{
-                marginTop: "1rem",
-                padding: "1rem",
-                background: "var(--cream)",
-                borderRadius: "8px",
-                fontSize: "0.875rem",
-              }}
-            >
-              <p
+          {transferData.fromId &&
+            transferData.toId &&
+            (transferData?.amount ?? 0) > 0 && (
+              <div
                 style={{
-                  marginBottom: "0.5rem",
-                  color: "var(--dark-sage)",
+                  marginTop: "1rem",
+                  padding: "1rem",
+                  background: "var(--cream)",
+                  borderRadius: "8px",
+                  fontSize: "0.875rem",
                 }}
               >
-                <strong>Transfer Summary:</strong>
-              </p>
-              <p style={{ color: "var(--charcoal)" }}>
-                From:{" "}
-                <strong>
-                  {
-                    state.envelopes.find((e) => e.id === transferData.fromId)
-                      ?.name
-                  }
-                </strong>
-                <br />
-                To:{" "}
-                <strong>
-                  {
-                    state.envelopes.find((e) => e.id === transferData.toId)
-                      ?.name
-                  }
-                </strong>
-                <br />
-                Amount:{" "}
-                <strong style={{ color: "var(--sage)" }}>
-                  {formatCurrency(transferData.amount ?? 0)}
-                </strong>
-              </p>
-            </div>
-          )}
+                <p
+                  style={{
+                    marginBottom: "0.5rem",
+                    color: "var(--dark-sage)",
+                  }}
+                >
+                  <strong>Transfer Summary:</strong>
+                </p>
+                <p style={{ color: "var(--charcoal)" }}>
+                  From:{" "}
+                  <strong>
+                    {
+                      state.envelopes.find((e) => e.id === transferData.fromId)
+                        ?.name
+                    }
+                  </strong>
+                  <br />
+                  To:{" "}
+                  <strong>
+                    {
+                      state.envelopes.find((e) => e.id === transferData.toId)
+                        ?.name
+                    }
+                  </strong>
+                  <br />
+                  Amount:{" "}
+                  <strong style={{ color: "var(--sage)" }}>
+                    {formatCurrency(transferData.amount ?? 0)}
+                  </strong>
+                </p>
+              </div>
+            )}
           <div className="modal-actions">
-            <button type="button" onClick={closeModal}>Cancel</button>
+            <button type="button" onClick={closeModal}>
+              Cancel
+            </button>
             <button type="submit" className="btn-primary">
               {isSubmitting ? (
                 <>
