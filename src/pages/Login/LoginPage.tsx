@@ -13,6 +13,7 @@ import type {
 import type { AuthUser, LoginFormData } from "../../models/auth.model";
 import { useAuthContext } from "../../context/auth.context";
 import useNotification from "../../hooks/useNotification";
+import Input from "../../components/Forms/Input";
 
 export default function LoginPage() {
   useDocumentTitle(APP_ROUTES.LOGIN.NAME);
@@ -131,72 +132,28 @@ export default function LoginPage() {
           onSubmit={handleSubmit(onSubmit)}
         >
           {/* <!-- Email --> */}
-          <div className="form-group">
-            <label htmlFor="email">
-              Email Address
-              <span className="required">*</span>
-            </label>
-            <input
-              type="email"
-              id="email"
-              placeholder="john.doe@example.com"
-              autoComplete="email"
-              {...register("email", { required: "Email is required" })}
-              disabled={isSubmitting}
-            />
-            {errors.email && (
-              <span
-                className={`error-message ${errors.email ? "show" : ""}`}
-                id="emailError"
-              >
-                {errors.email?.message}
-              </span>
-            )}
-          </div>
+          <Input
+            type="email"
+            id="email"
+            label="Email Address"
+            placeholder="john.doe@example.com"
+            autoComplete="email"
+            {...register("email", { required: "Email is required" })}
+            disabled={isSubmitting}
+            error={errors.email?.message}
+          />
 
           {/* <!-- Password --> */}
-          <div className="form-group">
-            <label htmlFor="password">
-              Password
-              <span className="required">*</span>
-            </label>
-            <div className="input-wrapper">
-              <input
-                type="password"
-                id="password"
-                placeholder="Enter your password"
-                autoComplete="current-password"
-                {...register("password", { required: "Password is required" })}
-                disabled={isSubmitting}
-              />
-              <button
-                type="button"
-                className="toggle-password"
-                aria-label="Toggle password visibility"
-              >
-                <svg
-                  id="eyeIcon"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-              </button>
-            </div>
-            {errors.password && (
-              <span
-                className={`error-message ${errors.password ? "show" : ""}`}
-                id="passwordError"
-              >
-                {errors.password.message}
-              </span>
-            )}
-          </div>
+          <Input
+            type="password"
+            id="password"
+            label="Password"
+            placeholder="Enter your password"
+            autoComplete="current-password"
+            {...register("password", { required: "Password is required" })}
+            disabled={isSubmitting}
+            error={errors.password?.message}
+          />
 
           {/* <!-- Form Options --> */}
           <div className="form-options">
