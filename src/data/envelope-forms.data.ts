@@ -12,3 +12,19 @@ export const envelopeCategoriesOptions = [
     { name: 'Savings 💰', value: EnvelopeCategories.SAVINGS },
     { name: 'Emergency Fund 🆘', value: EnvelopeCategories.EMERGENCY_FUND }
 ];
+
+export const envelopeCurrencyOptions = [
+    { name: "GHS (Ghanaian Cedi)", value: "GHS" },
+    {
+        name: "USD (US Dollar)",
+        value: "USD",
+    },
+    {
+        name: "EUR (Euro)",
+        value: "EUR",
+    },
+    {
+        name: "GBP (British Pound)",
+        value: "GBP",
+    },
+];
