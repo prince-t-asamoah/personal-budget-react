@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import "./SingupPage.css";
+import Input from "../../components/Forms/Input";
 
 import { APP_ROUTES } from "../../constants/routes.constants";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
@@ -20,7 +21,9 @@ export default function SignupPage() {
   const {
     register,
     handleSubmit,
-    watch,
+    setError,
+    clearErrors,
+    getValues,
     formState: { errors },
   } = useForm<SignupFormData>();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,7 +36,10 @@ export default function SignupPage() {
     password,
     confirmPassword,
   }) => {
-    if (password !== confirmPassword) return;
+    if (password !== confirmPassword) {
+      setError("confirmPassword", { message: "Passwords does not match" });
+      return;
+    }
     setIsSubmitting(true);
     signupUser({ fullname, email, password })
       .then(async (response) => {
@@ -125,155 +131,75 @@ export default function SignupPage() {
           onSubmit={handleSubmit(onSubmit)}
         >
           {/* <!-- Full Name --> */}
-          <div className="form-group">
-            <label htmlFor="fullName">
-              Full Name
-              <span className="required">*</span>
-            </label>
-            <input
-              type="text"
-              id="fullName"
-              placeholder="John Doe"
-              autoComplete="name"
-              {...register("fullname", { required: "Fullname is required." })}
-              disabled={isSubmitting}
-            />
-            <span
-              className={`error-message ${errors.fullname?.message ? "show" : ""}`}
-              id="nameError"
-            >
-              {errors.fullname?.message}
-            </span>
-          </div>
+          <Input
+            type="text"
+            id="fullName"
+            label="Full Name"
+            placeholder="John Doe"
+            autoComplete="name"
+            {...register("fullname", { required: "Fullname is required." })}
+            disabled={isSubmitting}
+            error={errors.fullname?.message}
+          />
 
           {/* <!-- Email --> */}
-          <div className="form-group">
-            <label htmlFor="email">
-              Email Address
-              <span className="required">*</span>
-            </label>
-            <input
-              type="email"
-              id="email"
-              placeholder="john.doe@example.com"
-              autoComplete="email"
-              {...register("email", { required: "Email is required." })}
-              disabled={isSubmitting}
-            />
-            <span
-              className={`error-message ${errors.email?.message ? "show" : ""}`}
-              id="emailError"
-            >
-              {errors.email?.message}
-            </span>
-          </div>
+          <Input
+            type="email"
+            id="email"
+            label="Email"
+            placeholder="john.doe@example.com"
+            autoComplete="email"
+            {...register("email", { required: "Email is required." })}
+            disabled={isSubmitting}
+            error={errors.email?.message}
+          />
 
           {/* <!-- Password --> */}
-          <div className="form-group">
-            <label htmlFor="password">
-              Password
-              <span className="required">*</span>
-            </label>
-            <div className="input-wrapper">
-              <input
-                type="password"
-                id="password"
-                placeholder="Create a strong password"
-                autoComplete="new-password"
-                {...register("password", {
-                  required: "Password is required.",
-                  minLength: {
-                    value: 12,
-                    message: "Password must be at least 12 characters long.",
-                  },
-                })}
-                disabled={isSubmitting}
-              />
-              <button
-                type="button"
-                className="toggle-password"
-                aria-label="Toggle password visibility"
-              >
-                <svg
-                  id="eyeIcon"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-              </button>
-            </div>
-            <div
-              className="password-strength"
-              id="passwordStrength"
-              style={{ display: "none" }}
-            >
-              <div className="strength-meter">
-                <div className="strength-fill" id="strengthFill"></div>
-              </div>
-              <div className="strength-text" id="strengthText"></div>
-            </div>
-            <span
-              className={`error-message ${errors.password?.message ? "show" : ""}`}
-              id="passwordError"
-            >
-              {errors.password?.message}
-            </span>
-          </div>
+          <Input
+            type="password"
+            id="password"
+            label="Password"
+            placeholder="Create a strong password"
+            autoComplete="new-password"
+            {...register("password", {
+              required: "Password is required.",
+              minLength: {
+                value: 12,
+                message: "Password must be at least 12 characters long.",
+              },
+            })}
+            error={errors.password?.message}
+          />
 
           {/* <!-- Confirm Password --> */}
-          <div className="form-group">
-            <label htmlFor="confirmPassword">
-              Confirm Password
-              <span className="required">*</span>
-            </label>
-            <div className="input-wrapper">
-              <input
-                type="password"
-                id="confirmPassword"
-                placeholder="Re-enter your password"
-                autoComplete="new-password"
-                {...register("confirmPassword", {
-                  required: "Confirm your password.",
-                  validate: (value) =>
-                    // eslint-disable-next-line react-hooks/incompatible-library
-                    value === watch("password") || "Passwords do not match",
-                })}
-                disabled={isSubmitting}
-              />
-              <button
-                type="button"
-                className="toggle-password"
-                aria-label="Toggle password visibility"
-              >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-              </button>
-            </div>
-            <span
-              className={`error-message ${errors.confirmPassword?.message ? "show" : ""}`}
-              id="confirmPasswordError"
-            >
-              {errors.confirmPassword?.message}
-            </span>
-            <span className="success-message" id="confirmPasswordSuccess">
-              Passwords match ✓
-            </span>
-          </div>
+          <Input
+            type="password"
+            id="confirmPassword"
+            label="Confirm Password"
+            placeholder="Re-enter your password"
+            autoComplete="new-password"
+            {...register("confirmPassword", {
+              required: "Confirm your password.",
+              onBlur: () => {
+                const currentPassword = getValues("password");
+                const currentConfirmPassword = getValues("confirmPassword");
+
+                if (
+                  currentConfirmPassword &&
+                  currentPassword !== currentConfirmPassword
+                ) {
+                  setError("confirmPassword", {
+                    message: "Passwords does not match",
+                  });
+                  return;
+                }
+
+                clearErrors("confirmPassword");
+              },
+            })}
+            disabled={isSubmitting}
+            error={errors.confirmPassword?.message}
+          />
 
           {/* <!-- Terms and Conditions --> */}
           <div className="terms-conditions">
