@@ -29,6 +29,10 @@ export const APP_ROUTES = {
     NAME: "login",
     URL: "/login",
   },
+  RESEND_VERIFICATION: {
+    NAME: "resend verification",
+    URL: "/resend-verification"
+  },
   HOME: {
     NAME: 'home',
     URL: API_BASE_URL
