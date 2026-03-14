@@ -17,6 +17,7 @@ import EnvelopesHome from "./pages/Budget/components/EnvelopesHome/EnvelopesHome
 import EnvelopesDetails from "./pages/Budget/components/EnvelopesDetails/EnvelopesDetails";
 import EmailVerificationLinkExpiredPage from './pages/EmailVerificationLinkExpired/EmailVerificationLinkExpiredPage';
 import ResendEmailVerificationPage from './pages/ResendEmailVerification/ResendEmailVerificationPage';
+import Transactions from "./pages/Budget/components/Transactions/Transactions";
 
 
 function App() {
@@ -37,6 +38,8 @@ function App() {
               <Route index element={<EnvelopesHome />} />
               <Route path="details/:id" element={<EnvelopesDetails />} />
             </Route>
+            <Route path="transactions" element={<Transactions />} />
+
             <Route path="analytics" element={<EnvelopesAnalyticsContent />} />
             <Route path="settings" element={<EnvelopesSettingsContent />} />
             <Route

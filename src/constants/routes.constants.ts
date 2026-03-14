@@ -9,6 +9,10 @@ export const APP_ROUTES = {
     NAME: 'envelopes',
     URL: "/envelopes"
   },
+  TRANSACTIONS: {
+    NAME: 'transactions',
+    URL: "/transactions"
+  },
   ANALYTICS: {
     NAME: "analytics",
     URL: "/analytics",
