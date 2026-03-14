@@ -40,11 +40,14 @@ export interface EnvelopeState {
   isTransacting: boolean;
   isDeleting: boolean;
   isEditing: boolean;
-  loading: boolean;
-
+  isLoading: boolean;
+  hasLoadingError: boolean;
 }
 
-export type EnvelopeStateActions = { type: 'SET_ENVELOPES', payload: Envelope | Envelope[] } |
+export type EnvelopeStateActions = 
+{ type : 'SET_IS_LOADING_ENVELOPES', payload: boolean } |
+{ type : 'SET_HAS_LOADING_ERROR', payload: boolean } |
+{ type: 'SET_ENVELOPES', payload: Envelope | Envelope[] } |
 { type: 'UPDATE_ENVELOPE', payload: Envelope } |
 { type: 'SET_NEW_ENVELOPE_MODAL', payload: boolean } |
 { type: 'SET_IS_TRANSFERING_FUNDS', payload: boolean } |

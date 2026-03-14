@@ -12,11 +12,24 @@ export const envelopesState: EnvelopeState = {
     isTransacting: false,
     isDeleting: false,
     isEditing: false,
-    loading: false,
+    isLoading: false,
+    hasLoadingError: false,
 };
 
-export const envelopesReducer = (state: EnvelopeState, action: EnvelopeStateActions) => {
+export const envelopesReducer = (state: EnvelopeState, action: EnvelopeStateActions): EnvelopeState => {
     switch (action.type) {
+        case 'SET_IS_LOADING_ENVELOPES': {
+            return {
+                ...state,
+                isLoading: action.payload
+            }
+        }
+        case 'SET_HAS_LOADING_ERROR': {
+            return {
+                ...state,
+                hasLoadingError: action.payload
+            }
+        }
         case 'SET_ENVELOPES': {
             return {
                 ...state,
@@ -25,7 +38,7 @@ export const envelopesReducer = (state: EnvelopeState, action: EnvelopeStateActi
         }
         case 'UPDATE_ENVELOPE': {
             const updateEnvelopeIndex = state.envelopes.findIndex(env => env.id === action.payload.id);
-            if (updateEnvelopeIndex === -1) return;
+            if (updateEnvelopeIndex === -1) return state;
             const currentEnvelopes = state.envelopes;
             currentEnvelopes[updateEnvelopeIndex] = action.payload;
 
