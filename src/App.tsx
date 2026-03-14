@@ -14,7 +14,10 @@ import LoginPage from "./pages/Login/LoginPage";
 import BudgetRoot from "./pages/Budget/components/BudgetRoot";
 import NotFoundPage from "./pages/NotFound/NotFoundPage";
 import EnvelopesHome from "./pages/Budget/components/EnvelopesHome/EnvelopesHome";
-import EnvelopesDetails  from "./pages/Budget/components/EnvelopesDetails/EnvelopesDetails";
+import EnvelopesDetails from "./pages/Budget/components/EnvelopesDetails/EnvelopesDetails";
+import EmailVerificationLinkExpiredPage from './pages/EmailVerificationLinkExpired/EmailVerificationLinkExpiredPage';
+import ResendEmailVerificationPage from './pages/ResendEmailVerification/ResendEmailVerificationPage';
+
 
 function App() {
   return (
@@ -43,6 +46,11 @@ function App() {
           </Route>
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/verification-link-expired"
+            element={<EmailVerificationLinkExpiredPage />}
+          />
+          <Route path="/resend-verification" element={<ResendEmailVerificationPage/>}/>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AppProvider>
