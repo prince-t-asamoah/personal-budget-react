@@ -25,3 +25,8 @@ export const signupUser = (data: SignupFormData) => httpClientService(`${BASE_RO
     },
     credentials: 'include'
 })
+
+export const verifyEmail = (token: string) => httpClientService(`${BASE_ROUTES}/verify-email?token=${token}`, {
+    method: 'GET',
+    credentials: 'include'
+});

@@ -20,6 +20,7 @@ export type AuthUser = {
   profileImageUrl: string | null;
   createdAt: string;
   updatedAt: string;
+  isVerified: boolean;
 }
 
 export type AuthState = {
@@ -27,4 +28,6 @@ export type AuthState = {
   isAuthenticated: boolean;
 }
 
-export type AuthStateActions = { type: 'SET_IS_AUTHENTICATED', payload: boolean } | { type: 'SET_USER', payload: AuthUser | null };
+export type AuthStateActions = 
+{ type: 'SET_IS_AUTHENTICATED', payload: boolean } |
+{ type: 'SET_USER', payload: AuthUser | null };

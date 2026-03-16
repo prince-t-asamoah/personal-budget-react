@@ -37,6 +37,10 @@ export const APP_ROUTES = {
     NAME: "resend verification",
     URL: "/resend-verification"
   },
+  VERIFICATION_LINK_EXPIRED: {
+    NAME: '/verification-link-expired',
+    URL: "/verification-link-expired"
+  },
   HOME: {
     NAME: 'home',
     URL: API_BASE_URL
