@@ -21,7 +21,7 @@ export default function VerifyAccountPage() {
           title: "Account Verification",
           message: "Email verification successful",
         });
-        navigate(APP_ROUTES.LOGIN.URL);
+        navigate(APP_ROUTES.LOGIN.URL, { replace: true });
       })
       .catch((error: unknown) => {
         console.error("User email verification: ", error);
