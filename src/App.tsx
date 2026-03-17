@@ -18,6 +18,7 @@ import EnvelopesDetails from "./pages/Budget/components/EnvelopesDetails/Envelop
 import EmailVerificationLinkExpiredPage from './pages/EmailVerificationLinkExpired/EmailVerificationLinkExpiredPage';
 import ResendEmailVerificationPage from './pages/ResendEmailVerification/ResendEmailVerificationPage';
 import Transactions from "./pages/Budget/components/Transactions/Transactions";
+import VerifyAccountPage from "./pages/VerifyAccount/VerifyAccountPage";
 
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
           </Route>
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/verify-account" element={<VerifyAccountPage />} />
           <Route
             path="/verification-link-expired"
             element={<EmailVerificationLinkExpiredPage />}
