@@ -23,7 +23,8 @@ export default function Sidebar({ isOpen }: Readonly<{ isOpen: boolean }>) {
       | "analytics"
       | "settings"
       | "helpcircle"
-      | "wallet";
+      | "wallet"
+      | "dollarsign";
   }[] = [
     {
       name: APP_ROUTES.DASHBOARD.NAME,
@@ -34,6 +35,11 @@ export default function Sidebar({ isOpen }: Readonly<{ isOpen: boolean }>) {
       name: APP_ROUTES.ENVELOPES.NAME,
       path: APP_ROUTES.ENVELOPES.URL,
       iconName: "wallet",
+    },
+     {
+      name: APP_ROUTES.TRANSACTIONS.NAME,
+      path: APP_ROUTES.TRANSACTIONS.URL,
+      iconName: "dollarsign",
     },
     {
       name: APP_ROUTES.ANALYTICS.NAME,
@@ -102,7 +108,6 @@ export default function Sidebar({ isOpen }: Readonly<{ isOpen: boolean }>) {
   }, [userMenuOpen]);
 
   return (
-    <>
       <aside className={`sidebar ${isOpen ? "open" : ""}`}>
         {/* Sidebar Header */}
         <div className="sidebar-header">
@@ -174,6 +179,5 @@ export default function Sidebar({ isOpen }: Readonly<{ isOpen: boolean }>) {
           </div>
         </div>
       </aside>
-    </>
   );
 }
