@@ -1,7 +1,11 @@
 import "./AppLoader.css";
 import AppLogo from "../AppLogo/AppLogo";
 
-export default function AppLoader() {
+export default function AppLoader({
+  message = "Loading",
+}: Readonly<{
+  message?: string;
+}>) {
   return (
     <div className="app-loader" id="appLoader">
       {/* <!-- Animated background --> */}
@@ -45,7 +49,7 @@ export default function AppLoader() {
 
         {/* <!-- Loading message --> */}
         <div className="loading-message" id="loadingMessage">
-          Loading...
+          {message}...
         </div>
       </div>
     </div>
