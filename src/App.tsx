@@ -11,26 +11,26 @@ import EnvelopesHelpSupportContent from "./pages/Budget/components/EnvelopesHelp
 import Envelopes from "./pages/Budget/components/Envelopes/Envelopes";
 import SignupPage from "./pages/Signup/SignupPage";
 import LoginPage from "./pages/Login/LoginPage";
-import BudgetRoot from "./pages/Budget/components/BudgetRoot";
 import NotFoundPage from "./pages/NotFound/NotFoundPage";
 import EnvelopesHome from "./pages/Budget/components/EnvelopesHome/EnvelopesHome";
 import EnvelopesDetails from "./pages/Budget/components/EnvelopesDetails/EnvelopesDetails";
-import EmailVerificationLinkExpiredPage from './pages/EmailVerificationLinkExpired/EmailVerificationLinkExpiredPage';
-import ResendEmailVerificationPage from './pages/ResendEmailVerification/ResendEmailVerificationPage';
+import EmailVerificationLinkExpiredPage from "./pages/EmailVerificationLinkExpired/EmailVerificationLinkExpiredPage";
+import ResendEmailVerificationPage from "./pages/ResendEmailVerification/ResendEmailVerificationPage";
 import Transactions from "./pages/Budget/components/Transactions/Transactions";
 import VerifyAccountPage from "./pages/VerifyAccount/VerifyAccountPage";
-
+import BudgetPage from "./pages/Budget/BudgetPage";
 
 function App() {
   return (
     <>
       <AppProvider>
         <Routes>
-          <Route index element={<Navigate to="/dashboard" replace />} />
+          <Route index element={<Navigate to="/app" replace />} />
           <Route
+            path="app"
             element={
               <AuthGuard>
-                <BudgetRoot />
+                <BudgetPage />
               </AuthGuard>
             }
           >
@@ -55,7 +55,10 @@ function App() {
             path="/verification-link-expired"
             element={<EmailVerificationLinkExpiredPage />}
           />
-          <Route path="/resend-verification" element={<ResendEmailVerificationPage/>}/>
+          <Route
+            path="/resend-verification"
+            element={<ResendEmailVerificationPage />}
+          />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AppProvider>

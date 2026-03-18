@@ -3,27 +3,27 @@ const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL || '/';
 export const APP_ROUTES = {
   DASHBOARD: {
     NAME: "dashboard",
-    URL: "/dashboard",
+    URL: "/app/dashboard",
   },
   ENVELOPES: {
     NAME: 'envelopes',
-    URL: "/envelopes"
+    URL: "/app/envelopes"
   },
   TRANSACTIONS: {
     NAME: 'transactions',
-    URL: "/transactions"
+    URL: "/app/transactions"
   },
   ANALYTICS: {
     NAME: "analytics",
-    URL: "/analytics",
+    URL: "/app/analytics",
   },
   SETTINGS: {
     NAME: "settings",
-    URL: "/settings",
+    URL: "/app/settings",
   },
   HELP_SUPPORT: {
     NAME: "help & support",
-    URL: "/help-support",
+    URL: "/app/help-support",
   },
   CREATE_ACCOUNT: {
     NAME: "Create your account",
