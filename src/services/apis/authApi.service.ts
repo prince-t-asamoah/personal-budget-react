@@ -30,3 +30,13 @@ export const verifyEmail = (token: string) => httpClientService(`${BASE_ROUTES}/
     method: 'GET',
     credentials: 'include'
 });
+
+
+export const getAuthenticatedUser = () => httpClientService(`${BASE_ROUTES}/me`, {
+    method: 'GET',
+    credentials: 'include'
+});
+
+export const googleAuth = () => {
+    globalThis.location.href = `${import.meta.env.VITE_API_BASE_URL}${BASE_ROUTES}/google`
+};
