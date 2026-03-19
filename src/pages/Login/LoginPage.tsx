@@ -162,8 +162,8 @@ export default function LoginPage() {
               <input
                 type="checkbox"
                 id="remember"
-                name="remember"
                 disabled={isSubmitting}
+                 {...register("rememberMe")}
               />
               <label htmlFor="remember">Remember me</label>
             </div>
