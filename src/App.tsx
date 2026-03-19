@@ -27,13 +27,14 @@ function App() {
         <Routes>
           <Route index element={<Navigate to="/app" replace />} />
           <Route
-            path="app"
+            path="/app"
             element={
               <AuthGuard>
                 <BudgetPage />
               </AuthGuard>
             }
           >
+            <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="envelopes" element={<Envelopes />}>
               <Route index element={<EnvelopesHome />} />
