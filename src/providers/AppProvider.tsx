@@ -7,7 +7,7 @@ type AppProviderProps = {
   children: ReactNode;
 };
 
-export default function AppProvider({ children }: AppProviderProps) {
+export default function AppProvider({ children }: Readonly<AppProviderProps>) {
   return (
     <AuthProvider>
       <BudgetStateProvider>{children}</BudgetStateProvider>
