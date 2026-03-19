@@ -21,6 +21,7 @@ import Transactions from "./pages/Budget/components/Transactions/Transactions";
 import VerifyAccountPage from "./pages/VerifyAccount/VerifyAccountPage";
 import BudgetRoot from "./pages/Budget/components/BudgetRoot";
 import ForgotPasswordPage from "./pages/ForgotPassword/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPassword/ResetPasswordPage";
 
 function App() {
   return (
@@ -54,7 +55,7 @@ function App() {
           <Route path={APP_ROUTES.CREATE_ACCOUNT.URL} element={<SignupPage />} />
           <Route path={APP_ROUTES.LOGIN.URL} element={<LoginPage />} />
           <Route path={APP_ROUTES.FORGOT_PASSWORD.URL} element={<ForgotPasswordPage />} />
-          <Route path="/forgot-password.html" element={<ForgotPasswordPage />} />
+          <Route path={APP_ROUTES.RESET_PASSWORD.URL} element={<ResetPasswordPage />} />
           <Route path="/verify-account" element={<VerifyAccountPage />} />
           <Route
             path="/verification-link-expired"
