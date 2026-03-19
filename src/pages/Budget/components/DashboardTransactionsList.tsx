@@ -16,7 +16,7 @@ export default function DashboardTransactionsList({
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
+            strokeWidth="2"
             className="empty-state-icon"
           >
             <line x1="12" y1="1" x2="12" y2="23" />
