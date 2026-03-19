@@ -168,9 +168,9 @@ export default function LoginPage() {
               <label htmlFor="remember">Remember me</label>
             </div>
 
-            <a href="forgot-password.html" className="forgot-password">
+            <NavLink to={APP_ROUTES.FORGOT_PASSWORD.URL} className="forgot-password">
               Forgot password?
-            </a>
+            </NavLink>
           </div>
 
           {/* <!-- Submit Button --> */}

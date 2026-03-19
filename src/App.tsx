@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import { TOAST_NOTIFICATION_DURATION } from "./constants/ui.constants";
+import { APP_ROUTES } from "./constants/routes.constants";
 import AppProvider from "./providers/AppProvider";
 import AuthGuard from "./guard/AuthGuard";
 import Dashboard from "./pages/Budget/components/Dashboard/Dashboard";
@@ -19,6 +20,7 @@ import ResendEmailVerificationPage from "./pages/ResendEmailVerification/ResendE
 import Transactions from "./pages/Budget/components/Transactions/Transactions";
 import VerifyAccountPage from "./pages/VerifyAccount/VerifyAccountPage";
 import BudgetRoot from "./pages/Budget/components/BudgetRoot";
+import ForgotPasswordPage from "./pages/ForgotPassword/ForgotPasswordPage";
 
 function App() {
   return (
@@ -49,8 +51,10 @@ function App() {
               element={<EnvelopesHelpSupportContent />}
             />
           </Route>
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path={APP_ROUTES.CREATE_ACCOUNT.URL} element={<SignupPage />} />
+          <Route path={APP_ROUTES.LOGIN.URL} element={<LoginPage />} />
+          <Route path={APP_ROUTES.FORGOT_PASSWORD.URL} element={<ForgotPasswordPage />} />
+          <Route path="/forgot-password.html" element={<ForgotPasswordPage />} />
           <Route path="/verify-account" element={<VerifyAccountPage />} />
           <Route
             path="/verification-link-expired"

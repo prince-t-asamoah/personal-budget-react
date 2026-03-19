@@ -33,6 +33,10 @@ export const APP_ROUTES = {
     NAME: "login",
     URL: "/login",
   },
+  FORGOT_PASSWORD: {
+    NAME: "forgot password",
+    URL: "/forgot-password",
+  },
   RESEND_VERIFICATION: {
     NAME: "resend verification",
     URL: "/resend-verification"
