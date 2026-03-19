@@ -8,7 +8,7 @@ import { APP_ROUTES } from "../../constants/routes.constants";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import AppLogo from "../../components/AppLogo/AppLogo";
 import type { AuthUser, SignupFormData } from "../../models/auth.model";
-import { signupUser } from "../../services/apis/authApi.service";
+import { googleAuth, signupUser } from "../../services/apis/authApi.service";
 import type {
   ErrorApiResponse,
   SuccessApiResponse,
@@ -66,6 +66,7 @@ export default function SignupPage() {
       });
   };
 
+
   return (
     <div className="auth-container">
       <div className="auth-card">
@@ -81,8 +82,8 @@ export default function SignupPage() {
         </div>
 
         {/* <!-- SSO Buttons --> */}
-        {/* <div className="sso-buttons">
-          <button className="sso-btn google">
+        <div className="sso-buttons">
+          <button className="sso-btn google" onClick={googleAuth}>
             <svg viewBox="0 0 24 24" fill="currentColor">
               <path
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -117,12 +118,12 @@ export default function SignupPage() {
             </svg>
             Continue with Apple
           </button>
-        </div> */}
+        </div>
 
         {/* <!-- Divider --> */}
-        {/* <div className="divider">
+        <div className="divider">
           <span>Or sign up with email</span>
-        </div> */}
+        </div>
 
         {/* <!-- Signup Form --> */}
         <form
