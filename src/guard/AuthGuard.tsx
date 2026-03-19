@@ -11,17 +11,18 @@ export default function AuthGuard({
 }>) {
   const { state } = useAuthContext();
 
+  // Show loader while authenticating
   if (state.isAuthenticating) {
     return <AppLoader message="Verifying session..." />;
+  } else {
+    return (
+      <>
+        {state.isAuthenticated ? (
+          children
+        ) : (
+          <Navigate to={APP_ROUTES.LOGIN.URL} replace />
+        )}
+      </>
+    );
   }
-
-  return (
-    <>
-      {state.isAuthenticated ? (
-        children
-      ) : (
-        <Navigate to={APP_ROUTES.LOGIN.URL} replace />
-      )}
-    </>
-  );
 }

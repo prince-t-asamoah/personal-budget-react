@@ -18,7 +18,7 @@ import EmailVerificationLinkExpiredPage from "./pages/EmailVerificationLinkExpir
 import ResendEmailVerificationPage from "./pages/ResendEmailVerification/ResendEmailVerificationPage";
 import Transactions from "./pages/Budget/components/Transactions/Transactions";
 import VerifyAccountPage from "./pages/VerifyAccount/VerifyAccountPage";
-import BudgetPage from "./pages/Budget/BudgetPage";
+import BudgetRoot from "./pages/Budget/components/BudgetRoot";
 
 function App() {
   return (
@@ -30,7 +30,7 @@ function App() {
             path="/app"
             element={
               <AuthGuard>
-                <BudgetPage />
+                <BudgetRoot />
               </AuthGuard>
             }
           >
