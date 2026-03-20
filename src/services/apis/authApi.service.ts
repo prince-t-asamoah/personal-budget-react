@@ -37,6 +37,15 @@ export const getAuthenticatedUser = () => httpClientService(`${BASE_ROUTES}/me`,
     credentials: 'include'
 });
 
+export const forgotPassword = (email: string) => httpClientService(`${BASE_ROUTES}/forgot-password`, {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    credentials: 'include'
+});
+
 export const googleAuth = () => {
     globalThis.location.href = `${import.meta.env.VITE_API_BASE_URL}${BASE_ROUTES}/google`
 };

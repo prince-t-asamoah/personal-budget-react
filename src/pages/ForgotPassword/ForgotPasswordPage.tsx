@@ -1,7 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { useState } from "react";
 import { APP_ROUTES } from "../../constants/routes.constants";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
+import useNotification from "../../hooks/useNotification";
+import { forgotPassword } from "../../services/apis/authApi.service";
+import type { ErrorApiResponse, SuccessApiResponse } from "../../models/api.model";
 import "./ForgotPasswordPage.css";
 
 type ForgotPasswordFormData = {
@@ -15,9 +19,47 @@ export default function ForgotPasswordPage() {
         handleSubmit,
         formState: { errors },
     } = useForm<ForgotPasswordFormData>();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [sentEmail, setSentEmail] = useState("");
+    const notification = useNotification();
 
-    const onSubmit: SubmitHandler<ForgotPasswordFormData> = () => {
-        // Intentionally left blank: UI-only page.
+    const onSubmit: SubmitHandler<ForgotPasswordFormData> = (data) => {
+        setIsSubmitting(true);
+        forgotPassword(data.email)
+            .then(async (response) => {
+                if (!response.ok) {
+                    const errorResponse = (await response.json()) as ErrorApiResponse;
+                    throw new Error(errorResponse.message);
+                }
+                return await response.json();
+            })
+            .then((response: SuccessApiResponse<null>) => {
+                setSentEmail(data.email);
+                setShowSuccess(true);
+                notification.success({
+                    title: "Reset Link Sent",
+                    message: response.message || "Password reset instructions have been sent to your email.",
+                });
+            })
+            .catch((error: unknown) => {
+                let errorMessage = "Failed to send reset link. Please try again.";
+                
+                if (error instanceof Error) {
+                    errorMessage = error.message;
+                } else if (error && typeof error === 'object' && 'message' in error) {
+                    errorMessage = String((error as Record<string, unknown>).message);
+                }
+                
+                console.error("Forgot Password Error: ", errorMessage);
+                notification.error({
+                    title: "Request Failed",
+                    message: errorMessage,
+                });
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
     };
 
     return (
@@ -74,23 +116,23 @@ export default function ForgotPasswordPage() {
                             <p className="form-hint">Enter the email you used when creating your account</p>
                         </div>
 
-                        <button type="submit" className="submit-button">
+                        <button type="submit" className="submit-button" disabled={isSubmitting}>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                                 <polyline points="22,6 12,13 2,6" />
                             </svg>
-                            Send Reset Link
+                            {isSubmitting ? "Sending..." : "Send Reset Link"}
                         </button>
                     </form>
 
-                    <div className="success-card" aria-hidden="true">
+                    <div className={`success-card ${showSuccess ? "show" : ""}`}>
                         <div className="success-header">
                             <svg className="success-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <polyline points="20 6 9 17 4 12" />
                             </svg>
                             <h3 className="success-title">Reset Link Sent!</h3>
                         </div>
-                        <p className="success-text">We&apos;ve sent password reset instructions to email@example.com.</p>
+                        <p className="success-text">We&apos;ve sent password reset instructions to {sentEmail}.</p>
                         <p className="success-text">Please follow these steps:</p>
                         <ul className="success-steps">
                             <li>Check your email inbox (and spam folder)</li>
