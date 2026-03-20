@@ -80,7 +80,7 @@ export default function Dashboard() {
   return (
     <div className="dashboard">
       <h2 className="page-title">{APP_ROUTES.DASHBOARD.NAME}</h2>
-      {state.loading ? (
+      {state.isLoading ? (
         <div className="loading">
           <div className="spinner large"></div>
           <p>Loading your envelopes...</p>
