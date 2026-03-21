@@ -1,4 +1,8 @@
-import type { LoginFormData, SignupFormData } from "../../models/auth.model";
+import type {
+    LoginFormData,
+    ResetPasswordFormData,
+    SignupFormData,
+} from "../../models/auth.model";
 import httpClientService from "../httpClient.service";
 
 const BASE_ROUTES = '/auth';
@@ -40,6 +44,24 @@ export const getAuthenticatedUser = () => httpClientService(`${BASE_ROUTES}/me`,
 export const forgotPassword = (email: string) => httpClientService(`${BASE_ROUTES}/forgot-password`, {
     method: 'POST',
     body: JSON.stringify({ email }),
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    credentials: 'include'
+});
+
+export const resetPassword = (data: ResetPasswordFormData) => httpClientService(`${BASE_ROUTES}/reset-password`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    credentials: 'include'
+});
+
+export const validateResetToken = (token: string) => httpClientService(`${BASE_ROUTES}/validate-reset-token`, {
+    method: 'POST',
+    body: JSON.stringify({ token }),
     headers: {
         'Content-Type': 'application/json',
     },

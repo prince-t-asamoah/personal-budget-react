@@ -12,6 +12,11 @@ export type SignupFormData = {
   agreedTotermsOfService?: boolean;
 }
 
+export type ResetPasswordFormData = {
+  newPassword: string;
+  confirmNewPassword: string;
+};
+
 export type AuthUser = {
   id: string;
   fullName: string;
