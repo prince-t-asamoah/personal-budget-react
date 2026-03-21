@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import { useState } from "react";
+import { useForm, useWatch, type SubmitHandler } from "react-hook-form";
+import { useEffect, useState } from "react";
 import "./LoginPage.css";
 import AppLogo from "../../components/AppLogo/AppLogo";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
@@ -15,6 +15,17 @@ import { useAuthContext } from "../../context/auth.context";
 import useNotification from "../../hooks/useNotification";
 import Input from "../../components/Forms/Input";
 
+const REMEMBER_ME_STORAGE_KEY = "login_remember_me";
+
+const getRememberMeFromStorage = (): boolean => {
+  try {
+    const stored = globalThis.localStorage.getItem(REMEMBER_ME_STORAGE_KEY);
+    return stored === "true";
+  } catch {
+    return false;
+  }
+};
+
 export default function LoginPage() {
   useDocumentTitle(APP_ROUTES.LOGIN.NAME);
   const { dispatch } = useAuthContext();
@@ -22,10 +33,27 @@ export default function LoginPage() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
-  } = useForm<LoginFormData>();
+  } = useForm<LoginFormData>({
+    defaultValues: {
+      rememberMe: getRememberMeFromStorage(),
+    },
+  });
+  const rememberMe = useWatch({ control, name: "rememberMe" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const notification = useNotification();
+
+  useEffect(() => {
+    try {
+      globalThis.localStorage.setItem(
+        REMEMBER_ME_STORAGE_KEY,
+        rememberMe ? "true" : "false"
+      );
+    } catch (error) {
+      console.error("Failed to save remember me preference:", error);
+    }
+  }, [rememberMe]);
 
   const onSubmit: SubmitHandler<LoginFormData> = (data) => {
     setIsSubmitting(true);
